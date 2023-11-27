@@ -1,0 +1,14 @@
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET:any-secret}
+auth0:
+  audience: https://myessen.eu.auth0.com/api/v2/
+  domain: myessen.eu.auth0.com
+server:
+  port: 8082
+spring:
+  datasource:
+    password: pepeeselmejor
+    url: jdbc:postgresql://localhost:5432/myessen
+    username: postgres

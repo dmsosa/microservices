@@ -17,7 +17,7 @@ logging:
 spring:
   datasource:
     password: pepeeselmejor
-    url: jdbc:postgresql://localhost:5432/vuttr
+    url: jdbc:postgresql://localhost:5432/myessen
     username: postgres
 springdoc:
   api-docs:
@@ -25,3 +25,7 @@ springdoc:
   show-actuator: true
   swagger-ui:
     url: /vuttr.yaml
+management:
+  tracing:
+    sampling:
+      probability: 1.0
