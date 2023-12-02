@@ -2,10 +2,14 @@ api:
   security:
     token:
       secret: ${JWT_SECRET:any-secret}
+application:
+  name: myessen
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+  instance:
+    instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
 auth0:
   audience: https://myessen.eu.auth0.com/api/v2/
   domain: myessen.eu.auth0.com
