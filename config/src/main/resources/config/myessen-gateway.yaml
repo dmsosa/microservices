@@ -9,14 +9,4 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
-spring:
-  cloud:
-    gateway:
-      routes:
-        - id: tool-service
-          uri: ${TOOLS_ROUTE_URI:lb://TOOL-SERVICE}
-          predicates:
-            - Path=/tools/**
-          filters:
-            - PrefixPath=/api
-            - AddResponseHeader=X-Powered-By, Duvi Gateway Service
+
