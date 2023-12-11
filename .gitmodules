@@ -1,3 +1,6 @@
 [submodule "myessen-service"]
 	path = myessen-service
 	url = git@github.com:dmsosa/myessen-service.git
+[submodule "tool-service"]
+	path = tool-service
+	url = git@github.com:dmsosa/tool-service.git
