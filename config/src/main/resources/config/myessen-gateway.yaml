@@ -1,31 +1,39 @@
 server:
   port:
     8061
-management:
-  tracing:
-    sampling:
-      probability: 1.0
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
   instance:
     hostname: localhost
+    prefer-ip-address: true
 spring:
+  application:
+    name: myessen-gateway
   cloud:
+    config:
+      import-check:
+        enabled: false
     gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
-      default-filters:
-        - RewritePath=/api/v1/.*?/(?<remaining>.*), /$\{remaining}
       routes:
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
+          filters:
+            - PrefixPath=/api
         - id: tool-service
-          predicates:
-            - Path=/api/v1/tool/**
           uri: lb://tool-service
-        - id: myessen-service
           predicates:
-            - Path=/api/v1/myessen/**
-          uri: lb://myessen-service
+            - Path=/tools/**
+          filters:
+            - PrefixPath=/api
+            - AuthFilter
+        - id: myessen-service
+          uri: lb://MYESSEN-SERVICE
+          predicates:
+            - Path=/foods/**
+          filters:
+            - PrefixPath=/api
+            - AuthFilter

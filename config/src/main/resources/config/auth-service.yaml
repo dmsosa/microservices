@@ -1,0 +1,28 @@
+server:
+  port: 7099
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET:secret}
+  issuer: myessen
+
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/myessen
+    username: postgres
+    password: pepeeselmejor
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+management:
+  tracing:
+    sampling:
+      probability: 1.0
