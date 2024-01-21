@@ -22,10 +22,10 @@ spring:
     username: postgres
 springdoc:
   api-docs:
-    enabled: false
+    enabled: true
   show-actuator: true
   swagger-ui:
-    url: /vuttr.yaml
+    path: /swagger-ui.html
 management:
   tracing:
     sampling:

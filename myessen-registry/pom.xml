@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.duvi</groupId>
-	<artifactId>service-registry</artifactId>
+	<artifactId>myessen-registry</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>service-registry</name>
 	<description>Configuration for Duvi Microservices</description>
