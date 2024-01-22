@@ -10,10 +10,12 @@ eureka:
 server:
   port: 8082
 spring:
+  config:
+    import: optional:file:.env[.properties]
   datasource:
-    password: pepeeselmejor
-    url: jdbc:postgresql://localhost:5432/myessen
-    username: postgres
+    password: ${PG_PASSWORD}
+    url: ${PG_URL}
+    username: ${PG_USER}
 springdoc:
   api-docs:
     enabled: true

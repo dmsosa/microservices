@@ -10,11 +10,6 @@ eureka:
 flyway:
   locations: classpath:db/migration
   schema: myessen
-logging:
-  level:
-    org:
-      springframework:
-        security: TRACE
 spring:
   datasource:
     password: pepeeselmejor

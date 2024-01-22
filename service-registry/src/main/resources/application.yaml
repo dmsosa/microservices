@@ -1,9 +1,14 @@
-server:
-  port: 8761
-
 spring:
   application:
     name: service-registry
+  cloud:
+    config:
+      password: ${CONFIG_SERVICE_PASSWORD}
+      username: ${SERVICE_USERNAME}
+  config:
+    import:
+     - optional:configserver:http://localhost:8888
+     - optional:file:.env[.properties]
 eureka:
   instance:
     hostname: localhost

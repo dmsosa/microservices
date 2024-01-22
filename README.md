@@ -8,12 +8,20 @@ MyEssen Projekt ein Seite wo du verschiedene Informationen von Lebensmittel erha
 ZU MACHEN:
 
 * Dishesbereich zu erstellen
+* Auth mit OAuth
+  * Password Grant (JWT Token) fur Kunden
+  * Client Grant fur Inneresdienstekommunikation
+  
 
 ### Dokumentation:
 
 Die Dokumentation unsere APIs mit Swagger entwickelt war, um en ein einfaches, verstandliche Weise die seinen Funktionen zu erklaren.
 
-### APIs:
+### DIENST / SERVICES:
+
+#### AUTH SERVICE:
+
+Wir haben es mit JWT Token implementier, aber danach es war entscheidet, OAuth2 fur die Authentikationdienste zu benutzen.
 
 #### FOOD API:
 

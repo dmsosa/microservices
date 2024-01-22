@@ -37,7 +37,7 @@
     <modules>
         <module>config</module>
         <module>auth-service</module>
-        <module>myessen-registry</module>
+        <module>service-registry</module>
         <module>myessen-gateway</module>
         <module>tool-service</module>
     </modules>

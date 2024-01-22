@@ -9,12 +9,6 @@ eureka:
     hostname: localhost
     prefer-ip-address: true
 spring:
-  application:
-    name: myessen-gateway
-  cloud:
-    config:
-      import-check:
-        enabled: false
     gateway:
       routes:
         - id: auth-service

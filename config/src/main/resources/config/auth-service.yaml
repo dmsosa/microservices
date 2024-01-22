@@ -4,7 +4,7 @@ api:
   security:
     token:
       secret: ${JWT_SECRET:secret}
-  issuer: myessen
+  issuer: ${JWT_ISSUER:myessen}
 
 logging:
   level:
@@ -13,9 +13,9 @@ logging:
         security: TRACE
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/myessen
-    username: postgres
-    password: pepeeselmejor
+    url: ${PG_URL}
+    username: ${PG_USER}
+    password: ${PG_PASSWORD}
 eureka:
   client:
     serviceUrl:
