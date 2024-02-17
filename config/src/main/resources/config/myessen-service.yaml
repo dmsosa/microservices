@@ -14,7 +14,7 @@ spring:
     import: optional:file:.env[.properties]
   datasource:
     password: ${PG_PASSWORD}
-    url: ${PG_URL}
+    url: ${PG_URL}/${PG_FOOD_DATABASE}
     username: ${PG_USER}
 springdoc:
   api-docs:

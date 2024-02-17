@@ -26,7 +26,8 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private UserRole role;
-    private Long customerID;
+    private String bio;
+    private String image;
 
     //User methods
     public User(String username, String email, String password, UserRole role) {
@@ -46,7 +47,8 @@ public class User implements UserDetails {
         this.email = updatedUser.email;
         this.password = updatedUser.password;
         this.role = updatedUser.role;
-        this.customerID = updatedUser.customerID;
+        this.bio = updatedUser.bio;
+        this.image = updatedUser.image;
     }
 
 
@@ -63,6 +65,15 @@ public class User implements UserDetails {
         return authoritiesList;
     }
 
+    public String getEmail() {
+        return this.email;
+    }
+
+    public UserRole getRole() {
+        return this.role;
+    }
+
+
     @Override
     public String getPassword() {
         return password;
@@ -72,6 +83,7 @@ public class User implements UserDetails {
     public String getUsername() {
         return username;
     }
+
 
     @Override
     public boolean isAccountNonExpired() {

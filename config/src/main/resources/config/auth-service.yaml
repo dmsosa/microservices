@@ -13,7 +13,7 @@ logging:
         security: TRACE
 spring:
   datasource:
-    url: ${PG_URL}
+    url: ${PG_URL}/${PG_BLOG_DATABASE}
     username: ${PG_USER}
     password: ${PG_PASSWORD}
 eureka:
