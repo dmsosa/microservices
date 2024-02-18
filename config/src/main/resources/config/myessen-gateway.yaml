@@ -31,3 +31,8 @@ spring:
           filters:
             - PrefixPath=/api
             - AuthFilter
+logging:
+  level:
+    org:
+      springframework:
+        gateway: TRACE
