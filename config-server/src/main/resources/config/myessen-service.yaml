@@ -1,5 +1,3 @@
-application:
-  name: myessen
 eureka:
   client:
     serviceUrl:
@@ -10,12 +8,10 @@ eureka:
 server:
   port: 8082
 spring:
-  config:
-    import: optional:file:.env[.properties]
   datasource:
-    password: ${PG_PASSWORD}
-    url: ${PG_URL}/${PG_FOOD_DATABASE}
-    username: ${PG_USER}
+    url: ${PG_URL:jdbc:postgresql://localhost:5432/myessen}
+    username: ${PG_USER:postgres}
+    password: ${PG_PASSWORD:pepeeselmejor}
 springdoc:
   api-docs:
     enabled: true

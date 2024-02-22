@@ -1,21 +1,21 @@
 server:
   port: 7099
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: pepeeselmejor
+    url: jdbc:postgresql://localhost/postgres
 api:
   security:
     token:
       secret: ${JWT_SECRET:secret}
   issuer: ${JWT_ISSUER:myessen}
-
 logging:
   level:
     org:
       springframework:
         security: TRACE
-spring:
-  datasource:
-    url: ${PG_URL}/${PG_BLOG_DATABASE}
-    username: ${PG_USER}
-    password: ${PG_PASSWORD}
 eureka:
   client:
     serviceUrl:

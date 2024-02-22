@@ -8,16 +8,17 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="VUTTR" />
+        <module name="config-server" />
         <module name="auth-service" />
-        <module name="myessen" />
-        <module name="config" />
         <module name="myessen-gateway" />
         <module name="service-registry" />
+        <module name="myessen-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="blog-service" target="21" />
       <module name="customer-service" target="1.5" />
+      <module name="myessen" target="21" />
       <module name="myessen-registry" target="21" />
       <module name="myessenregistry" target="21" />
       <module name="piggymetrics" target="1.8" />
@@ -28,10 +29,11 @@
       <module name="VUTTR" options="-parameters" />
       <module name="auth-service" options="-parameters" />
       <module name="blog-service" options="-parameters" />
-      <module name="config" options="-parameters" />
+      <module name="config-server" options="-parameters" />
       <module name="myessen" options="-parameters" />
       <module name="myessen-gateway" options="-parameters" />
       <module name="myessen-registry" options="-parameters" />
+      <module name="myessen-service" options="-parameters" />
       <module name="myessenregistry" options="-parameters" />
       <module name="service-registry" options="-parameters" />
     </option>

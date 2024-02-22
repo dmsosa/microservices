@@ -2,10 +2,19 @@ spring:
   application:
     name: auth-service
   config:
-    import:
-      - optional:configserver:http://localhost:8888
-      - optional:file:.env[.properties]
+    import: optional:configserver:/
   cloud:
     config:
-      password: ${CONFIG_SERVICE_PASSWORD}
-      username: ${SERVICE_USERNAME}
+      discovery:
+        enabled: true
+        serviceId: config-server
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+logging:
+  level:
+    org:
+      springframework:
+        core:
+          env: DEBUG
