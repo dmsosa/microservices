@@ -36,10 +36,12 @@
 
     <modules>
         <module>config-server</module>
-        <module>auth-service</module>
         <module>service-registry</module>
         <module>myessen-gateway</module>
-        <module>tool-service</module>
+        <module>auth-service</module>
+        <module>stats</module>
+        <module>account</module>
+        <module>noti</module>
         <module>myessen-service</module>
     </modules>
 

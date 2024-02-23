@@ -17,20 +17,10 @@ spring:
             - Path=/auth/**
           filters:
             - PrefixPath=/api
-        - id: tool-service
-          uri: lb://tool-service
-          predicates:
-            - Path=/tools/**
-          filters:
-            - PrefixPath=/api
-            - AuthFilter
-        - id: myessen-service
-          uri: lb://MYESSEN-SERVICE
-          predicates:
-            - Path=/foods/**
-          filters:
-            - PrefixPath=/api
-            - AuthFilter
+#        -id: andere dienst
+#          filters:
+#            - PrefixPath=/api
+#            - AuthFilter
 logging:
   level:
     org:
