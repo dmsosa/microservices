@@ -1,2 +1,7 @@
+spring:
+  datasource:
+    driver: org.postgresql.Driver
+    url: postgres
+
 server:
   port: 8083
