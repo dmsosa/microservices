@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
+@Table(name = "accounts")
 @Setter
 @Getter
 @NoArgsConstructor

@@ -1,19 +1,22 @@
 package com.duvi.services.account.domain;
 
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 
+@Entity
+@Table(name = "savings")
 @Getter
 @Setter
 public class Saving {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
     @MapsId

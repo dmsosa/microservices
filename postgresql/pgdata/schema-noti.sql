@@ -1,29 +1,17 @@
-CREATE TYPE currency as ENUM ('EUR', 'GBP', 'USD');
+CREATE TYPE frequency as ENUM ('WEEKLY', 'MONTHLY', 'QUARTERLY', 'YEARLY');
 
-CREATE TYPE period as ENUM ('HOUR', 'DAY', 'WEEK', 'MONTH', 'QUARTER', 'YEAR');
+CREATE TYPE noti_type as ENUM ('BACKUP', 'REMIND');
 
-CREATE TABLE IF NOT EXISTS 'accounts' (
-    name VARCHAR[40] NOT NULL UNIQUE PRIMARY KEY,
-    last_seen DATE,
-    saving_id INTEGER REFERENCES savings;
-    note VARCHAR[20000]
+CREATE TABLE IF NOT EXISTS 'notisettings' (
+    id SERIAL PRIMARY KEY,
+    account_name TEXT NOT NULL,
+    active BOOLEAN NOT NULL,
+    last_notified DATE,
+    frequency frequency,
+    type noti_type
 )
 
-CREATE TABLE IF NOT EXISTS 'savings' (
-    id SERIAL PRIMARY KEY,
-    account_name TEXT REFERENCES accounts,
-    interest INTEGER,
-    currency currency,
-    deposit BOOLEAN DEFAULT FALSE,
-    capitalization BOOLEAN DEFAULT FALSE
-)
-
-CREATE TABLE IF NOT EXISTS 'items' (
-    id SERIAL PRIMARY KEY,
-    account_name TEXT REFERENCES accounts,
-    title VARCHAR[40],
-    amount INTEGER,
-    currency currency,
-    time_period period,
-    icon TEXT
+CREATE TABLE IF NOT EXISTS 'recipients' (
+    account_name TEXT NOT NULL UNIQUE PRIMARY KEY,
+    email TEXT NOT NULL UNIQUE
 )
