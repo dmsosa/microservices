@@ -1,4 +1,4 @@
-package com.duvi.services.stats.domain.timeseries;
+package com.duvi.services.stats.domain;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;

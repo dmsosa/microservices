@@ -34,9 +34,12 @@ public class Item {
     private Currency currency;
 
     @NotNull
-    private TimePeriod timePeriod;
+    private Frequency frequency;
+
+    private ItemType type;
 
     @NotNull
     private String icon;
+
 
 }

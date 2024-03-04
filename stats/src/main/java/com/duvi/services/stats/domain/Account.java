@@ -12,9 +12,7 @@ import java.util.List;
 public class Account {
     private String name;
     private LocalDateTime lastSeen;
-
     private List<Item> incomes;
     private List<Item> expenses;
-    private Saving saving;
     private String note;
 }

@@ -25,18 +25,12 @@ public class Account {
     private LocalDateTime lastSeen;
 
     @Valid
-    @OneToMany
+    @OneToMany(mappedBy = "account")
     private Set<Item> incomes;
 
     @Valid
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "account")
     private Set<Item> expenses;
-
-    @Valid
-    @NotNull
-    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private Saving saving;
 
     @NotNull
     @Length(min = 3, max = 20_000)

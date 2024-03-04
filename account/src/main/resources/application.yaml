@@ -5,6 +5,7 @@ spring:
     import: optional:configserver:/
   cloud:
     config:
+      profile: dev
       discovery:
         enabled: true
         serviceId: config-server
