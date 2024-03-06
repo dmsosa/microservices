@@ -1,10 +1,15 @@
 spring:
+  profiles:
+    active: dev
   application:
     name: auth-service
   config:
     import: optional:configserver:/
   cloud:
     config:
+      username: username
+      password: password
+      profile: dev
       discovery:
         enabled: true
         serviceId: config-server

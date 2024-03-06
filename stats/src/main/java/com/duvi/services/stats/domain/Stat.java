@@ -1,6 +1,5 @@
 package com.duvi.services.stats.domain;
 
-import com.duvi.services.stats.domain.DataPoint;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -8,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 @Table(name = "stats")
 @Getter
@@ -25,9 +25,10 @@ public class Stat {
             @JoinColumn(name = "account_name"),
             @JoinColumn(name = "data_date")
     })
-    private DataPoint datapoint;
+    private Datapoint datapoint;
     private BigDecimal totalIncomes;
     private BigDecimal totalExpenses;
-    private BigDecimal savings;
-    private BigDecimal rate;
+    private BigDecimal totalSavings;
+
+    //todo rates
 }

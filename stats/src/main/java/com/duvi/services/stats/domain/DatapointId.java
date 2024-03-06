@@ -10,14 +10,16 @@ import java.time.LocalDateTime;
 @Embeddable
 @Getter
 @Setter
-public class DataPointId implements Serializable {
+public class DatapointId implements Serializable {
     private static final long serialVersionUID = 1L;
     private String accountName;
     private LocalDateTime dataDate;
-    public DataPointId(String accountName, LocalDateTime dataDate) {
+
+    public DatapointId(String accountName, LocalDateTime dataDate) {
         this.accountName = accountName;
         this.dataDate = dataDate;
     }
+
 
     @Override
     public String toString() {

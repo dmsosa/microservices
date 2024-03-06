@@ -2,23 +2,21 @@ package com.duvi.authservice.service;
 
 import com.duvi.authservice.model.User;
 import com.duvi.authservice.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
-    @Autowired
-    UserRepository userRepository;
 
-    @Override
-    public User findUserById(String id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isEmpty()) {
-            return null;
-        }
-        return optionalUser.get();
+    private Logger logger = LoggerFactory.getLogger(getClass());
+    private UserRepository userRepository;
+
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     //Zu Machen: EXCEPTIONS
@@ -51,8 +49,16 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User saveUser(User user) {
-        return userRepository.save(user);
+    public void saveUser(User user) throws Exception {
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new Exception("exists by Username");
+        } else if (userRepository.existsByEmail(user.getEmail())) {
+            throw new Exception("exists by Email");
+        }
+        String encryptedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
+        user.setPassword(encryptedPassword);
+        userRepository.save(user);
+        logger.info("New user has been registered: {}!".formatted(user.getUsername()));
     }
 
     @Override
@@ -70,15 +76,5 @@ public class UserServiceImpl implements UserService{
     @Override
     public void deleteUserById(Long id) {
 
-    }
-
-    @Override
-    public boolean existsByUsername(String username) {
-        return userRepository.existsByUsername(username);
-    }
-
-    @Override
-    public boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
     }
 }

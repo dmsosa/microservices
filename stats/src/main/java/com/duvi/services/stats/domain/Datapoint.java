@@ -2,6 +2,7 @@ package com.duvi.services.stats.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Set;
@@ -10,9 +11,10 @@ import java.util.Set;
 @Table(name = "datapoints")
 @Getter
 @Setter
-public class DataPoint {
+@NoArgsConstructor
+public class Datapoint {
     @EmbeddedId
-    private DataPointId id;
+    private DatapointId id;
 
     @OneToMany(mappedBy = "datapoint")
     private Set<Item> incomes;

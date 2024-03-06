@@ -1,9 +1,12 @@
 package com.duvi.services.account.domain;
 
 
+import com.duvi.services.account.domain.dto.ItemDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
@@ -13,6 +16,8 @@ import java.math.BigDecimal;
 @Table(name = "items")
 @Getter
 @Setter
+@NoArgsConstructor
+@EqualsAndHashCode
 public class Item {
 
     @Id
@@ -40,6 +45,7 @@ public class Item {
 
     @NotNull
     private String icon;
+
 
 
 }

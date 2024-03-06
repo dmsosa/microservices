@@ -10,8 +10,8 @@ spring:
     active: native
   security:
     user:
-      name: ${SERVICE_USERNAME:username}
-      password: ${CONFIG_SERVICE_PASSWORD:password}
+      name: username
+      password: password
 eureka:
   client:
     serviceUrl:

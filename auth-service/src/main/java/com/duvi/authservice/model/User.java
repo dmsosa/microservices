@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,41 +15,27 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
     private String username;
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
     private UserRole role;
-    private String bio;
-    private String image;
+
 
     //User methods
-    public User(String username, String email, String password, UserRole role) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
-    public User(RegisterDTO registerDTO, String encryptedPassword) {
-        this.username = registerDTO.username();
-        this.email = registerDTO.email();
-        this.password = encryptedPassword;
-        this.role = registerDTO.role();
-    }
+
     public void updateWithUser(User updatedUser) {
         this.username = updatedUser.username;
         this.email = updatedUser.email;
         this.password = updatedUser.password;
         this.role = updatedUser.role;
-        this.bio = updatedUser.bio;
-        this.image = updatedUser.image;
+
     }
 
 
@@ -63,25 +50,6 @@ public class User implements UserDetails {
             authoritiesList.add(new SimpleGrantedAuthority("user"));
         }
         return authoritiesList;
-    }
-
-    public String getEmail() {
-        return this.email;
-    }
-
-    public UserRole getRole() {
-        return this.role;
-    }
-
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
     }
 
 
