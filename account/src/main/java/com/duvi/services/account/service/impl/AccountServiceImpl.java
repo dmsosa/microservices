@@ -33,6 +33,12 @@ public class AccountServiceImpl implements AccountService {
         }
 
         authClient.createUser(user);
+        Account account = new Account();
+        account.setName(user.getUsername());
+        account.setLastSeen(LocalDateTime.now());
+        account.setNote("I'm using microservices!");
+        accountRepository.save(account);
+
         return accountRepository.findById(user.getUsername()).get();
 
     }

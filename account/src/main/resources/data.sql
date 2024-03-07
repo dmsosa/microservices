@@ -1,6 +1,6 @@
 INSERT INTO accounts (name, last_seen, notes) VALUES (
     'demo',
-    '03-04-2024',
+    '2024-03-04',
     'demo notes!'
 );
 
@@ -27,7 +27,7 @@ INSERT INTO items (account_name, title, amount, currency, frequency, type) VALUE
     'demo gym',
     55,
     'USD',
-    'WEEK',
+    'MONTH',
     'EXPENSE'
 );
 
