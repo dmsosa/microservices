@@ -1,9 +1,10 @@
 spring:
   datasource:
-    driverClassName: org.h2.Driver
+    driverClassName: org.postgresql.Driver
     username: sa
     password: password
-    url: jdbc:h2:mem:demoprod
+#    using the container’s name as hostname
+    url: jdbc:postgres://authpg:5432
   jpa:
     hibernate:
       ddl-auto: none
