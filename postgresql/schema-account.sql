@@ -6,17 +6,17 @@ CREATE TYPE item_types as ENUM('INCOME', 'EXPENSE', 'SAVING');
 CREATE TABLE IF NOT EXISTS accounts (
     name VARCHAR[40] NOT NULL UNIQUE PRIMARY KEY,
     last_seen DATE,
-    saving_id INTEGER REFERENCES savings,
     note VARCHAR[20000]
-)
+);
 
 CREATE TABLE IF NOT EXISTS items (
     id SERIAL PRIMARY KEY,
-    account_name TEXT REFERENCES accounts,
+    account_name VARCHAR[40] NOT NULL,
     title VARCHAR[40],
     amount INTEGER,
     currency currencies,
     frequency frequencies,
     type item_types,
-    icon TEXT
-)
+    icon TEXT,
+    FOREIGN KEY (account_name) REFERENCES accounts (name)
+);

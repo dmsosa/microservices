@@ -1,0 +1,9 @@
+spring:
+  profile: prod
+  datasource:
+    url: jdbc:postgres://notipg:5432
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driverClassName: org.postgresql.Driver
+server:
+  port: 8084

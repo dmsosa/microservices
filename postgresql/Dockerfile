@@ -8,8 +8,8 @@ ENV POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
     SCHEMA=$SCHEMA \
     POSTGRES_DB=$POSTGRES_DB
 
-COPY ./$SCHEMA ./docker-entrypoint-initdb.d/
-COPY ./pg-entrypoint.sh ./
+ADD ./$SCHEMA ./docker-entrypoint-initdb.d/
+ADD ./pg-entrypoint.sh ./
 
 RUN apt-get update && apt-get dist-upgrade -y --force-yes && \
     apt-get install dos2unix && \
@@ -18,5 +18,6 @@ RUN apt-get update && apt-get dist-upgrade -y --force-yes && \
     chmod 755 ./docker-entrypoint-initdb.d/pg-entrypointx.sh && \
     rm -rf /var/cache/* && rm -rf /var/lib/apt/lists/*
 
-ENTRYPOINT ["./docker-entrypoint-initdb.d/pg-entrypointx.sh"]
+EXPOSE 5000:5432
+
 
