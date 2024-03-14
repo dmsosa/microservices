@@ -24,15 +24,11 @@ public class Account {
 
     private LocalDateTime lastSeen;
 
-    @Valid
-    @OneToMany(mappedBy = "account")
-    private Set<Item> incomes;
-
-    @Valid
-    @OneToMany(mappedBy = "account")
-    private Set<Item> expenses;
-
     @NotNull
     @Length(min = 3, max = 20_000)
     private String note;
+
+    @Valid
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "account", cascade = CascadeType.ALL)
+    private Set<Item> items;
 }

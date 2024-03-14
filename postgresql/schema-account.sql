@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS items (
     id SERIAL PRIMARY KEY,
     account_name VARCHAR[40] NOT NULL,
     title VARCHAR[40],
+    icon TEXT,
     amount INTEGER,
     currency currencies,
     frequency frequencies,

@@ -47,8 +47,7 @@ public class AccountServiceImpl implements AccountService {
     public Account saveChanges(String name, Account account) {
         Account oldAccount = accountRepository.findById(name).get();
         oldAccount.setLastSeen(LocalDateTime.now());
-        oldAccount.setIncomes(account.getIncomes());
-        oldAccount.setExpenses(account.getExpenses());
+        oldAccount.setItems(account.getItems());
         oldAccount.setNote(account.getNote());
         statClient.saveAccount(account);
         return accountRepository.findById(account.getName()).get();
@@ -56,10 +55,11 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account getAccountByName(String name) {
-        Optional<Account> optionalAccount = accountRepository.findById(name);
+        Optional<Account> optionalAccount = accountRepository.findByName(name);
         if (optionalAccount.isEmpty()) {
             throw new RuntimeException("Account does not exists!");
         }
+        System.out.println("account "+ optionalAccount.get());
         return optionalAccount.get();
     }
 

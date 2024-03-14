@@ -2,6 +2,7 @@ package com.duvi.services.account.domain;
 
 
 import com.duvi.services.account.domain.dto.ItemDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
@@ -26,6 +27,7 @@ public class Item {
 
     @ManyToOne
     @JoinColumn(name = "account_name")
+    @JsonIgnore
     private Account account;
 
     @NotNull

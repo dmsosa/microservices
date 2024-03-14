@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 
 
 @Table(name = "items")
+@Entity
 @Getter
 @Setter
 @AllArgsConstructor
@@ -26,7 +27,7 @@ public class Item {
             @JoinColumn(name = "data_date")
 
     })
-    private Datapoint dataPoint;
+    private Datapoint datapoint;
     private String title;
     private Category category;
     private BigDecimal amount;

@@ -1,0 +1,31 @@
+microservices:
+  baseMessage: DMSERVICES IS WORKING
+server:
+  port:
+    8061
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+spring:
+  profile: alternative
+  cloud:
+    gateway:
+      metrics:
+        enabled: true
+      discovery:
+        locator:
+          enabled: true
+logging:
+  level:
+    reactor:
+      netty:
+        http:
+          client: TRACE
+    org:
+      springframework:
+        cloud:
+          gateway: DEBUG

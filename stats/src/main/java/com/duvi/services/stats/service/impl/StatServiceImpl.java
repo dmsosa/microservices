@@ -42,12 +42,12 @@ public class StatServiceImpl implements StatService {
 
         //SAVE ALL INCOMES
         for (Item income : account.getIncomes()) {
-            income.setDataPoint(datapoint);
+            income.setDatapoint(datapoint);
             itemRepository.save(income);
         }
         //SAVE ALL EXPENSES
         for (Item expense : account.getExpenses()) {
-            expense.setDataPoint(datapoint);
+            expense.setDatapoint(datapoint);
             itemRepository.save(expense);
         }
 
@@ -60,7 +60,7 @@ public class StatServiceImpl implements StatService {
 
         //SAVE SAVINGS
         for (Item saving : savings) {
-            saving.setDataPoint(datapoint);
+            saving.setDatapoint(datapoint);
             itemRepository.save(saving);
         }
 
