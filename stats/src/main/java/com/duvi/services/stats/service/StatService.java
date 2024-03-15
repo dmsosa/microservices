@@ -10,9 +10,10 @@ import java.util.List;
 
 @Service
 public interface StatService {
-    Datapoint getStatsOfAccount(String accountName);
+    Datapoint getStatsOfAccount(Account account);
+    Datapoint getStatsOfAccountByName(String accountName);
     Datapoint saveChanges(Account account);
     BigDecimal calculateTotal(List<Item> items);
-    List<Item> calculateSavings(List<Item> incomes, List<Item> expenses);
+    List<Item> calculateSavings(Datapoint datapoint, List<Item> incomes, List<Item> expenses);
     BigDecimal calculateCurrentSaving(Datapoint datapoint, List<Item> savings, List<Item> incomes, List<Item> expenses);
 }

@@ -11,9 +11,10 @@ CREATE TABLE IF NOT EXISTS items (
     title VARCHAR(40),
     icon TEXT,
     amount NUMERIC,
+    category ENUM('FIXED', 'OCCASIONAL'),
     currency ENUM('USD', 'EUR', 'GBP'),
     frequency ENUM('DAY', 'MONTH', 'QUARTER', 'YEAR'),
-    type ENUM('SAVING', 'INCOME', 'EXPENSE'),
+    type ENUM('INCOME', 'EXPENSE', 'SAVING'),
     PRIMARY KEY (id),
     FOREIGN KEY (account_name) REFERENCES accounts (name)
 );

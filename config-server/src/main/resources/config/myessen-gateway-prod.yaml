@@ -11,7 +11,7 @@ eureka:
     hostname: localhost
     prefer-ip-address: true
 spring:
-  profile: alternative
+  profile: prod
   cloud:
     gateway:
       metrics:

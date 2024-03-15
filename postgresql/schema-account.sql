@@ -15,9 +15,9 @@ CREATE TABLE IF NOT EXISTS items (
     title VARCHAR[40],
     icon TEXT,
     amount INTEGER,
+    category categories,
     currency currencies,
     frequency frequencies,
     type item_types,
-    icon TEXT,
     FOREIGN KEY (account_name) REFERENCES accounts (name)
 );

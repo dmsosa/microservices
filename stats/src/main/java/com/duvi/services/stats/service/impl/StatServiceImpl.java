@@ -1,5 +1,6 @@
 package com.duvi.services.stats.service.impl;
 
+import com.duvi.services.stats.client.AccountClient;
 import com.duvi.services.stats.domain.*;
 import com.duvi.services.stats.repository.DatapointRepository;
 import com.duvi.services.stats.repository.ItemRepository;
@@ -9,26 +10,45 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StatServiceImpl implements StatService {
     private StatRepository statRepository;
     private ItemRepository itemRepository;
     private DatapointRepository datapointRepository;
+    private AccountClient accountClient;
     public StatServiceImpl(StatRepository statRepository,
                            ItemRepository itemRepository,
-                           DatapointRepository datapointRepository) {
+                           DatapointRepository datapointRepository,
+                           AccountClient accountClient) {
         this.statRepository = statRepository;
         this.itemRepository = itemRepository;
         this.datapointRepository = datapointRepository;
+        this.accountClient = accountClient;
     }
 
     @Override
-    public Datapoint getStatsOfAccount(String accountName) {
-        //todo account client
-        return datapointRepository.findAll().getFirst();
-//        LocalDateTime = account.getLastSeen();
+    public Datapoint getStatsOfAccount(Account account) {
+        DatapointId id = new DatapointId(account.getName(), account.getLastSeen());
+        Optional<Datapoint> datapoint =  datapointRepository.findById(id);
+        if (datapoint.isEmpty()) {
+            throw new RuntimeException("There are no datapoints for this account!");
+        }
+        return datapoint.get();
+    }
+
+    @Override
+    public Datapoint getStatsOfAccountByName(String accountName) {
+        Account account = accountClient.getAccount(accountName);
+        DatapointId id = new DatapointId(account.getName(), account.getLastSeen());
+        Optional<Datapoint> datapoint =  datapointRepository.findById(id);
+        if (datapoint.isEmpty()) {
+            throw new RuntimeException("There are no datapoints for this account!");
+        }
+        return datapoint.get();
     }
 
     @Override
@@ -38,33 +58,41 @@ public class StatServiceImpl implements StatService {
         DatapointId datapointId = new DatapointId(account.getName(), LocalDateTime.now());
         Datapoint datapoint = new Datapoint();
         datapoint.setId(datapointId);
-        datapointRepository.save(datapoint);
+        datapoint = datapointRepository.save(datapoint);
 
-        //SAVE ALL INCOMES
-        for (Item income : account.getIncomes()) {
-            income.setDatapoint(datapoint);
-            itemRepository.save(income);
+        List<Item> incomes = new ArrayList<Item>();
+        List<Item> expenses = new ArrayList<Item>();
+
+        if (account.getItems() == null) {
+            throw new RuntimeException("This account have no items yet!");
         }
-        //SAVE ALL EXPENSES
-        for (Item expense : account.getExpenses()) {
-            expense.setDatapoint(datapoint);
-            itemRepository.save(expense);
+        //SAVE ALL ITEMS, separate incomes from expenses
+        for (Item item : account.getItems()) {
+            item.setDatapoint(datapoint);
+            itemRepository.save(item);
+            if (item.getType().equals(ItemType.INCOME)) {
+                incomes.add(item);
+                System.out.println("income");
+
+            }
+            if (item.getType().equals(ItemType.EXPENSE)) {
+                expenses.add(item);
+                System.out.println("expense");
+
+            }
         }
+
 
         //CREATE STAT FOR THE GIVEN DATAPOINT
         Stat stat = new Stat();
         stat.setDatapoint(datapoint);
-        stat.setTotalIncomes(calculateTotal(account.getIncomes()));
-        stat.setTotalExpenses(calculateTotal(account.getExpenses()));
-        List<Item> savings = calculateSavings(account.getIncomes(), account.getExpenses());
+        stat.setTotalIncomes(calculateTotal(incomes));
+        stat.setTotalExpenses(calculateTotal(expenses));
+        List<Item> savings = calculateSavings(datapoint, incomes, expenses);
 
-        //SAVE SAVINGS
-        for (Item saving : savings) {
-            saving.setDatapoint(datapoint);
-            itemRepository.save(saving);
-        }
 
-        stat.setTotalSavings(calculateCurrentSaving(datapoint, savings, account.getIncomes(), account.getExpenses()));
+
+        stat.setTotalSavings(calculateCurrentSaving(datapoint, savings, incomes, expenses));
 
 
         statRepository.save(stat);
@@ -83,7 +111,7 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
-    public List<Item> calculateSavings(List<Item> incomes, List<Item> expenses) {
+    public List<Item> calculateSavings(Datapoint datapoint, List<Item> incomes, List<Item> expenses) {
         Item savingsDay = new Item("DAILY SAVINGS", Category.FIXED, Currency.getDefault(), Frequency.DAY, ItemType.SAVING);
         Item savingsMonth = new Item("MONTHLY SAVINGS", Category.FIXED, Currency.getDefault(), Frequency.MONTH, ItemType.SAVING);
         Item savingsQuarter = new Item("QUARTERLY SAVINGS", Category.FIXED, Currency.getDefault(), Frequency.QUARTER, ItemType.SAVING);
@@ -156,8 +184,13 @@ public class StatServiceImpl implements StatService {
                 )
         );
 
-        return List.of(savingsDay, savingsMonth, savingsQuarter, savingsYear);
-
+        List<Item> savings =  List.of(savingsDay, savingsMonth, savingsQuarter, savingsYear);
+        //SAVE SAVINGS
+        for (Item saving : savings) {
+            saving.setDatapoint(datapoint);
+            itemRepository.save(saving);
+        };
+        return savings;
     }
 
     @Override

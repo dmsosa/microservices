@@ -25,11 +25,11 @@ public class ItemServiceImpl implements ItemService {
         Account account = accountRepository.findById(itemDTO.accountName()).get();
         item.setAccount(account);
         item.setTitle(itemDTO.title());
+        item.setIcon(itemDTO.icon());
         item.setAmount(itemDTO.amount());
         item.setCurrency(itemDTO.currency());
-        item.setFrequency(itemDTO.frequency());
+//        item.setFrequency(itemDTO.frequency());
         item.setType(itemDTO.type());
-        item.setIcon(itemDTO.icon());
 
         return itemRepository.save(item);
     }
@@ -41,10 +41,10 @@ public class ItemServiceImpl implements ItemService {
         item.setAccount(account);
         item.setTitle(itemDTO.title());
         item.setAmount(itemDTO.amount());
-        item.setCurrency(itemDTO.currency());
-        item.setFrequency(itemDTO.frequency());
-        item.setType(itemDTO.type());
         item.setIcon(itemDTO.icon());
+        item.setCurrency(itemDTO.currency());
+//        item.setFrequency(itemDTO.frequency());
+        item.setType(itemDTO.type());
         return itemRepository.save(item);
     }
 

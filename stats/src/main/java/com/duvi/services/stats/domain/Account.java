@@ -12,7 +12,6 @@ import java.util.List;
 public class Account {
     private String name;
     private LocalDateTime lastSeen;
-    private List<Item> incomes;
-    private List<Item> expenses;
+    private List<Item> items;
     private String note;
 }

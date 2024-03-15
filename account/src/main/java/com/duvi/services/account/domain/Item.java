@@ -1,7 +1,6 @@
 package com.duvi.services.account.domain;
 
 
-import com.duvi.services.account.domain.dto.ItemDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -33,9 +32,13 @@ public class Item {
     @NotNull
     @Length(min = 4, max = 20)
     private String title;
+    @NotNull
+    private String icon;
 
     @NotNull
     private BigDecimal amount;
+    @NotNull
+    private Category category;
 
     @NotNull
     private Currency currency;
@@ -43,10 +46,10 @@ public class Item {
     @NotNull
     private Frequency frequency;
 
-    private ItemType type;
-
     @NotNull
-    private String icon;
+    private Type type;
+
+
 
 
 

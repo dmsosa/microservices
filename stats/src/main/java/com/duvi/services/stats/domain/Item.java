@@ -29,10 +29,14 @@ public class Item {
     })
     private Datapoint datapoint;
     private String title;
-    private Category category;
     private BigDecimal amount;
+    @Enumerated(EnumType.STRING)
+    private Category category;
+    @Enumerated(EnumType.STRING)
     private Currency currency;
+    @Enumerated(EnumType.STRING)
     private Frequency frequency;
+    @Enumerated(EnumType.STRING)
     private ItemType type;
 
     public Item(

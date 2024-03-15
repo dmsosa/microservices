@@ -37,7 +37,7 @@ spring:
             - Path=/stats/**
           filters:
             - PrefixPath=/api
-            - Dmfilter=DMSERVICES WORKING IN DEV FOR STATS, false, true
+            - DmFilterFactory=DMSERVICES WORKING IN DEV FOR STATS, false, true
 logging:
   level:
     reactor:

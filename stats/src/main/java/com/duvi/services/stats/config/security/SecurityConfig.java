@@ -1,4 +1,4 @@
-package com.duvi.services.account.config.security;
+package com.duvi.services.stats.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,10 +12,9 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(csrf -> csrf.disable())
-                //allowing h2 to display in a frame of the same origin as our app
-                .headers(headers -> headers.frameOptions(options -> options.sameOrigin()))
+                .headers(headers -> headers.frameOptions(fop -> fop.sameOrigin()))
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers( "/h2-console/**").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().permitAll())
                 .build();
     }

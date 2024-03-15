@@ -3,9 +3,7 @@ package com.duvi.services.account.service.impl;
 import com.duvi.services.account.client.AuthClient;
 import com.duvi.services.account.client.StatClient;
 import com.duvi.services.account.domain.Account;
-import com.duvi.services.account.domain.Item;
 import com.duvi.services.account.domain.User;
-import com.duvi.services.account.domain.dto.ItemDTO;
 import com.duvi.services.account.repository.AccountRepository;
 import com.duvi.services.account.service.AccountService;
 import org.springframework.stereotype.Service;
@@ -44,7 +42,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account saveChanges(String name, Account account) {
+    public Account editAccount(String name, Account account) {
         Account oldAccount = accountRepository.findById(name).get();
         oldAccount.setLastSeen(LocalDateTime.now());
         oldAccount.setItems(account.getItems());
@@ -55,11 +53,10 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account getAccountByName(String name) {
-        Optional<Account> optionalAccount = accountRepository.findByName(name);
+        Optional<Account> optionalAccount = accountRepository.findById(name);
         if (optionalAccount.isEmpty()) {
             throw new RuntimeException("Account does not exists!");
         }
-        System.out.println("account "+ optionalAccount.get());
         return optionalAccount.get();
     }
 
@@ -73,7 +70,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Item createItem(ItemDTO itemDTO) {
-        return null;
+    public void saveChanges(Account account) {
+        statClient.saveAccount(account);
     }
 }
