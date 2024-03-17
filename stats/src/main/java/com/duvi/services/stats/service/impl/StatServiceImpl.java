@@ -31,10 +31,12 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
-    public Datapoint getStatsOfAccount(Account account) {
+    public Datapoint getStatsOfAccount(AccountDTO account) {
         DatapointId id = new DatapointId(account.getName(), account.getLastSeen());
         Optional<Datapoint> datapoint =  datapointRepository.findById(id);
+        List<Datapoint> datapoints = datapointRepository.findAll();
         if (datapoint.isEmpty()) {
+            System.out.println(datapoints.stream().findFirst().get().getId().getDataDate() + "  //  " + account.getLastSeen());
             throw new RuntimeException("There are no datapoints for this account!");
         }
         return datapoint.get();
@@ -42,7 +44,7 @@ public class StatServiceImpl implements StatService {
 
     @Override
     public Datapoint getStatsOfAccountByName(String accountName) {
-        Account account = accountClient.getAccount(accountName);
+        AccountDTO account = accountClient.getAccount(accountName);
         DatapointId id = new DatapointId(account.getName(), account.getLastSeen());
         Optional<Datapoint> datapoint =  datapointRepository.findById(id);
         if (datapoint.isEmpty()) {
@@ -52,10 +54,10 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
-    public Datapoint saveChanges(Account account) {
+    public Datapoint saveChanges(AccountDTO account) {
 
         //CREATE DATAPOINT
-        DatapointId datapointId = new DatapointId(account.getName(), LocalDateTime.now());
+        DatapointId datapointId = new DatapointId(account.getName(), account.getLastSeen());
         Datapoint datapoint = new Datapoint();
         datapoint.setId(datapointId);
         datapoint = datapointRepository.save(datapoint);
@@ -67,21 +69,16 @@ public class StatServiceImpl implements StatService {
             throw new RuntimeException("This account have no items yet!");
         }
         //SAVE ALL ITEMS, separate incomes from expenses
-        for (Item item : account.getItems()) {
+        for (ItemDTO itemDTO : account.getItems()) {
+            //Item von DTO erstellen, damit unsere Id nicht uberschrieben ist
+            Item item = new Item(itemDTO);
             item.setDatapoint(datapoint);
-            itemRepository.save(item);
-            if (item.getType().equals(ItemType.INCOME)) {
-                incomes.add(item);
-                System.out.println("income");
-
-            }
-            if (item.getType().equals(ItemType.EXPENSE)) {
-                expenses.add(item);
-                System.out.println("expense");
-
+            Item savedItem = itemRepository.save(item);
+            switch (savedItem.getType()) {
+                case INCOME -> { System.out.println("income"); incomes.add(savedItem); }
+                case EXPENSE -> { System.out.println("expense"); expenses.add(savedItem); }
             }
         }
-
 
         //CREATE STAT FOR THE GIVEN DATAPOINT
         Stat stat = new Stat();

@@ -6,7 +6,7 @@ spring:
 #    using the container’s name as hostname
     url: jdbc:postgres://authpg:5432
 server:
-  port: 9000
+  port: 7099
 api:
   security:
     token:

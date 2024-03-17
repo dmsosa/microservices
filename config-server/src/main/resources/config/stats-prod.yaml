@@ -1,2 +1,10 @@
 server:
   port: 8085
+spring:
+  datasource:
+    url: jdbc:postgresql://statpg:5432
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driverClassName: org.postgresql.Driver
+  jpa:
+    show-sql: true

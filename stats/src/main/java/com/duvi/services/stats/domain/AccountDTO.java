@@ -9,9 +9,9 @@ import java.util.List;
 
 @Getter
 @Setter
-public class Account {
+public class AccountDTO {
     private String name;
     private LocalDateTime lastSeen;
-    private List<Item> items;
+    private List<ItemDTO> items;
     private String note;
 }

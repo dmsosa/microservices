@@ -15,11 +15,8 @@ import java.util.Set;
 public class Datapoint {
     @EmbeddedId
     private DatapointId id;
-
     @OneToMany(mappedBy = "datapoint")
-    private Set<Item> incomes;
-    @OneToMany(mappedBy = "datapoint")
-    private Set<Item> expenses;
+    private Set<Item> items;
     @OneToOne(mappedBy = "datapoint")
     private Stat stats;
 

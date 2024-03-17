@@ -22,7 +22,7 @@ import java.security.Principal;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("")
 public class AuthController {
     Logger logger = LoggerFactory.getLogger(AuthController.class);
 
@@ -40,7 +40,7 @@ public class AuthController {
         return new ResponseEntity<>(principal, HttpStatus.OK);
     }
 
-    @PostMapping("")
+    @PostMapping("/register")
     public void registerUser(@Valid @RequestBody User user) throws Exception {
         userService.saveUser(user);
     }

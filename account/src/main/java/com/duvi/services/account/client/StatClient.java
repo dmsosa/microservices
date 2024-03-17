@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public interface StatClient {
     @RequestMapping(
             method = RequestMethod.POST,
-            value = "/api/stat",
+            value = "/api/stats/save",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public void saveAccount(Account account);

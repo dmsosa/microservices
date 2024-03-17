@@ -1,5 +1,21 @@
+server:
+  servlet:
+    context-path: /api/account
+  port: 8083
+
 spring:
   profile: dev
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:7099/api/auth
+      client:
+        clientId: account
+        clientSecret: secret
+        accessTokenUri: http://localhost:7099/api/auth/oauth2/token
+        grant-type: client_credentials
+        scope: server
   datasource:
     url: jdbc:h2:mem:demo
     username: sa
@@ -13,9 +29,8 @@ spring:
   h2:
     console:
       enabled: true
-server:
-  port: 8083
-message: Hallo welt2
+
+
 logging:
   level:
     org:

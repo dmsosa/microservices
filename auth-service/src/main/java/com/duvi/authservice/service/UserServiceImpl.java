@@ -55,10 +55,14 @@ public class UserServiceImpl implements UserService{
         } else if (userRepository.existsByEmail(user.getEmail())) {
             throw new Exception("exists by Email");
         }
+        User newUser = new User();
+        newUser.setUsername(user.getUsername());
+        newUser.setEmail(user.getEmail());
         String encryptedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
-        user.setPassword(encryptedPassword);
-        userRepository.save(user);
-        logger.info("New user has been registered: {}!".formatted(user.getUsername()));
+        newUser.setPassword(encryptedPassword);
+        newUser.setRole(user.getRole());
+        userRepository.save(newUser);
+        logger.info("New user has been registered: {}!".formatted(newUser.getUsername()));
     }
 
     @Override

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RefreshScope
 @RestController
-@RequestMapping("/api/account")
+@RequestMapping("")
 public class AccountController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -25,6 +25,13 @@ public class AccountController {
     public ResponseEntity<Account> getAccountByName(@PathVariable String accountName) {
         Account account = accountService.getAccountByName(accountName);
         return new ResponseEntity<>(account, HttpStatus.OK);
+    }
+    @PostMapping("/demo")
+    public ResponseEntity<String> saveDemoAccount() {
+        Account demo = accountService.getAccountByName("demo");
+        accountService.saveChanges(demo);
+        logger.info("Changes for account %1$s at %2$s saved successfully".formatted(demo.getName(), demo.getLastSeen()));
+        return new ResponseEntity<>("Changes for account %1$s at %2$s saved successfully".formatted(demo.getName(), demo.getLastSeen()), HttpStatus.OK);
     }
 
     @PostMapping("/")

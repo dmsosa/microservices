@@ -1,6 +1,7 @@
 package com.duvi.services.stats.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,6 +28,7 @@ public class Item {
             @JoinColumn(name = "data_date")
 
     })
+    @JsonIgnore
     private Datapoint datapoint;
     private String title;
     private BigDecimal amount;
@@ -51,6 +53,14 @@ public class Item {
         this.currency = currency;
         this.frequency = frequency;
         this.type = type;
+    }
+    public Item(ItemDTO dto) {
+        this.title = dto.title();
+        this.amount = dto.amount();
+        this.category = dto.category();
+        this.currency = dto.currency();
+        this.frequency = dto.frequency();
+        this.type = dto.type();
     }
 
 }

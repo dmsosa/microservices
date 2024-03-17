@@ -1,5 +1,6 @@
 package com.duvi.services.stats.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -26,6 +27,7 @@ public class Stat {
             @JoinColumn(name = "account_name"),
             @JoinColumn(name = "data_date")
     })
+    @JsonIgnore
     private Datapoint datapoint;
     private BigDecimal totalIncomes;
     private BigDecimal totalExpenses;
