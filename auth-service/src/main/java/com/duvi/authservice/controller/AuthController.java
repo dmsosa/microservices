@@ -16,6 +16,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -27,6 +29,9 @@ public class AuthController {
     Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
+    RegisteredClientRepository registeredClientRepository;
+
+    @Autowired
     AuthenticationManager authenticationManager;
     @Autowired
     TokenService tokenService;
@@ -34,6 +39,11 @@ public class AuthController {
     @Autowired
     UserService userService;
 
+    @GetMapping("/clients")
+    public ResponseEntity<String> getRegisteredClients() {
+        RegisteredClient registeredClient = registeredClientRepository.findByClientId("account");
+        return new ResponseEntity<>("Client ID: " + registeredClient.getClientId() + " //// Client Secret: " + registeredClient.getClientSecret(), HttpStatus.OK);
+    }
 
     @GetMapping("/current")
     public ResponseEntity<Principal> getUser(Principal principal) {

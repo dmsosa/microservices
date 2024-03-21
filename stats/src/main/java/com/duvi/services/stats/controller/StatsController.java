@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,6 +32,7 @@ public class StatsController {
         return new ResponseEntity<>(datapoint, HttpStatus.OK);
     }
     @PostMapping("/save")
+    @PreAuthorize("hasAuthority('SCOPE_read')")
     public void saveChanges(@RequestBody AccountDTO account) {
         Datapoint datapoint = statService.saveChanges(account);
         logger.info("Changes for account %1$s at %2$s saved successfully".formatted(datapoint.getId().getAccountName(), datapoint.getId().getDataDate()));

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public interface AuthClient {
     @RequestMapping(
             method = RequestMethod.POST,
-            value = "/api/auth",
+            value = "/api/auth/register",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public void createUser(User user);

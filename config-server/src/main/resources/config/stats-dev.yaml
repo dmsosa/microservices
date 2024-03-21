@@ -6,15 +6,15 @@ spring:
   profile: dev
   security:
     oauth2:
-      resourceserver:
+      resource-server:
         jwt:
           issuer-uri: http://localhost:7099/api/auth
-      client:
-        clientId: stat
-        clientSecret: password
-        accessTokenUri: http://auth-service:7099/api/auth/oauth2/token
-        grant-type: client_credentials
-        scope: server
+#      client:
+#        clientId: stat
+#        clientSecret: password
+#        accessTokenUri: http://localhost:7099/api/auth/oauth2/token
+#        authorization-grant-type: client_credentials
+#        scope: oidc.profile
   datasource:
     url: jdbc:h2:mem:demo
     username: sa

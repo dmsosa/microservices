@@ -4,28 +4,29 @@ server:
   port: 7099
 
 spring:
-  security:
-    oauth2:
-      authorizationserver:
-        issuer: "http://auth-service:7099"
-        client:
-          account:
-            registration:
-              client-id: "account"
-              client-secret: "{noop}secret"
-              client-authentication-methods:
-                - "client_secret_basic"
-              authorization-grant-types:
-                - "authorization_code"
-                - "refresh_token"
-              redirect-uris:
-                - "http://127.0.0.1:8083/api/account/login/oauth2/code/account"
-              post-logout-redirect-uris:
-                - "http://127.0.0.1:7099/"
-              scopes:
-                - "openid"
-                - "profile"
-              require-authorization-consent: true
+#decided to comment this configuration since I'm configuring the RegisteredClientRepository programatically
+#  security:
+#    oauth2:
+#      authorization-server:
+#        client:
+#          account-client:
+#            registration:
+#              client-id: 'account-client'
+#              client-secret: {noop}secret
+#              client-authentication-methods:
+#                - client_secret_basic
+#              authorization-grant-types:
+#                - authorization_code
+#                - refresh_token
+#              redirect-uris:
+#                - "http://127.0.0.1:8083/api/account/login/oauth2/code/account-client"
+#              post-logout-redirect-uris:
+#                - "http://127.0.0.1:8083/api/account/"
+#              scopes:
+#                - "read"
+#            require-authorization-consent: true
+
+
   datasource:
 #    driverClassName: org.h2.Driver
 #    username: sa

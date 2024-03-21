@@ -38,7 +38,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     }
     private String getToken(HttpServletRequest request) {
         String tokenHeader = request.getHeader("Authorization");
-        if (tokenHeader == null) return null;
+        if (tokenHeader == null || !tokenHeader.startsWith("Bearer")) return null;
         return tokenHeader.replace("Bearer ", "");
     }
 }

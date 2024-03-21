@@ -17,8 +17,7 @@ public class SecurityConfig {
                 .headers(headers -> headers.frameOptions(fop -> fop.sameOrigin()))
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/save")
-                        .hasAuthority("SCOPE_server")
+                        .requestMatchers(HttpMethod.POST, "/save").authenticated()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(rs -> rs.jwt(Customizer.withDefaults()))
                 .build();

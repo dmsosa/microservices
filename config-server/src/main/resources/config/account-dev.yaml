@@ -7,15 +7,22 @@ spring:
   profile: dev
   security:
     oauth2:
-      resourceserver:
+      resource-server:
         jwt:
           issuer-uri: http://localhost:7099/api/auth
       client:
-        clientId: account
-        clientSecret: secret
-        accessTokenUri: http://localhost:7099/api/auth/oauth2/token
-        grant-type: client_credentials
-        scope: server
+        provider:
+          auth:
+            issuer-uri: http://localhost:7099/api/auth
+        registration:
+          account:
+            provider: auth
+            client-id: account
+            client-secret: secret
+            redirect-uri: "http://127.0.0.1:8083/api/account/login/oauth2/code/{registrationId}"
+            authorization-grant-type: client_credentials
+            scope: oidc.profile
+            client-name: account
   datasource:
     url: jdbc:h2:mem:demo
     username: sa
