@@ -6,25 +6,29 @@ import com.duvi.services.account.service.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.cloud.loadbalancer.security.OAuth2LoadBalancerClientAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @RefreshScope
 @RestController
 @RequestMapping("")
 public class AccountController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-
+    private WebClient client;
     private AccountService accountService;
-    private OAuth2AuthorizedClient service;
-    public AccountController(AccountService accountService, OAuth2AuthorizedClientService service) {
+    public AccountController(AccountService accountService,
+                             WebClient client) {
         this.accountService = accountService;
-        this.service = service;
+        this.client = client;
     }
 
     @GetMapping("/{accountName}")
@@ -51,11 +55,7 @@ public class AccountController {
         logger.info("Changes for account %1$s at %2$s saved successfully".formatted(account.getName(), account.getLastSeen()));
     }
     @GetMapping("/indexe")
-    public String index(Authentication authentication) {
-        Jwt jwt = (Jwt) authentication.getPrincipal();
-        System.out.println(authentication.getName() + " PRINCIPAL");
-        System.out.println(authentication.getAuthorities() + " CREDENTIALS");
-        OAuth2AuthorizedClient authorizedClient = service.loadAuthorizedClient("account", jwt.getSubject());
-        return authorizedClient.getAccessToken().getTokenValue() + "  " + authorizedClient.getPrincipalName();
+    public String index(@RegisteredOAuth2AuthorizedClient("account") OAuth2AuthorizedClient authorizedClient) {
+        return client.get().uri("/mes").attributes(ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient(authorizedClient)).retrieve().bodyToMono(String.class).block();
     }
 }

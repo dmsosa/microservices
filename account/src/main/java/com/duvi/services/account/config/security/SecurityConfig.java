@@ -26,10 +26,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/demo").permitAll()
                         .requestMatchers(HttpMethod.POST, "/").permitAll()
                         .requestMatchers(HttpMethod.GET, "/**").hasAuthority(OidcScopes.PROFILE)
-                        .anyRequest().authenticated())
-
-                //Very simple Security Config, just indicating the type of tokens supported by our server here.
-                .oauth2ResourceServer(rs -> rs.jwt(Customizer.withDefaults()))
+                        .anyRequest().permitAll())
+                .oauth2Client(Customizer.withDefaults())
+//
+//                //Very simple Security Config, just indicating the type of tokens supported by our server here.
+//                .oauth2ResourceServer(rs -> rs.jwt(Customizer.withDefaults()))
                 .build();
     }
 

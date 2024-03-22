@@ -8,7 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.function.Consumer;
 
 @RestController
 @RequestMapping("")
@@ -36,5 +41,9 @@ public class StatsController {
     public void saveChanges(@RequestBody AccountDTO account) {
         Datapoint datapoint = statService.saveChanges(account);
         logger.info("Changes for account %1$s at %2$s saved successfully".formatted(datapoint.getId().getAccountName(), datapoint.getId().getDataDate()));
+    }
+    @GetMapping("/mes")
+    public String message(Authentication authentication) {
+        return "Hallo von STATS dienst!";
     }
 }

@@ -21,7 +21,7 @@ spring:
             client-secret: secret
             redirect-uri: "http://127.0.0.1:8083/api/account/login/oauth2/code/{registrationId}"
             authorization-grant-type: client_credentials
-            scope: oidc.profile
+            scope: openid,profile
             client-name: account
   datasource:
     url: jdbc:h2:mem:demo

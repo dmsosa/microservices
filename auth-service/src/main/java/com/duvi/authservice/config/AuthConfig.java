@@ -25,6 +25,7 @@ import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Configuration
@@ -49,6 +50,7 @@ public class AuthConfig  {
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .clientName("account")
+                .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
                 .build();
         RegisteredClient statsClient = RegisteredClient.withId(UUID.randomUUID().toString())
