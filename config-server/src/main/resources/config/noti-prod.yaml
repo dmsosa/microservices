@@ -1,9 +1,33 @@
+server:
+  servlet:
+    context-path: /api/noti
+  port: 8084
 spring:
   profile: prod
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: pepemanso85@gmail.com
+    password: daaihaeiqmzrjrdu
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   datasource:
     url: jdbc:postgres://notipg:5432
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
     driverClassName: org.postgresql.Driver
-server:
-  port: 8084
+backup:
+  cron: 0 0 12 * * *
+  email:
+    subject: "Backup message from Duvi Dmservices Team! - {0}"
+    text: "Regards, \nDmservices Team."
+    attachment: "backup.json"
+remind:
+  cron: 0 0 0 * * *
+  email:
+    subject: "Reminder from Dmservices Team! - {0}"
+    text: "Hey, {0}!\n It's always good to see you, consider coming back soon, your finances do not sleep!\n\nRegards,\nDmservices Team - {1}"

@@ -1,51 +1,7 @@
 server:
   servlet:
-    context-path: /api/auth
+    context-path: /api/uaa
   port: 7099
-
-spring:
-#decided to comment this configuration since I'm configuring the RegisteredClientRepository programatically
-#  security:
-#    oauth2:
-#      authorization-server:
-#        client:
-#          account-client:
-#            registration:
-#              client-id: 'account-client'
-#              client-secret: {noop}secret
-#              client-authentication-methods:
-#                - client_secret_basic
-#              authorization-grant-types:
-#                - authorization_code
-#                - refresh_token
-#              redirect-uris:
-#                - "http://127.0.0.1:8083/api/account/login/oauth2/code/account-client"
-#              post-logout-redirect-uris:
-#                - "http://127.0.0.1:8083/api/account/"
-#              scopes:
-#                - "read"
-#            require-authorization-consent: true
-
-
-  datasource:
-#    driverClassName: org.h2.Driver
-#    username: sa
-#    password: password
-#    url: jdbc:h2:mem:demo
-    driverClassName: org.postgresql.Driver
-    username: postgres
-    password: pepeeselmejor
-    url: jdbc:postgresql://localhost:5432/postgres
-#  jpa:
-#    hibernate:
-#      ddl-auto: none
-#    show-sql: true
-#    defer-datasource-initialization: true
-#    database-platform: org.hibernate.dialect.H2Dialect
-#  h2:
-#    console:
-#      enabled: true
-
 api:
   security:
     token:
@@ -60,3 +16,26 @@ management:
   tracing:
     sampling:
       probability: 1.0
+spring:
+  profiles: dev
+# the RegisteredClientRepository is configured programmatically
+  datasource:
+#    driverClassName: org.h2.Driver
+#    username: sa
+#    password: password
+#    url: jdbc:h2:mem:demo
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: pepeeselmejor
+    url: jdbc:postgresql://localhost:5432/postgres
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    defer-datasource-initialization: true
+    database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+
+

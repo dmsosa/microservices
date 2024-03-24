@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: prod
   application:
     name: auth-service
   config:
@@ -9,7 +9,6 @@ spring:
     config:
       username: username
       password: password
-      profile: dev
       discovery:
         enabled: true
         serviceId: config-server
@@ -19,6 +18,7 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
     instance:
       hostname: localhost
+      prefer-ip-address: true
 logging:
   level:
     org:

@@ -2,7 +2,7 @@ package com.duvi.services.noti.domain;
 
 public enum NotiType {
     BACKUP("backup.email.subject", "backup.email.text", "backup.email.attachment"),
-    REMIND("backup.email.subject", "backup.email.text", null);
+    REMIND("remind.email.subject", "remind.email.text", null);
 
     private String subject;
     private String text;

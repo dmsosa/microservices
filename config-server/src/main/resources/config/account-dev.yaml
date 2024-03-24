@@ -7,19 +7,22 @@ spring:
   profile: dev
   security:
     oauth2:
-      resource-server:
+      resource:
+        loadBalanced: true
         jwt:
-          issuer-uri: http://localhost:7099/api/auth
+          issuer-uri: http://auth-service/api/auth
+#      resource-server:
+#        jwt:
+#          issuer-uri: http://auth-service
       client:
         provider:
           auth:
-            issuer-uri: http://localhost:7099/api/auth
+            issuer-uri: http://localhost:7099/api/uaa
         registration:
-          account:
+          accountClient:
             provider: auth
-            client-id: account
+            client-id: accountClient
             client-secret: secret
-            redirect-uri: "http://127.0.0.1:8083/api/account/login/oauth2/code/{registrationId}"
             authorization-grant-type: client_credentials
             scope: openid,profile
             client-name: account
