@@ -1,5 +1,22 @@
 spring:
   profile: prod
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: http://localhost:7099/api/uaa
+      client:
+        provider:
+          auth:
+            issuer-uri: http://localhost:7099/api/uaa
+        registration:
+          accountClient:
+            provider: auth
+            client-id: accountClient
+            client-secret: account
+            authorization-grant-type: client_credentials
+            scope: openid,profile
+            client-name: accountService
   datasource:
     url: jdbc:postgresql://accountpg:5432
     username: ${POSTGRES_USER}

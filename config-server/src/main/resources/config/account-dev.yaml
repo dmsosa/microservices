@@ -7,13 +7,9 @@ spring:
   profile: dev
   security:
     oauth2:
-      resource:
-        loadBalanced: true
+      resource-server:
         jwt:
-          issuer-uri: http://auth-service/api/auth
-#      resource-server:
-#        jwt:
-#          issuer-uri: http://auth-service
+          issuer-uri: http://localhost:7099/api/uaa
       client:
         provider:
           auth:
@@ -22,10 +18,10 @@ spring:
           accountClient:
             provider: auth
             client-id: accountClient
-            client-secret: secret
+            client-secret: account
             authorization-grant-type: client_credentials
             scope: openid,profile
-            client-name: account
+            client-name: accountService
   datasource:
     url: jdbc:h2:mem:demo
     username: sa
@@ -55,3 +51,8 @@ logging:
             sql:
               BasicBinder: TRACE
         SQL: DEBUG
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "refresh"

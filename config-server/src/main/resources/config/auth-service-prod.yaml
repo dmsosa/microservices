@@ -1,21 +1,21 @@
-server:
-  servlet:
-    context-path: /api/uaa
-  port: 7099
-api:
-  security:
-    token:
-      secret: ${JWT_SECRET:secret}
-  issuer: ${JWT_ISSUER:myessen}
-logging:
-  level:
-    org:
-      springframework:
-        security: TRACE
-management:
-  tracing:
-    sampling:
-      probability: 1.0
+#server:
+#  servlet:
+#    context-path: /api/uaa
+#  port: 7099
+#api:
+#  security:
+#    token:
+#      secret: ${JWT_SECRET:secret}
+#  issuer: ${JWT_ISSUER:myessen}
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        security: TRACE
+#management:
+#  tracing:
+#    sampling:
+#      probability: 1.0
 spring:
   profiles: prod
   datasource:

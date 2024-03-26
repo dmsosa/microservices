@@ -12,8 +12,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class NotiSettings {
-    @EmbeddedId
-    NotiSettingsId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
     @ManyToOne
     @JoinColumn(name = "account_name", nullable = false)
     private Recipient recipient;

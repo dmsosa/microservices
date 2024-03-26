@@ -75,8 +75,8 @@ public class StatServiceImpl implements StatService {
             item.setDatapoint(datapoint);
             Item savedItem = itemRepository.save(item);
             switch (savedItem.getType()) {
-                case INCOME -> { System.out.println("income"); incomes.add(savedItem); }
-                case EXPENSE -> { System.out.println("expense"); expenses.add(savedItem); }
+                case INCOME -> { incomes.add(savedItem); }
+                case EXPENSE -> { expenses.add(savedItem); }
             }
         }
 

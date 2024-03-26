@@ -173,7 +173,7 @@ public class AuthConfig  {
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .clientName("account")
+                .clientName("accountService")
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
                 .build();
@@ -186,7 +186,7 @@ public class AuthConfig  {
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
-                .clientName("stats")
+                .clientName("statsService")
                 .build();
         RegisteredClient notiClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("notiClient")
@@ -197,7 +197,7 @@ public class AuthConfig  {
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.EMAIL)
-                .clientName("noti")
+                .clientName("notiService")
                 .build();
         RegisteredClient browserClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("browserClient")
@@ -206,7 +206,7 @@ public class AuthConfig  {
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .redirectUri("http://localhost:6000/")
-                .clientName("browser")
+                .clientName("browserService")
                 .build();
         return new InMemoryRegisteredClientRepository(List.of(accountClient, statsClient, notiClient, browserClient));
     }

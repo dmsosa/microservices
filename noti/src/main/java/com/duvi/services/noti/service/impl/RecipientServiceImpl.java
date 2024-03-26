@@ -1,7 +1,6 @@
 package com.duvi.services.noti.service.impl;
 
 import com.duvi.services.noti.domain.NotiSettings;
-import com.duvi.services.noti.domain.NotiSettingsId;
 import com.duvi.services.noti.domain.NotiType;
 import com.duvi.services.noti.domain.Recipient;
 import com.duvi.services.noti.domain.dto.NotiSettingsDTO;
@@ -10,7 +9,6 @@ import com.duvi.services.noti.repository.RecipientRepository;
 import com.duvi.services.noti.service.RecipientService;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -39,16 +37,17 @@ public class RecipientServiceImpl implements RecipientService  {
 
     @Override
     public void removeNotification(Recipient recipient, NotiType notiType) {
-        Optional<NotiSettings> notiSettings = notiRepository.findById(new NotiSettingsId(recipient, notiType));
+        List<NotiSettings> allNotifications = notiRepository.findAllByRecipient(recipient);
+        List<NotiSettings> notiSettings = allNotifications.stream().filter(noti -> noti.getType() == notiType).toList();
         if (notiSettings.isEmpty()) {
             throw new RuntimeException("Dieses nutzer der Typ von Notification %s nicht einmail hat!".formatted(notiType));
         }
-        notiRepository.delete(notiSettings.get());
+        notiRepository.delete(notiSettings.getFirst());
     }
 
     @Override
     public void setNotification(Recipient recipient, NotiSettingsDTO noti) {
-        Optional<NotiSettings> optSettings = notiRepository.findById(new NotiSettingsId(recipient, noti.type()));
+        Optional<NotiSettings> optSettings = notiRepository.findByRecipientAndType(recipient, noti.type());
         if (optSettings.isEmpty()) {
             NotiSettings notiSettings = new NotiSettings(noti);
             notiSettings.setRecipient(recipient);
@@ -73,7 +72,7 @@ public class RecipientServiceImpl implements RecipientService  {
     @Override
     public void MarkNotified(Recipient recipient, NotiType notiType) {
 
-        Optional<NotiSettings> notiSettings = notiRepository.findById(new NotiSettingsId(recipient, notiType));
+        Optional<NotiSettings> notiSettings = notiRepository.findByRecipientAndType(recipient, notiType);
         if (notiSettings.isEmpty()) {
             throw new RuntimeException("Es gibt kein %s Notification fur dieses Nutzer!".formatted(notiType));
         }

@@ -8,6 +8,7 @@ import com.duvi.services.account.repository.ItemRepository;
 import com.duvi.services.account.service.ItemService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,7 +29,7 @@ public class ItemServiceImpl implements ItemService {
         item.setIcon(itemDTO.icon());
         item.setAmount(itemDTO.amount());
         item.setCurrency(itemDTO.currency());
-//        item.setFrequency(itemDTO.frequency());
+        item.setFrequency(itemDTO.frequency());
         item.setType(itemDTO.type());
 
         return itemRepository.save(item);
@@ -43,7 +44,7 @@ public class ItemServiceImpl implements ItemService {
         item.setAmount(itemDTO.amount());
         item.setIcon(itemDTO.icon());
         item.setCurrency(itemDTO.currency());
-//        item.setFrequency(itemDTO.frequency());
+        item.setFrequency(itemDTO.frequency());
         item.setType(itemDTO.type());
         return itemRepository.save(item);
     }
@@ -64,5 +65,10 @@ public class ItemServiceImpl implements ItemService {
             throw new RuntimeException("Item does not exists");
         }
         return optionalItem.get();
+    }
+
+    @Override
+    public List<Item> getItemsByAccount(Account account) {
+        return itemRepository.findByAccount(account);
     }
 }

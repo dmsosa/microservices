@@ -12,7 +12,7 @@ public record ItemDTO(
         String icon,
         BigDecimal amount,
         Currency currency,
-//        Frequency frequency,
+        Frequency frequency,
         Type type
 ){
 }

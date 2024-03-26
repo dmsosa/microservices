@@ -4,6 +4,23 @@ server:
   port: 8084
 spring:
   profile: prod
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: http://localhost:7099/api/uaa
+      client:
+        provider:
+          auth:
+            issuer-uri: http://localhost:7099/api/uaa
+        registration:
+          notiClient:
+            provider: auth
+            client-id: notiClient
+            client-secret: noti
+            authorization-grant-type: client_credentials
+            scope: openid,email
+            client-name: notiService
   mail:
     host: smtp.gmail.com
     port: 587

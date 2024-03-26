@@ -28,7 +28,7 @@ public class EmailServiceImpl  implements EmailService {
     @Override
     public void sendEmail(Recipient recipient, NotiType type, String attachment) throws MessagingException {
         String subject = env.getProperty(type.getSubject());
-        MessageFormat textFormat = new MessageFormat(env.getProperty(type.getText());
+        MessageFormat textFormat = new MessageFormat(env.getProperty(type.getText()));
         final String text = textFormat.format(recipient.getAccountName());
 
         MimeMessage message = javaMailSender.createMimeMessage();

@@ -6,7 +6,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2ClientConfigurer;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -21,16 +23,13 @@ public class SecurityConfig {
                 .headers(headers -> headers.frameOptions(options -> options.sameOrigin()))
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers( "/h2-console/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/demo").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/indexe").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/demo").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/create").permitAll()
                         .requestMatchers(HttpMethod.GET, "/**").hasAuthority(OidcScopes.PROFILE)
-                        .anyRequest().permitAll())
+                        .anyRequest().authenticated())
                 .oauth2Client(Customizer.withDefaults())
 //
 //                //Very simple Security Config, just indicating the type of tokens supported by our server here.
-//                .oauth2ResourceServer(rs -> rs.jwt(Customizer.withDefaults()))
+                .oauth2ResourceServer(rs -> rs.jwt(Customizer.withDefaults()))
                 .build();
     }
 

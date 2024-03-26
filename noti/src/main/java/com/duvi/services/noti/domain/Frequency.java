@@ -3,7 +3,7 @@ package com.duvi.services.noti.domain;
 import java.util.stream.Stream;
 
 public enum Frequency {
-    WEEKLY(7), MONTHLY(30), QUARTERLY(90), YEAR(365);
+    MINUTE(0), DAY(1), WEEK(7), MONTH(30), QUARTER(90), YEAR(365);
 
     private Integer days;
     Frequency(Integer days) {

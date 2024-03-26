@@ -17,7 +17,7 @@ management:
     sampling:
       probability: 1.0
 spring:
-  profiles: dev
+  profile: dev
 # the RegisteredClientRepository is configured programmatically
   datasource:
 #    driverClassName: org.h2.Driver
@@ -32,10 +32,10 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
-    defer-datasource-initialization: true
-    database-platform: org.hibernate.dialect.H2Dialect
-  h2:
-    console:
-      enabled: true
+#    defer-datasource-initialization: true
+#    database-platform: org.hibernate.dialect.H2Dialect
+#  h2:
+#    console:
+#      enabled: true
 
 
