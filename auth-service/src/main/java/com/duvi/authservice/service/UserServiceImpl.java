@@ -1,6 +1,8 @@
 package com.duvi.authservice.service;
 
 import com.duvi.authservice.model.User;
+import com.duvi.authservice.model.exception.UserExistsException;
+import com.duvi.authservice.model.exception.UserNotExistsException;
 import com.duvi.authservice.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,27 +21,26 @@ public class UserServiceImpl implements UserService{
         this.userRepository = userRepository;
     }
 
-    //Zu Machen: EXCEPTIONS
     @Override
-    public User findUserByUsername(String username) {
-        User user = (User) userRepository.findByUsername(username);
-        if (user == null) {
-            return null;
+    public User findUserByUsername(String username) throws UserNotExistsException {
+        Optional<User> user = userRepository.findById(username);
+        if (user.isEmpty()) {
+            throw new UserNotExistsException("The user with username: \"%s\" does not exist!".formatted(username));
         }
-        return user;
+        return user.get();
     }
 
     @Override
-    public User findByEmail(String email) {
+    public User findByEmail(String email) throws UserNotExistsException {
         Optional<User> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isEmpty()) {
-            return null;
+            throw new UserNotExistsException("The user with email: \"%s\" does not exist!".formatted(email));
         }
         return optionalUser.get();
     }
 
     @Override
-    public User findByLogin(String login) {
+    public User findByLogin(String login) throws UserNotExistsException {
         User user = this.findUserByUsername(login);
         if (user == null){
             Optional<User> optUser = userRepository.findByEmail(login);
@@ -49,11 +50,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void saveUser(User user) throws Exception {
+    public void saveUser(User user) throws UserExistsException {
         if (userRepository.existsByUsername(user.getUsername())) {
-            throw new Exception("exists by Username");
+            throw new UserExistsException("The username: \"%s\" is already in use".formatted(user.getUsername()));
         } else if (userRepository.existsByEmail(user.getEmail())) {
-            throw new Exception("exists by Email");
+            throw new UserExistsException("The email: \"%s\" is already in use".formatted(user.getEmail()));
         }
         User newUser = new User();
         newUser.setUsername(user.getUsername());
@@ -78,7 +79,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void deleteUserById(Long id) {
-
+    public void deleteUser(String username) throws UserNotExistsException {
+        Optional<User> user = userRepository.findById(username);
+        if (user.isEmpty()) {
+            throw new UserNotExistsException("The user with username: \"%s\" does not exist!".formatted(username));
+        }
+        userRepository.delete(user.get());
     }
 }

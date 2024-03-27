@@ -1,14 +1,14 @@
 CREATE TABLE IF NOT EXISTS accounts (
     name VARCHAR(40) UNIQUE NOT NULL,
-    last_seen DATE,
+    last_seen TIMESTAMP,
     note VARCHAR(3000),
     PRIMARY KEY (name)
 );
 
 CREATE TABLE IF NOT EXISTS items (
     id INTEGER NOT NULL AUTO_INCREMENT,
-    account_name VARCHAR(40),
-    title VARCHAR(40),
+    account_name VARCHAR(40) NOT NULL,
+    title VARCHAR(40) UNIQUE NOT NULL,
     icon TEXT,
     amount NUMERIC,
     category ENUM('FIXED', 'OCCASIONAL'),

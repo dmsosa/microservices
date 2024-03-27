@@ -1,5 +1,6 @@
 package com.duvi.services.account.domain.dto;
 
+import com.duvi.services.account.domain.Category;
 import com.duvi.services.account.domain.Currency;
 import com.duvi.services.account.domain.Frequency;
 import com.duvi.services.account.domain.Type;
@@ -13,6 +14,7 @@ public record ItemDTO(
         BigDecimal amount,
         Currency currency,
         Frequency frequency,
-        Type type
+        Type type,
+        Category category
 ){
 }

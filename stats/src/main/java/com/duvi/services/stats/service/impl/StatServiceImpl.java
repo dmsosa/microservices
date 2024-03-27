@@ -2,6 +2,7 @@ package com.duvi.services.stats.service.impl;
 
 import com.duvi.services.stats.client.AccountClient;
 import com.duvi.services.stats.domain.*;
+import com.duvi.services.stats.domain.exception.EntityExistsException;
 import com.duvi.services.stats.repository.DatapointRepository;
 import com.duvi.services.stats.repository.ItemRepository;
 import com.duvi.services.stats.repository.StatRepository;
@@ -54,12 +55,15 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
-    public Datapoint saveChanges(AccountDTO account) {
+    public Datapoint saveChanges(AccountDTO account) throws EntityExistsException {
 
         //CREATE DATAPOINT
         DatapointId datapointId = new DatapointId(account.getName(), account.getLastSeen());
         Datapoint datapoint = new Datapoint();
         datapoint.setId(datapointId);
+        if (datapointRepository.existsById(datapointId)) {
+            throw new EntityExistsException("Datapoint for account %1$s at date: %2$s already saved!".formatted(datapointId.getAccountName(), datapointId.getDataDate()));
+        }
         datapoint = datapointRepository.save(datapoint);
 
         List<Item> incomes = new ArrayList<Item>();

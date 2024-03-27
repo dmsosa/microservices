@@ -47,7 +47,7 @@ public class SecurityConfig {
                 .oidc(Customizer.withDefaults());
         httpSecurity.exceptionHandling(exceptions -> exceptions
                 .defaultAuthenticationEntryPointFor(
-                        new LoginUrlAuthenticationEntryPoint("/lg"),
+                        new LoginUrlAuthenticationEntryPoint("/login"),
                         new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
                 )
         )

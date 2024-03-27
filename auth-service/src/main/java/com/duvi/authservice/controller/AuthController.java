@@ -2,6 +2,8 @@ package com.duvi.authservice.controller;
 
 import com.duvi.authservice.config.TokenService;
 import com.duvi.authservice.model.*;
+import com.duvi.authservice.model.exception.UserExistsException;
+import com.duvi.authservice.model.exception.UserNotExistsException;
 import com.duvi.authservice.repository.UserRepository;
 import com.duvi.authservice.service.UserService;
 import jakarta.validation.Valid;
@@ -28,22 +30,11 @@ import java.security.Principal;
 public class AuthController {
     Logger logger = LoggerFactory.getLogger(AuthController.class);
 
-    @Autowired
-    RegisteredClientRepository registeredClientRepository;
-
-    @Autowired
-    AuthenticationManager authenticationManager;
-    @Autowired
-    TokenService tokenService;
-
-    @Autowired
-    UserService userService;
-
-    @GetMapping("/clients")
-    public ResponseEntity<String> getRegisteredClients() {
-        RegisteredClient registeredClient = registeredClientRepository.findByClientId("account");
-        return new ResponseEntity<>("Client ID: " + registeredClient.getClientId() + " //// Client Secret: " + registeredClient.getClientSecret(), HttpStatus.OK);
+    private UserService userService;
+    public AuthController(UserService userService) {
+        this.userService = userService;
     }
+
 
     @GetMapping("/current")
     public ResponseEntity<Principal> getUser(Principal principal) {
@@ -51,7 +42,11 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public void registerUser(@Valid @RequestBody User user) throws Exception {
+    public void registerUser(@Valid @RequestBody User user) throws UserExistsException {
         userService.saveUser(user);
+    }
+    @DeleteMapping("/{username}")
+    public void deleteUser(@PathVariable String username) throws UserNotExistsException {
+        userService.deleteUser(username);
     }
 }

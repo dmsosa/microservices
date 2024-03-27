@@ -30,15 +30,13 @@ public class Item {
     private Account account;
 
     @NotNull
-    @Length(min = 4, max = 20)
+    @Length(min = 3, max = 20)
     private String title;
     @NotNull
     private String icon;
 
     @NotNull
     private BigDecimal amount;
-    @NotNull
-    private Category category;
 
     @NotNull
     private Currency currency;
@@ -48,6 +46,8 @@ public class Item {
 
     @NotNull
     private Type type;
+    @NotNull
+    private Category category;
 
 
 

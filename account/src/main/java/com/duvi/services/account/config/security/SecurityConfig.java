@@ -24,7 +24,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers( "/h2-console/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/create").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/**").hasAuthority(OidcScopes.PROFILE)
+                        .requestMatchers(HttpMethod.GET, "/demo").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/demo").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/**").hasAuthority("SCOPE_PROFILE")
                         .anyRequest().authenticated())
                 .oauth2Client(Customizer.withDefaults())
 //

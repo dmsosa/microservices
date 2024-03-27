@@ -4,6 +4,8 @@ import com.duvi.services.account.client.AuthClient;
 import com.duvi.services.account.client.StatClient;
 import com.duvi.services.account.domain.Account;
 import com.duvi.services.account.domain.User;
+import com.duvi.services.account.domain.exception.EntityNotFoundException;
+import com.duvi.services.account.domain.exception.EntityExistsException;
 import com.duvi.services.account.repository.AccountRepository;
 import com.duvi.services.account.service.AccountService;
 import org.springframework.stereotype.Service;
@@ -25,7 +27,7 @@ public class AccountServiceImpl implements AccountService {
         this.accountRepository = accountRepository;
     }
     @Override
-    public Account createAccount(User user) {
+    public Account createAccount(User user) throws EntityExistsException {
         if (accountRepository.existsByName(user.getUsername())) {
             throw new RuntimeException("User Already Exists"); //todo exception
         }
@@ -36,7 +38,6 @@ public class AccountServiceImpl implements AccountService {
         account.setLastSeen(LocalDateTime.now());
         account.setNote("I'm using microservices!");
         accountRepository.save(account);
-
         return accountRepository.findById(user.getUsername()).get();
 
     }
@@ -52,20 +53,21 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account getAccountByName(String name) {
+    public Account getAccountByName(String name) throws EntityNotFoundException {
         Optional<Account> optionalAccount = accountRepository.findById(name);
         if (optionalAccount.isEmpty()) {
-            throw new RuntimeException("Account does not exists!");
+            throw new EntityNotFoundException("Account with name: \"%s\" does not exists!".formatted(name));
         }
         return optionalAccount.get();
     }
 
     @Override
-    public void deleteAccountByName(String name) {
+    public void deleteAccountByName(String name) throws EntityNotFoundException {
         Optional<Account> optionalAccount = accountRepository.findById(name);
         if (optionalAccount.isEmpty()) {
-            throw new RuntimeException("Account does not exists!");
+            throw new EntityNotFoundException("Account with name: \"%s\" does not exists!".formatted(name));
         }
+        authClient.deleteUser(name);
         accountRepository.deleteById(name);
     }
 

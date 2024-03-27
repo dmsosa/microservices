@@ -3,6 +3,7 @@ package com.duvi.services.account.service.impl;
 import com.duvi.services.account.domain.Account;
 import com.duvi.services.account.domain.Item;
 import com.duvi.services.account.domain.dto.ItemDTO;
+import com.duvi.services.account.domain.exception.EntityNotFoundException;
 import com.duvi.services.account.repository.AccountRepository;
 import com.duvi.services.account.repository.ItemRepository;
 import com.duvi.services.account.service.ItemService;
@@ -21,9 +22,13 @@ public class ItemServiceImpl implements ItemService {
         this.itemRepository = itemRepository;
     }
     @Override
-    public Item createItem(ItemDTO itemDTO) {
+    public Item createItem(ItemDTO itemDTO) throws EntityNotFoundException {
+        Optional<Account> optionalAccount = accountRepository.findById(itemDTO.accountName());
+        if (optionalAccount.isEmpty()) {
+            throw new EntityNotFoundException("Account with name: \"%s\" does not exists!".formatted(itemDTO.accountName()));
+        }
+        Account account = optionalAccount.get();
         Item item = new Item();
-        Account account = accountRepository.findById(itemDTO.accountName()).get();
         item.setAccount(account);
         item.setTitle(itemDTO.title());
         item.setIcon(itemDTO.icon());
@@ -31,14 +36,19 @@ public class ItemServiceImpl implements ItemService {
         item.setCurrency(itemDTO.currency());
         item.setFrequency(itemDTO.frequency());
         item.setType(itemDTO.type());
+        item.setCategory(itemDTO.category());
 
         return itemRepository.save(item);
     }
 
     @Override
-    public Item updateItem(Long id, ItemDTO itemDTO) {
-        Item item = itemRepository.findById(id).get();
-        Account account = accountRepository.findById(itemDTO.accountName()).get();
+    public Item updateItem(String title, ItemDTO itemDTO) throws EntityNotFoundException {
+        Optional<Account> optionalAccount = accountRepository.findById(itemDTO.accountName());
+        if (optionalAccount.isEmpty()) {
+            throw new EntityNotFoundException("Account with name: \"%s\" does not exists!".formatted(itemDTO.accountName()));
+        }
+        Item item = itemRepository.findByTitle(title).get();
+        Account account = optionalAccount.get();
         item.setAccount(account);
         item.setTitle(itemDTO.title());
         item.setAmount(itemDTO.amount());
@@ -46,26 +56,24 @@ public class ItemServiceImpl implements ItemService {
         item.setCurrency(itemDTO.currency());
         item.setFrequency(itemDTO.frequency());
         item.setType(itemDTO.type());
+        item.setCategory(itemDTO.category());
         return itemRepository.save(item);
     }
 
     @Override
-    public void deleteItem(Long id) {
-        Optional<Item> optionalItem = itemRepository.findById(id);
-        if (optionalItem.isEmpty()) {
-            throw new RuntimeException("Item does not exists");
+    public void deleteItem(String accountName, String title) throws EntityNotFoundException {
+        Optional<Account> optionalAccount = accountRepository.findById(accountName);
+        if (optionalAccount.isEmpty()) {
+            throw new EntityNotFoundException("Account with name: \"%s\" does not exists!".formatted(accountName));
         }
-        itemRepository.delete(optionalItem.get());
+        List<Item> itemList = itemRepository.findByAccount(optionalAccount.get());
+        Item item = itemList.stream().filter(it -> it.getTitle() == title).toList().getFirst();
+        if (item == null) {
+            throw new EntityNotFoundException("Item with title \"%s\" does not exists".formatted(title));
+        }
+        itemRepository.delete(item);
     }
 
-    @Override
-    public Item getItemById(Long id) {
-        Optional<Item> optionalItem = itemRepository.findById(id);
-        if (optionalItem.isEmpty()) {
-            throw new RuntimeException("Item does not exists");
-        }
-        return optionalItem.get();
-    }
 
     @Override
     public List<Item> getItemsByAccount(Account account) {

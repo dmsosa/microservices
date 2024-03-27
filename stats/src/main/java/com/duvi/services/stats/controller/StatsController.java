@@ -2,6 +2,7 @@ package com.duvi.services.stats.controller;
 
 import com.duvi.services.stats.domain.AccountDTO;
 import com.duvi.services.stats.domain.Datapoint;
+import com.duvi.services.stats.domain.exception.EntityExistsException;
 import com.duvi.services.stats.service.StatService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +40,7 @@ public class StatsController {
         return new ResponseEntity<>(datapoint, HttpStatus.OK);
     }
     @PostMapping("/save")
-    public void saveChanges(@RequestBody AccountDTO account) {
+    public void saveChanges(@RequestBody AccountDTO account) throws EntityExistsException {
         Datapoint datapoint = statService.saveChanges(account);
         logger.info("Changes for account %1$s at %2$s saved successfully".formatted(datapoint.getId().getAccountName(), datapoint.getId().getDataDate()));
     }
