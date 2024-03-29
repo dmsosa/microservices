@@ -46,7 +46,7 @@ public class AuthConfig  {
     }
 
     @Bean
-    @Profile("prod")
+    @Profile("dev")
     JdbcTemplate getJdbcTemplate(DataSource dataSource) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         jdbcTemplate.execute("CREATE TABLE oauth2_registered_client (\n" +
@@ -112,7 +112,7 @@ public class AuthConfig  {
 
     //in memory registered client repository
     @Bean
-    @Profile("prod")
+    @Profile("dev")
     public RegisteredClientRepository persistentClientRepository(JdbcTemplate jdbcTemplate) {
 
         RegisteredClient accountClient = RegisteredClient.withId(UUID.randomUUID().toString())
@@ -166,7 +166,7 @@ public class AuthConfig  {
     }
 
     @Bean
-    @Profile("dev")
+    @Profile("mem")
     RegisteredClientRepository inMemoryRegisteredClientRepository() {
         RegisteredClient accountClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("accountClient")
@@ -206,9 +206,8 @@ public class AuthConfig  {
                 .clientId("browserClient")
                 .clientSecret("$2a$10$n/SceFpTYbugzlg0DsWSgOlCeqYrHKboBKB6.AnZp.vi3tav0H/Mq")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://localhost:6000/")
                 .clientName("browserService")
                 .build();
         return new InMemoryRegisteredClientRepository(List.of(accountClient, statsClient, notiClient, browserClient));

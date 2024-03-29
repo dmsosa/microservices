@@ -5,6 +5,7 @@ services:
       service-registry:
         condition: service_healthy
     environment:
+      SERVICE_REGISTRY_URL: http://service-registry:8761/eureka/
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     container_name: config-server
@@ -22,6 +23,8 @@ services:
         condition: service_healthy
       service-registry:
         condition: service_healthy
+    environment:
+      SERVICE_REGISTRY_URL: ${SERVICE_REGISTRY_URL}
     container_name: gateway
     build: gateway
     ports:
@@ -36,6 +39,7 @@ services:
       gateway:
         condition: service_healthy
     environment:
+      SERVICE_REGISTRY_URL: ${SERVICE_REGISTRY_URL}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: authdb
@@ -48,6 +52,7 @@ services:
       auth-service:
         condition: service_healthy
     environment:
+      SERVICE_REGISTRY_URL: ${SERVICE_REGISTRY_URL}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: accountdb
@@ -60,6 +65,7 @@ services:
       auth-service:
         condition: service_healthy
     environment:
+      SERVICE_REGISTRY_URL: ${SERVICE_REGISTRY_URL}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: statsdb
@@ -72,6 +78,7 @@ services:
       auth-service:
         condition: service_healthy
     environment:
+      SERVICE_REGISTRY_URL: ${SERVICE_REGISTRY_URL}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: notidb
