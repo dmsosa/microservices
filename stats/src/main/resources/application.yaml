@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: mem
   application:
     name: stats
   config:
@@ -15,10 +15,11 @@ spring:
         serviceId: config-server
 eureka:
   instance:
-    hostname: localhost
+        instance-id: ${spring.application.name}:${random.value}
+        prefer-ip-address: true
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://service-registry:8761/eureka/
 management:
   endpoints:
     web:

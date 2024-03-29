@@ -1,0 +1,65 @@
+database: h2
+
+server:
+  servlet:
+    context-path: /api/account
+  port: 8083
+
+spring:
+  profile: mem
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: http://localhost:9000/api/uaa
+      client:
+        provider:
+          auth:
+            issuer-uri: http://localhost:9000/api/uaa
+        registration:
+          accountClient:
+            provider: auth
+            client-id: accountClient
+            client-secret: account
+            authorization-grant-type: client_credentials
+            scope: openid,profile
+            client-name: accountService
+  flyway:
+    user: sa
+    password: password
+    schemas: account-db
+    url: jdbc:h2:mem:demo
+    locations: classpath:db/migration/${database}
+  datasource:
+    url: jdbc:h2:mem:demo
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+
+
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          core:
+            JdbcTemplate: DEBUG
+            StatementCreatorUtils: TRACE
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+        SQL: DEBUG
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "refresh"

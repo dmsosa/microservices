@@ -1,0 +1,16 @@
+C:\Users\duria\Desktop\projects\projekt\microservices\auth-service\src\main\java\com\duvi\authservice\service\AuthenticationService.java
+C:\Users\duria\Desktop\projects\projekt\microservices\auth-service\src\main\java\com\duvi\authservice\model\exception\ApiError.java
+C:\Users\duria\Desktop\projects\projekt\microservices\auth-service\src\main\java\com\duvi\authservice\config\SecurityConfig.java
+C:\Users\duria\Desktop\projects\projekt\microservices\auth-service\src\main\java\com\duvi\authservice\controller\GlobalExceptionHandler.java
+C:\Users\duria\Desktop\projects\projekt\microservices\auth-service\src\main\java\com\duvi\authservice\config\TokenService.java
+C:\Users\duria\Desktop\projects\projekt\microservices\auth-service\src\main\java\com\duvi\authservice\model\exception\UserExistsException.java
+C:\Users\duria\Desktop\projects\projekt\microservices\auth-service\src\main\java\com\duvi\authservice\repository\UserRepository.java
+C:\Users\duria\Desktop\projects\projekt\microservices\auth-service\src\main\java\com\duvi\authservice\model\exception\UserNotExistsException.java
+C:\Users\duria\Desktop\projects\projekt\microservices\auth-service\src\main\java\com\duvi\authservice\controller\AuthController.java
+C:\Users\duria\Desktop\projects\projekt\microservices\auth-service\src\main\java\com\duvi\authservice\model\UserRole.java
+C:\Users\duria\Desktop\projects\projekt\microservices\auth-service\src\main\java\com\duvi\authservice\service\UserService.java
+C:\Users\duria\Desktop\projects\projekt\microservices\auth-service\src\main\java\com\duvi\authservice\config\AuthConfig.java
+C:\Users\duria\Desktop\projects\projekt\microservices\auth-service\src\main\java\com\duvi\authservice\service\UserServiceImpl.java
+C:\Users\duria\Desktop\projects\projekt\microservices\auth-service\src\main\java\com\duvi\authservice\config\SecurityFilter.java
+C:\Users\duria\Desktop\projects\projekt\microservices\auth-service\src\main\java\com\duvi\authservice\model\User.java
+C:\Users\duria\Desktop\projects\projekt\microservices\auth-service\src\main\java\com\duvi\authservice\AuthServiceApplication.java

@@ -1,3 +1,5 @@
+database: postgres
+
 server:
   servlet:
     context-path: /api/account
@@ -9,11 +11,11 @@ spring:
     oauth2:
       resource-server:
         jwt:
-          issuer-uri: http://localhost:7099/api/uaa
+          issuer-uri: http://auth-service:9000/api/uaa
       client:
         provider:
           auth:
-            issuer-uri: http://localhost:7099/api/uaa
+            issuer-uri: http://auth-service:9000/api/uaa
         registration:
           accountClient:
             provider: auth
@@ -22,20 +24,13 @@ spring:
             authorization-grant-type: client_credentials
             scope: openid,profile
             client-name: accountService
+  flyway:
+    locations: classpath:db/migration/${database}
   datasource:
-    url: jdbc:h2:mem:demo
-    username: sa
-    password: password
-    driverClassName: org.h2.Driver
-  jpa:
-    hibernate:
-      ddl-auto: none
-    show-sql: true
-    defer-datasource-initialization: true
-  h2:
-    console:
-      enabled: true
-
+    url: jdbc:postgresql://dmservices-database:5432/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driverClassName: org.postgresql.Driver
 
 logging:
   level:

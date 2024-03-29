@@ -1,0 +1,93 @@
+services:
+  #  config
+  config-server:
+    depends_on:
+      service-registry:
+        condition: service_healthy
+    container_name: config-server
+    build: config-server
+    ports:
+      - 8888:8888
+  service-registry:
+    container_name: service-registry
+    build: service-registry
+    ports:
+      - 8761:8761
+  #  services
+  auth-service:
+    depends_on:
+      config-server:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+    container_name: auth-service
+    build: auth-service
+    ports:
+      - 9000:9000
+  account:
+    depends_on:
+      config-server:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+    container_name: account
+    build: account
+    ports:
+      - 8083:8083
+  stats:
+    depends_on:
+      config-server:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+    container_name: stats
+    build: stats
+    ports:
+      - 8085:8085
+  noti:
+    depends_on:
+      config-server:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+    container_name: noti
+    build: noti
+    ports:
+      - 8084:8084
+  #databases
+  authdb:
+    container_name: authdb
+    build: postgresql
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: authdb
+    ports:
+      - 5000:5432
+  accountdb:
+    container_name: accountdb
+    build: postgresql
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: accountdb
+    ports:
+      - 5003:5432
+  statsdb:
+    build: postgresql
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: statsdb
+    ports:
+      - 5005:5432
+  notidb:
+    build: postgresql
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: notidb
+    ports:
+      - 5004:5432
+volumes:
+  dmservicesvol

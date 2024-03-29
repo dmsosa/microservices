@@ -1,0 +1,33 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: auth-service
+  config:
+    import: optional:configserver:/
+  cloud:
+    config:
+      profile: dev
+      username: username
+      password: password
+      discovery:
+        enabled: true
+        serviceId: config-server
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://service-registry:8761/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${random.value}
+    prefer-ip-address: true
+logging:
+  level:
+    org:
+      springframework:
+        core:
+          env: DEBUG
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

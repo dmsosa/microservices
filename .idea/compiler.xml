@@ -9,12 +9,11 @@
         <outputRelativeToContentRoot value="true" />
         <module name="config-server" />
         <module name="auth-service" />
-        <module name="myessen-gateway" />
         <module name="noti" />
         <module name="stats" />
         <module name="service-registry" />
         <module name="account" />
-        <module name="myessen-service" />
+        <module name="gateway" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -22,6 +21,7 @@
       <module name="customer-service" target="1.5" />
       <module name="myessen" target="21" />
       <module name="myessen-registry" target="21" />
+      <module name="myessen-service" target="21" />
       <module name="myessenregistry" target="21" />
       <module name="piggymetrics" target="1.8" />
       <module name="tool-service" target="21" />
@@ -35,8 +35,8 @@
       <module name="auth-service" options="-parameters" />
       <module name="blog-service" options="-parameters" />
       <module name="config-server" options="-parameters" />
+      <module name="gateway" options="-parameters" />
       <module name="myessen" options="-parameters" />
-      <module name="myessen-gateway" options="-parameters" />
       <module name="myessen-registry" options="-parameters" />
       <module name="myessen-service" options="-parameters" />
       <module name="myessenregistry" options="-parameters" />

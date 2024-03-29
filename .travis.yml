@@ -10,22 +10,51 @@ jdk: openjdk21
 env:
   global:
   - COMMIT=${TRAVIS_COMMIT::7}
-  - secure: ChN+MsV9H22jXXjcMKCemljGKo+1LUxnKIPkO+YAK7WkexyCFBW/I9itP3Hd8puQapkbVI2hPlsZr+V0SRIJDgUOanl7JydoM4pGfWP01GLGxjdPPre22F4rco9B6o38g9762L8lAtkJeW/MejODvsLQHokfrQZ57CcyZvir45uOqB5VerBEbg3v107gmx5TEX0Z8Jx1d4iQL82ME7cRZ75F6AVu9bHfIu6Ig7/BpcEIqMgjoyBLkKO3ea2eAN6TJCVE6n1FV5QWQpUPShLT00D0t92yDzJPIVeJiT1nse9m4Cv2zLmthpzd30d1Qowc1XFjGb88ym7HHzI5eFB8E4A0wZPePRDvNtxUQvhE8NiGMrnLfW4KJdjiMhsNyA7T/R08gRQXKfcpyStZvkyj6kaUx72wT3pN56PJrDk3a1w7nt10MN11ZTdGKyoXaLOXx8g4LpR9VjmDmlXV1kAWgagqE/jX1/rd7EETWqmPUz/AAgTetcWWovKGXZyjwdGyKanEL24a8MBgV+sFotyMimgyLiTphglHkFF903Kq3nYtq8OnrVKp4jM815qAcD8xujJRYvTlAa0AaFF8pKFJeHWSu2EbP18lcRLIAHYg9BKwbr7Lpij16WWQQrIKjLJPFgOWT/A5Xh/ep6QLGVf0ltJTzTTkd62APhAA4hA17OA= #DOCKER_EMAIL
-  - secure: cZW94WSWLR38Rq9l4q3OF1w9DdAtC3fozHKfUa/cDArvrpH3+Q+lxs/6I4Zd6arGeZxItDm9cVL7OtEv+6rTkTGdaUsYPcP6cJHWcTxx5aD/Wr+ChHkKObDvDPhd4ONLEygyJ7ghkH9hAvKx7+DJRDgQlg/0Zm+53CREyvH7ynZJzQVXOM49I7k6g6fzKFDkEBlacnqXoyaUeU/HW0cUM6+VGeh/pP9/zBJOnE+eMWc94IeH/lgZx74h8NKMvRITPAFl02giINMEBuRuZnmyNfLG2rlYYmpN/95Zn6bmDpbiuQCjecLo94jLZ8Tu47WYSluChnqGpzEbzJIHtxEPsaJk8tJdGKcMsTID7pz4aVxzlzyXPhUgF7CKyhS8EVZ43NzSEp8GWqRdcsFFXf0lxIQLHuzKTkZJq+xyorlnSV+CJ6MpIVlDb92w5jWpxY1el1W5Ua5iVmhPda9NmtJ4zPQ199YYEmJnfoQuGwDh8JCnqSu1T1rLw4HdemlE46v8BhdOrBMs5GTUWXs4wx6uQ/+KMwq6fUfqnWa2JwlANJ6uEr84uYrboIXC3xYWi9TBLgX41za9pnY52edQXXPmdmYr9ywKHGDvAZAoNjVRzmMzXeEDib31gRvhow7Qmp1PPRlpMW2A8G/fsyCpMq8eUp84dOZnSAYp4nnQ1TcDQgA= #DOCKER_USER
-  - secure: aVshCTXD1fbjoz97g81Tp1pBX08LhTz7YFMSH6LIngMGH6qIaV55n8wrmws1RRKdl/n1Fguf71x4cPZ/2OPBsrfnPZNXPrMXcE0o5OE7Bw0Y6kRD/LdWOcQODyjDx+xTjX1ALRgKPc1l6iBYBevZxziBOrkiKJHKErgeJI9RlKWIscdaNa1ztJbGxecUuuplzxrUZyz+Lq7IL7739dku+cnm6ALwd7Hr0nUPnEcUBEIp/KWWO2Tmiq2ij4LMHFoGEWZ6rISsf52lNeFT4+s1ISFxDdl/uQs4a3lpWT8CL4SpijC3+lNyfvbQNgF1YfgnpQ8bt9ZDDgIaUUOUF9WrBTz66sarM3IZo3Oq0m7sOsPXm3nF2UyWOQAzCWlYiFMTrHwP3RUrwM9Zd0JHQmdsgwdeSDUPPgKxTp/2agMLJvkaqjoBYD55Z33sldo7njy9+A24fhmgG6h4bobuZO+v+qTv0D1M0GPILQ10QFMXEDehZ0wqu3Zm5m0e+uhbvX2R/AkMqpfJ0u05PZ37JXYTAv/3g+PPZsKxOGb7sTyVeWHvhrlJv9Svg0w1dA1ExGs1OYDOmToDR24oXEP+y2LmOei/rax7pZ/PI0xo2YX0el/+hcUGpEiUhp+OAopT2kpbvPrJ7cGsuGAVqqZrJhjoOGMYc/8CTKUYlvm93LabVZ4= #DOCKER_PASSWORD
+
 after_success:
   - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 
-  #TAG
+#TAG
   - export TAG=`if ["$TRAVIS_BRANCH" == "master"]; then echo "latest"; else echo $TRAVIS_BRANCH; fi"`
-  - export CONFIG=dmsosa/dmservices-config
+#SERVICE'S NAMES
+  - export CONFIG_SERVER=dmsosa/dmservices-config-server
   - export SERVICE_REGISTRY=dmsosa/dmservices-service-registry
   - export ACCOUNT=dmsosa/dmservices-account
   - export NOTI=dmsosa/dmservices-noti
   - export STATS=dmsosa/dmservices-stats
   - export GATEWAY=dmsosa/dmservices-gateway
-  - export AUTH_SERVICE=dmsosa/dmservices-auth
+  - export AUTH_SERVICE=dmsosa/dmservices-auth-service
   - export POSTGRES_DB=dmsosa/dmservices-postgresql
+#BUILD, TAG AND PUSH
+#  POSTGRES IMAGE
   - docker build -t $POSTGRES_DB:$COMMIT ./postgresql
   - docker tag $POSTGRES_DB:$COMMIT $POSTGRES_DB:$TAG
   - docker push $POSTGRES_DB
+#SERVICE REGISTRY IMAGE
+  - docker build -t $SERVICE_REGISTRY:$COMMIT ./service-registry
+  - docker tag $SERVICE_REGISTRY:$COMMIT $SERVICE_REGISTRY:$TAG
+  - docker push $SERVICE_REGISTRY
+#CONFIG SERVER IMAGE
+  - docker build -t $CONFIG_SERVER:$COMMIT ./config-server
+  - docker tag $CONFIG_SERVER:$COMMIT $CONFIG_SERVER:$TAG
+  - docker push $CONFIG_SERVER
+#GATEWAY IMAGE
+  - docker build -t $GATEWAY:$COMMIT ./gateway
+  - docker tag $GATEWAY:$COMMIT $GATEWAY:$TAG
+  - docker push $GATEWAY
+#AUTH_SERVICE IMAGE
+  - docker build -t $AUTH_SERVICE:$COMMIT ./auth-service
+  - docker tag $AUTH_SERVICE:$COMMIT $AUTH_SERVICE:$TAG
+  - docker push $AUTH_SERVICE
+#ACCOUNT IMAGE
+  - docker build -t $ACCOUNT:$COMMIT ./account
+  - docker tag $ACCOUNT:$COMMIT $ACCOUNT:$TAG
+  - docker push $ACCOUNT
+#STATS IMAGE
+  - docker build -t $STATS:$COMMIT ./stats
+  - docker tag $STATS:$COMMIT $STATS:$TAG
+  - docker push $STATS
+#NOTI IMAGE
+  - docker build -t $NOTI:$COMMIT ./noti
+  - docker tag $NOTI:$COMMIT $NOTI:$TAG
+  - docker push $NOTI

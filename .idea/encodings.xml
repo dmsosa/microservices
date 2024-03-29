@@ -7,7 +7,7 @@
     <file url="file://$PROJECT_DIR$/config-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/customer-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/customer-service/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/myessen-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/myessen-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/noti/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/registry/src/main/java" charset="UTF-8" />

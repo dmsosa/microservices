@@ -1,0 +1,50 @@
+server:
+  port:
+    8061
+spring:
+  profile: mem
+  cloud:
+    gateway:
+      metrics:
+        enabled: true
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/uaa/**
+          filters:
+            - PrefixPath=/api
+        - id: account
+          uri: lb://account
+          predicates:
+            - Path=/account/**
+          filters:
+            - PrefixPath=/api
+            - DmFilterFactory=DMSERVICES WORKING IN DEV FOR ACCOUNTS, true, true
+        - id: stats
+          uri: lb://stats
+          predicates:
+            - Path=/stats/**
+          filters:
+            - PrefixPath=/api
+            - DmFilterFactory=DMSERVICES WORKING IN DEV FOR STATS, false, true
+        - id: noti
+          uri: lb://noti
+          predicates:
+            - Path=/noti/**
+          filters:
+            - PrefixPath=/api
+            - DmFilterFactory=DMSERVICES WORKING IN DEV FOR NOTI, false, true
+logging:
+  level:
+    reactor:
+      netty:
+        http:
+          client: TRACE
+    org:
+      springframework:
+        cloud:
+          gateway: DEBUG
