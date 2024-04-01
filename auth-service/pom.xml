@@ -15,6 +15,11 @@
 	<packaging>jar</packaging>
 
 	<dependencies>
+<!--		Thymeleaf (for customized login page)-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
 <!--		Web dependencies-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

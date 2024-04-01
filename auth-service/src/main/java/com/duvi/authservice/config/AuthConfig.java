@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.config.annotation.web.configurers.DefaultLoginPageConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -23,7 +24,9 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
+import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
+import org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter;
 
 import javax.sql.DataSource;
 import java.security.KeyPair;
@@ -154,16 +157,23 @@ public class AuthConfig  {
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://localhost:6000/")
-                .clientName("browser")
+                .redirectUri("http://127.0.0.1:8061/login/oauth2/code/browserClient")
+                .clientName("browserClient")
+                .scope(OidcScopes.OPENID)
+                .scope(OidcScopes.PROFILE)
                 .build();
         JdbcRegisteredClientRepository registeredClientRepository = new JdbcRegisteredClientRepository(jdbcTemplate);
         registeredClientRepository.save(accountClient);
         registeredClientRepository.save(statsClient);
         registeredClientRepository.save(notiClient);
         registeredClientRepository.save(browserClient);
+
+        DefaultLoginPageGeneratingFilter loginPageGeneratingFilter;
+        DefaultLoginPageConfigurer configurer = new DefaultLoginPageConfigurer<>();
         return registeredClientRepository;
     }
+
+
 
     @Bean
     @Profile("mem")
@@ -204,11 +214,13 @@ public class AuthConfig  {
                 .build();
         RegisteredClient browserClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("browserClient")
-                .clientSecret("$2a$10$n/SceFpTYbugzlg0DsWSgOlCeqYrHKboBKB6.AnZp.vi3tav0H/Mq")
+                .clientSecret("$2a$10$RfRD97cQUakYcKRirWsK1exiZOxdVjmYa0hQhx08pAmnhrDPADs4S")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .clientName("browserService")
+                .redirectUri("http://127.0.0.1:8061/login/oauth2/code/browserClient")
+                .scope(OidcScopes.OPENID)
+                .scope(OidcScopes.PROFILE)
                 .build();
         return new InMemoryRegisteredClientRepository(List.of(accountClient, statsClient, notiClient, browserClient));
     }
