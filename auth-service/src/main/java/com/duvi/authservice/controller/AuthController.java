@@ -21,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.spring6.view.ThymeleafView;
 
 import java.security.Principal;
 
@@ -49,4 +50,5 @@ public class AuthController {
     public void deleteUser(@PathVariable String username) throws UserNotExistsException {
         userService.deleteUser(username);
     }
+
 }

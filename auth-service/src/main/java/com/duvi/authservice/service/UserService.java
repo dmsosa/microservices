@@ -5,10 +5,12 @@ import com.duvi.authservice.model.exception.UserExistsException;
 import com.duvi.authservice.model.exception.UserNotExistsException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public interface UserService {
+    public List<User> findAllUsers();
     public User findUserByUsername(String username) throws UserNotExistsException;
     public User findByEmail(String email) throws UserNotExistsException;
     public User findByLogin(String login) throws UserNotExistsException;

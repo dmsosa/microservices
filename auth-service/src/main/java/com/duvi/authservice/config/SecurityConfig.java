@@ -66,7 +66,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/clients").permitAll()
                         .requestMatchers(HttpMethod.POST, "/register").permitAll()
                         .anyRequest().authenticated())
-                .formLogin()
+                .formLogin(Customizer.withDefaults())
                 .build();
     }
     @Bean
