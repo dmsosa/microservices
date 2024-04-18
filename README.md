@@ -1,7 +1,7 @@
-## MyEssen Projekt
+## Microdienstleistungen Projekt
 
 
-MyEssen Projekt ein Seite wo du verschiedene Informationen von Lebensmittel erhalten kann, es hat naturlicherweise ein FoodAPI wodurch alle die Lebensmitteldateien erhalten wird, es haben aber auch ein Benutzer API, damit man ein Konto anmelden kannst.
+Microdienstleistungen Projekt ist nach "Piggymetrics" von  @sqshq "Alexander Lukyanchikov" inspiriert.
 
 ### Status: Development
 
@@ -21,18 +21,15 @@ Die Dokumentation unsere APIs mit Swagger entwickelt war, um en ein einfaches, v
 
 #### AUTH SERVICE:
 
-Wir haben es mit JWT Token implementier, aber danach es war entscheidet, OAuth2 fur die Authentikationdienste zu benutzen.
+Es ist ein Sicherheitserver, womit benutzere das login und register machen kann, wir nutzen OAuth2 sowohl fur ein Login mit anderen Nutzerkonto von verschiedene Dienste zu erlauben, als auch Erlaubnis von unsere Dienstleitungen notig zu machen.
 
-#### FOOD API:
+Grant Types:
 
+1. Client Credentials:
+Es ist benutz, so ein Dienst anfragen zu ein anderes authorisiert werden konnen, ohne neuen Beglaubigungsschreiben zu geben
 
-Retrieve useful information about foods in a quick, easy-to-get way, this API makes calls to other free Food APIs that are out there, and collects themore relevant information about foods.
-
-You can even get the most popular dishes that exists out there!
-
-#### USER API:
-
-Anmelden Sie mit ein Konto, und die JWT Token fur zukunfitge anfragen zu erhalten!
+2. Authorization Code:
+Unseres Gateway eine Art Kunde sein, um die anfrage zu jedes Dienst zu senden, aber es muss autorisiert bei die AuthService sein.
 
 ###
 
