@@ -1,6 +1,5 @@
-microservices:
-  baseMessage: DMSERVICES IS WORKING
-server:
+
+  server:
   port:
     8061
 spring:
@@ -63,5 +62,6 @@ logging:
           client: TRACE
     org:
       springframework:
+        web: DEBUG
         cloud:
           gateway: DEBUG

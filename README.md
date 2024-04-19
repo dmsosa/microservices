@@ -1,7 +1,7 @@
-## Microdienstleistungen Projekt
+## Microdienste Projekt
 
 
-Microdienstleistungen Projekt ist nach "Piggymetrics" von  @sqshq "Alexander Lukyanchikov" inspiriert.
+Microdienste Projekt ist nach "Piggymetrics" von  @sqshq "Alexander Lukyanchikov" inspiriert.
 
 ### Status: Development
 
@@ -19,9 +19,16 @@ Die Dokumentation unsere APIs mit Swagger entwickelt war, um en ein einfaches, v
 
 ### DIENST / SERVICES:
 
+### GATEWAY:
+
+Alle die dienste in ein einzige Ort, es erfull die folgenden funktionen:
+
+1. Es verwendet ein WebRequest, um anfrage zu sich selbst zu senden
+2. Die Templates des Frontends zu geben 
+
 #### AUTH SERVICE:
 
-Es ist ein Sicherheitserver, womit benutzere das login und register machen kann, wir nutzen OAuth2 sowohl fur ein Login mit anderen Nutzerkonto von verschiedene Dienste zu erlauben, als auch Erlaubnis von unsere Dienstleitungen notig zu machen.
+Es ist ein Sicherheitserver, womit benutzere das login und register machen kann, wir nutzen OAuth2 sowohl fur ein Login mit anderen Nutzerkonto von verschiedene Dienste zu erlauben, als auch Erlaubnis von unsere Dienste notig zu machen.
 
 Grant Types:
 
@@ -31,5 +38,4 @@ Es ist benutz, so ein Dienst anfragen zu ein anderes authorisiert werden konnen,
 2. Authorization Code:
 Unseres Gateway eine Art Kunde sein, um die anfrage zu jedes Dienst zu senden, aber es muss autorisiert bei die AuthService sein.
 
-###
 
