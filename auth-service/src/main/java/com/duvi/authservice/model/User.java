@@ -24,8 +24,7 @@ public class User implements UserDetails {
     private String username;
     private String email;
     private String password;
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
+
 
 
     //User methods
@@ -34,7 +33,6 @@ public class User implements UserDetails {
         this.username = updatedUser.username;
         this.email = updatedUser.email;
         this.password = updatedUser.password;
-        this.role = updatedUser.role;
 
     }
 
@@ -43,12 +41,6 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authoritiesList = new ArrayList<SimpleGrantedAuthority>();
-        if (this.role.equals(UserRole.ADMIN)) {
-            authoritiesList.add(new SimpleGrantedAuthority("admin"));
-            authoritiesList.add(new SimpleGrantedAuthority("user"));
-        } else if (this.role.equals(UserRole.USER)) {
-            authoritiesList.add(new SimpleGrantedAuthority("user"));
-        }
         return authoritiesList;
     }
 

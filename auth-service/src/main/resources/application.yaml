@@ -26,6 +26,7 @@ logging:
       springframework:
         core:
           env: DEBUG
+        security: TRACE
 management:
   endpoints:
     web:

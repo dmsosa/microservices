@@ -32,7 +32,7 @@ public class GatewayConfig {
                         .filters(f ->
                         f.prefixPath("/api")
                         .filter(filterFactory.apply(new DmFilterFactory.Config(baseMessage, false, true))))
-                        .uri("lb://account"))
+                        .uri("lb://stats"))
                 .build();
     }
 }

@@ -27,7 +27,6 @@ spring:
   flyway:
     user: sa
     password: password
-    schemas: account-db
     url: jdbc:h2:mem:demo
     locations: classpath:db/migration/${database}
   datasource:

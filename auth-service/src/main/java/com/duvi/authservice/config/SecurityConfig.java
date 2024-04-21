@@ -65,16 +65,14 @@ public class SecurityConfig {
                         .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/clients").permitAll()
                         .requestMatchers(HttpMethod.POST, "/register").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/login").permitAll()
                         .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults())
+                .formLogin(formLogin -> formLogin.loginPage("/login"))
                 .build();
     }
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST"));
-        corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization"));
-        corsConfiguration.setAllowedOrigins(Arrays.asList("http://gateway:8061"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;

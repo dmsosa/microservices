@@ -9,7 +9,7 @@ spring:
     config:
       username: username
       password: password
-      profile: dev
+      profile: mem
       discovery:
         enabled: true
         serviceId: config-server

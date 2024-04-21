@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: mem
+    active: dev
   application:
     name: gateway
   config:

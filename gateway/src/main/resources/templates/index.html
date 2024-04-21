@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{title}">Microservices</title>
+</head>
+<body>
+    <div class="header"></div>
+    <div class="main">
+        <div class="container">
+            <div class="row" th:each="account : ${accounts}">
+                <div class="col">
+                    <div class="stats-chart">
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="account-chart">
+                        <img src="../static/images/piggy.png" th:src="@{/images/piggy.png}">
+                        <h5 th:text="${account.name}">Account name</h5>
+                        <p th:text="${account.note}">Account note come here to put additional information</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="item-chart">
+                        <ul th:remove="all-but-first">
+                            <li th:each="item : ${account.items}">
+                                <div class="item-profile">
+                                    <h4 th:text="${item.title}">Title</h4>
+                                    <h5 th:text="${item.amount}">Amount</h5>
+                                    <div class="field-div">
+                                        <p>Category:</p><span th:text="#{${'item.enum.category.' + item.category}}">FIXED</span>
+                                    </div>
+                                    <div class="field-div">
+                                        <p>Type:</p><span th:text="#{${'item.enum.type.' + item.type}}">EXPENSE</span>
+                                    </div>
+                                    <div class="field-div">
+                                        <p>Currency:</p><span th:text="#{${'item.enum.currency.' + item.currency}}">EUR</span>
+                                    </div>
+                                    <div class="field-div">
+                                        <p>Frequency:</p><span th:text="#{${'item.enum.frequency.' + item.frequency}}">MONTH</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-profile">
+                                    <h4 th:text="${item.title}">Income</h4>
+                                    <h5 th:text="${item.amount}">1000 </h5> <span th:text="#{${'item.enum.category.' + item.category}}">EUR</span>
+                                    <div class="field-div">
+                                        <p>Category:</p><span th:text="#{${'item.enum.category.' + item.category}}">FIXED</span>
+                                    </div>
+                                    <div class="field-div">
+                                        <p>Type:</p><span th:text="#{${'item.enum.type.' + item.type}}">INCOME</span>
+                                    </div>
+                                    <div class="field-div">
+                                        <p>Currency:</p><span th:text="#{${'item.enum.currency.' + item.currency}}">EUR</span>
+                                    </div>
+                                    <div class="field-div">
+                                        <p>Frequency:</p><span th:text="#{${'item.enum.frequency.' + item.frequency}}">MONTH</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-profile">
+                                    <h4 th:text="${item.title}">Trainings</h4>
+                                    <h5 th:text="${item.amount}">20 </h5> <span th:text="#{${'item.enum.category.' + item.category}}">EUR</span>
+                                    <div class="field-div">
+                                        <p>Category:</p><span th:text="#{${'item.enum.category.' + item.category}}">OCCASIONAL</span>
+                                    </div>
+                                    <div class="field-div">
+                                        <p>Type:</p><span th:text="#{${'item.enum.type.' + item.type}}">EXPENSE</span>
+                                    </div>
+                                    <div class="field-div">
+                                        <p>Currency:</p><span th:text="#{${'item.enum.currency.' + item.currency}}">EUR</span>
+                                    </div>
+                                    <div class="field-div">
+                                        <p>Frequency:</p><span th:text="#{${'item.enum.frequency.' + item.frequency}}">DAY</span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer"></div>
+</body>
+</html>

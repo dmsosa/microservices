@@ -1,6 +1,7 @@
 package com.duvi.gateway.web;
 
 import org.springframework.beans.BeansException;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
@@ -37,7 +38,7 @@ public class ThymeleafConfig implements ApplicationContextAware, WebFluxConfigur
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setApplicationContext(applicationContext);
         templateResolver.setTemplateMode(TemplateMode.HTML);
-        templateResolver.setPrefix("/src/main/webapp/templates/");
+        templateResolver.setPrefix("classpath:/templates/");
         templateResolver.setSuffix(".html");
         return templateResolver;
     }
@@ -74,8 +75,9 @@ public class ThymeleafConfig implements ApplicationContextAware, WebFluxConfigur
         registry.viewResolver(viewResolver());
     }
     @Bean
-    public WebClient gatewayClient() {
-        return WebClient.builder().baseUrl("https://swapi.dev/api/").build();
+    @LoadBalanced
+    public WebClient.Builder gatewayClient() {
+        return WebClient.builder();
     }
 
 }

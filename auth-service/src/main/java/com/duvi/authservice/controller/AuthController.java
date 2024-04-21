@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
@@ -27,13 +28,15 @@ import java.security.Principal;
 
 @Slf4j
 @RestController
-@RequestMapping("")
 public class AuthController {
-    Logger logger = LoggerFactory.getLogger(AuthController.class);
-
+    private final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private UserService userService;
-    public AuthController(UserService userService) {
+    private AuthenticationManager authenticationManager;
+
+
+    public AuthController(UserService userService, AuthenticationManager authenticationManager) {
         this.userService = userService;
+        this.authenticationManager = authenticationManager;
     }
 
 
@@ -45,6 +48,10 @@ public class AuthController {
     @PostMapping("/register")
     public void registerUser(@Valid @RequestBody User user) throws UserExistsException {
         userService.saveUser(user);
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), user.getAuthorities());
+        Authentication authentication = authenticationManager.authenticate(authToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        logger.info("Successfully registered and authenticated");
     }
     @DeleteMapping("/{username}")
     public void deleteUser(@PathVariable String username) throws UserNotExistsException {

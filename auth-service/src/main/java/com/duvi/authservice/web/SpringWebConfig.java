@@ -1,6 +1,5 @@
 package com.duvi.authservice.web;
 
-import com.duvi.authservice.web.convertor.DateFormatter;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -18,14 +17,9 @@ import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 @Configuration
 public class SpringWebConfig implements WebMvcConfigurer, ApplicationContextAware {
     private ApplicationContext applicationContext;
-    private MessageSource messageSource;
 
     public SpringWebConfig() {
         super();
-    }
-    public SpringWebConfig(MessageSource messageSource) {
-        super();
-        this.messageSource = messageSource;
     }
     @Override
 
@@ -45,43 +39,33 @@ public class SpringWebConfig implements WebMvcConfigurer, ApplicationContextAwar
     }
 
     @Bean
-    ResourceBundleMessageSource messageSource() {
+    public ResourceBundleMessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("messages");
         return messageSource;
     }
 
-    @Override
-    public void addFormatters(FormatterRegistry formatterRegistry) {
-        WebMvcConfigurer.super.addFormatters(formatterRegistry);
-        formatterRegistry.addFormatter(dateFormatter());
-    }
 
-
-    @Bean
-    public DateFormatter dateFormatter() {
-        return new DateFormatter(messageSource);
-    }
 
 //    Thymeleaf artifacts
     @Bean
-    SpringResourceTemplateResolver templateResolver() {
+    public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setApplicationContext(applicationContext);
-        templateResolver.setPrefix("/src/main/WEB-INF/templates/");
+        templateResolver.setPrefix("classpath:/templates/");
         templateResolver.setSuffix(".html");
         return templateResolver;
     }
 
     @Bean
-    SpringTemplateEngine templateEngine() {
+    public SpringTemplateEngine templateEngine() {
         SpringTemplateEngine templateEngine =  new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
         return templateEngine;
     }
 
     @Bean
-    ThymeleafViewResolver viewResolver() {
+    public ThymeleafViewResolver viewResolver() {
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine());
         return viewResolver;
