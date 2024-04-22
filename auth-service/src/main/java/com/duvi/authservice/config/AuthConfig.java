@@ -116,7 +116,7 @@ public class AuthConfig  {
     //in memory registered client repository
     @Bean
     @Profile("dev")
-    public RegisteredClientRepository persistentClientRepository(JdbcTemplate jdbcTemplate) {
+    public RegisteredClientRepository inMemoryClientRepository(JdbcTemplate jdbcTemplate) {
 
         RegisteredClient accountClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("accountClient")
@@ -153,7 +153,7 @@ public class AuthConfig  {
                 .build();
         RegisteredClient browserClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("browserClient")
-                .clientSecret("$2a$10$n/SceFpTYbugzlg0DsWSgOlCeqYrHKboBKB6.AnZp.vi3tav0H/Mq")
+                .clientSecret("$2a$10$vUUeMi5ICnYMmCHeekyQ4O.z0t9Ff.il0FBrrPYKaVUFZOCVSn0VW")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
@@ -168,8 +168,6 @@ public class AuthConfig  {
         registeredClientRepository.save(notiClient);
         registeredClientRepository.save(browserClient);
 
-        DefaultLoginPageGeneratingFilter loginPageGeneratingFilter;
-        DefaultLoginPageConfigurer configurer = new DefaultLoginPageConfigurer<>();
         return registeredClientRepository;
     }
 
@@ -213,12 +211,12 @@ public class AuthConfig  {
                 .clientName("notiService")
                 .build();
         RegisteredClient browserClient = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("browserClient")
-                .clientSecret("$2a$10$RfRD97cQUakYcKRirWsK1exiZOxdVjmYa0hQhx08pAmnhrDPADs4S")
+                .clientId("gatewayClient")
+                .clientSecret("$2a$10$T4a55gT79PMGRPWdFxntSeapLSKjssYNXxi7/qXPXfteoaujy/sqy")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://127.0.0.1:8061/login/oauth2/code/browserClient")
+                .redirectUri("http://127.0.0.1:8061/login/oauth2/code/gatewayClient")
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
                 .build();

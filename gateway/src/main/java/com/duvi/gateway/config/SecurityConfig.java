@@ -3,6 +3,7 @@ package com.duvi.gateway.config;
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.*;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -20,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.authentication.RedirectServerAuthenticationEntryPoint;
 
 import java.security.Principal;
 
@@ -29,11 +31,13 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity serverHttpSecurity) throws Exception {
         serverHttpSecurity
-        .authorizeExchange( exchanges ->
-                exchanges.anyExchange().permitAll()
-        )
-        .httpBasic(Customizer.withDefaults())
-        .formLogin(Customizer.withDefaults());
+                .csrf(csrf -> csrf.disable())
+                .authorizeExchange( exchanges ->
+                exchanges.pathMatchers("/login").permitAll()
+                .anyExchange().authenticated()
+                 )
+                .oauth2Login(Customizer.withDefaults())
+                .exceptionHandling(eh -> eh.authenticationEntryPoint(new RedirectServerAuthenticationEntryPoint("/oauth2/authorization/gatewayClient")));
         return serverHttpSecurity.build();
     }
 

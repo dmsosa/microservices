@@ -1,24 +1,23 @@
-
 server:
   port:
     8061
 spring:
+  profile: dev
   security:
     oauth2:
       client:
         registration:
-          browserClient:
+          gatewayClient:
             provider: auth
-            client-id: browserClient
-            client-secret: "{bcrypt}$2a$10$RfRD97cQUakYcKRirWsK1exiZOxdVjmYa0hQhx08pAmnhrDPADs4S"
+            client-id: gatewayClient
+            client-secret: gateway
             authorization-grant-types: authorization_code,refresh_token
             client-authentication-method: client_secret_basic
             scope: openid,profile
-            redirect-uri: "http://127.0.0.1:8061/login/oauth2/code/browserClient"
+            redirect-uri: "http://127.0.0.1:8061/login/oauth2/code/gatewayClient"
         provider:
           auth:
             issuer-uri: http://localhost:9000/api/uaa
-  profile: dev
   cloud:
     gateway:
       metrics:

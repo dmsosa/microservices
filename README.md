@@ -6,8 +6,8 @@ Microdienste Projekt ist nach "Piggymetrics" von  @sqshq "Alexander Lukyanchikov
 ### Status: Development
 
 ZU MACHEN:
-
-* Dishesbereich zu erstellen
+* Unit test fur jeder Dienst
+* CSRF Token zu hinzufugen
 * Auth mit OAuth
   * Password Grant (JWT Token) fur Kunden
   * Client Grant fur Inneresdienstekommunikation
