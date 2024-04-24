@@ -21,3 +21,58 @@ eureka:
     instance-id: ${spring.application.name}:${random.value}
     prefer-ip-address: true
 
+  security:
+    oauth2:
+      client:
+        registration:
+          gatewayClient:
+            provider: auth
+            client-id: gatewayClient
+            client-secret: gateway
+            authorization-grant-types: authorization_code,refresh_token
+            client-authentication-method: client_secret_basic
+            scope: openid,profile
+            redirect-uri: "http://127.0.0.1:8061/login/oauth2/code/gatewayClient"
+        provider:
+          auth:
+            issuer-uri: http://localhost:9000/api/uaa
+  cloud:
+    gateway:
+      metrics:
+        enabled: true
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/uaa/**
+          filters:
+            - PrefixPath=/api
+        - id: account
+          uri: lb://account
+          predicates:
+            - Path=/account/**
+          filters:
+            - PrefixPath=/api
+            - DmFilterFactory=DMSERVICES WORKING IN DEV FOR ACCOUNTS, true, true
+        - id: stats
+          uri: lb://stats
+          predicates:
+            - Path=/stats/**
+          filters:
+            - PrefixPath=/api
+            - DmFilterFactory=DMSERVICES WORKING IN DEV FOR STATS, false, true
+        - id: noti
+          uri: lb://noti
+          predicates:
+            - Path=/noti/**
+          filters:
+            - PrefixPath=/api
+            - DmFilterFactory=DMSERVICES WORKING IN DEV FOR NOTI, false, true
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
