@@ -3,6 +3,7 @@ package com.duvi.services.account.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -36,14 +37,13 @@ public class Item {
     private String icon;
 
     @NotNull
+    @Min(0)
     private BigDecimal amount;
 
     @NotNull
     private Currency currency;
-
     @NotNull
     private Frequency frequency;
-
     @NotNull
     private Type type;
     @NotNull

@@ -24,11 +24,13 @@ public class SecurityConfig {
     public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity serverHttpSecurity) throws Exception {
         serverHttpSecurity
                 .csrf(csrf -> csrf.disable())
-                .authorizeExchange( exchanges ->
-                        exchanges.anyExchange().authenticated()
-                 )
+                .formLogin(Customizer.withDefaults())
                 .oauth2Login(Customizer.withDefaults())
-                .exceptionHandling(eh -> eh.authenticationEntryPoint(new RedirectServerAuthenticationEntryPoint("/oauth2/authorization/gatewayClient")));
+                .exceptionHandling(eh -> eh.authenticationEntryPoint(new RedirectServerAuthenticationEntryPoint("/oauth2/authorization/gatewayClient")))
+                .authorizeExchange( exchanges ->
+                        exchanges.pathMatchers("/login/**").permitAll()
+                        .anyExchange().authenticated()
+                 );
         return serverHttpSecurity.build();
     }
 

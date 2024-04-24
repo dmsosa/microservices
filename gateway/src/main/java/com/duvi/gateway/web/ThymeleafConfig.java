@@ -74,10 +74,5 @@ public class ThymeleafConfig implements ApplicationContextAware, WebFluxConfigur
     public void configureViewResolvers(ViewResolverRegistry registry) {
         registry.viewResolver(viewResolver());
     }
-    @Bean
-    @LoadBalanced
-    public WebClient.Builder gatewayClient() {
-        return WebClient.builder();
-    }
 
 }

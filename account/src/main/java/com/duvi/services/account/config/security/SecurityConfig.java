@@ -22,6 +22,8 @@ public class SecurityConfig {
                 //allowing h2 to display in a frame of the same origin as our app
                 .headers(headers -> headers.frameOptions(options -> options.sameOrigin()))
                 .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers( "/h2-console/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/create").permitAll()
                         .requestMatchers(HttpMethod.GET, "/demo").permitAll()

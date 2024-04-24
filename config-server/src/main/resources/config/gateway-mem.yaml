@@ -3,8 +3,6 @@ server:
     8061
 spring:
   profile: mem
-  config:
-    import: optional:file:.env[.properties]
   security:
     oauth2:
       client:
@@ -12,7 +10,7 @@ spring:
           gatewayClient:
             provider: auth
             client-id: gatewayClient
-            client-secret: ${GATEWAY_CLIENT_SECRET}
+            client-secret: gateway
             authorization-grant-types: authorization_code,refresh_token
             client-authentication-method: client_secret_basic
             scope: openid,profile
@@ -65,3 +63,4 @@ logging:
       springframework:
         cloud:
           gateway: DEBUG
+        security: DEBUG

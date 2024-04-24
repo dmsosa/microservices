@@ -2,6 +2,7 @@ package com.duvi.services.account.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,8 +21,9 @@ import java.util.Set;
 @AllArgsConstructor
 public class Account {
     @Id
+    @NotBlank
     private String name;
-
+    @NotNull
     private LocalDateTime lastSeen;
 
     @NotNull

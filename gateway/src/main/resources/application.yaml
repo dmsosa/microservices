@@ -1,13 +1,13 @@
 spring:
   profiles:
-    active: dev
+    active: mem
   application:
     name: gateway
   config:
     import: optional:configserver:/
   cloud:
     config:
-      profile: dev
+      profile: mem
       username: username
       password: password
       discovery:
@@ -71,8 +71,3 @@ eureka:
           filters:
             - PrefixPath=/api
             - DmFilterFactory=DMSERVICES WORKING IN DEV FOR NOTI, false, true
-logging:
-  level:
-    org:
-      springframework:
-        security: DEBUG

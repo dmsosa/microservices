@@ -83,9 +83,19 @@
                                 </div>
                             </li>
                         </ul>
+                        <form action="#" method="POST" th:action="@{/save/{accountName}(accountName=${account.name})}" th:object="${account}">
+                            <fieldset>
+                                <input type="hidden" th:field="*{name}">
+                                <input type="hidden" th:field="*{lastSeen}">
+                                <input type="hidden" th:field="*{note}">
+                                <input type="hidden" th:field="*{items}">
+                            </fieldset>
+                            <button type="submit">Save account changes</button>
+                        </form>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
     <div class="footer"></div>
