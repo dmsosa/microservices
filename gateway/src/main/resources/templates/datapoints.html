@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{title}">Microservices</title>
+</head>
+<body>
+    <div class="row" th:each="datapoint : ${datapoints}" th:fragment="dpFragment">
+        <div class="col datapoints-col">
+            <div class="datapoints-chart" th:if="${datapoint != null}">
+                <h1>Stats for account: <span th:text="${datapoint.id.accountName}">demo</span></h1>
+                <h2>for date: <span th:text="${datapoint.id.dataDate}">24/04/2024</span></h2>
+            </div>
+            <h2>Fragment Von Datapointss</h2>
+        </div>
+    </div>
+</body>
+</html>

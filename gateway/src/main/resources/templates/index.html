@@ -10,12 +10,12 @@
     <div class="header"></div>
     <div class="main">
         <div class="container">
-            <div class="row" th:each="accountContext : ${accountContextVar}">
+            <div class="row" th:each="account : ${accounts}">
                 <div class="col view-col">
                     <div class="account-chart">
                         <img src="../static/images/piggy.png" th:src="@{/images/piggy.png}">
-                        <h5 th:text="${accountContext.account.name}">Account name</h5>
-                        <p th:text="${accountContext.account.note}">Account note come here to put additional information</p>
+                        <h5 th:text="${account.name}">Account name</h5>
+                        <p th:text="${account.note}">Account note come here to put additional information</p>
                     </div>
                     <button class="btn btn-edit">Edit</button>
                     <button class="btn btn-edit">Add or Remove Items</button>
@@ -119,12 +119,9 @@
 <!--                        </fieldset>-->
 <!--                    </form>-->
 <!--                </div>-->
-<!--                <div class="col datapoints-col">-->
-<!--                    <div class="datapoints-chart" th:if="${accountContext.datapoint != null}">-->
-<!--                        <h1>Stats for account: <span th:text="${accountContext.datapoint.id.accountName}">demo</span></h1>-->
-<!--                        <h2>for date: <span th:text="${accountContext.datapoint.id.dataDate}">24/04/2024</span></h2>-->
-<!--                    </div>-->
-<!--                </div>-->
+                <div th:replace="~{datapoints :: dpFragment}">
+                    <h2>No datapoints yet</h2>
+                </div>
             </div>
         </div>
     </div>

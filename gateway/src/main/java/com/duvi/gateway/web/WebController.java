@@ -36,27 +36,27 @@ public class WebController {
     public String showIndexPage(
             @RegisteredOAuth2AuthorizedClient(registrationId = "gatewayClient") OAuth2AuthorizedClient authorizedClient, Model model) {
 
-        Flux<Datapoint> datapoints = null;
-        Flux<AccountContextVar> accountContextVar = webClientBuilder.build()
+        Flux<Account> accountContextVar = webClientBuilder.build()
                 .get()
                 .uri("http://gateway:8061/account/demo")
                 .attributes(oauth2AuthorizedClient(authorizedClient))
                 .retrieve()
-                .bodyToFlux(AccountContextVar.class);
+                .bodyToFlux(Account.class);
 
-//        webClientBuilder.build()
-//                .get()
-//                .uri("http://gateway:8061/stats/demo")
-//                .attributes(oauth2AuthorizedClient(authorizedClient))
-//                .retrieve()
-//                .bodyToFlux(Datapoint.class)
-//                .subscribe(datapoint -> accountContextVar.subscribe(
-//                        acv -> acv.setDatapoint(datapoint)
-//                ));
-        model.addAttribute("accountContextVar", new ReactiveDataDriverContextVariable(accountContextVar, 1));
+        model.addAttribute("accounts", new ReactiveDataDriverContextVariable(accountContextVar, 1));
         return "index";
     }
-
+    @RequestMapping(value = "/datapoints")
+    public String showDatapoints(Model model) {
+        Flux<Datapoint> datapoints = webClientBuilder.build()
+                .get()
+                .uri("http://gateway:8061/stats/demo")
+                .retrieve()
+                .bodyToFlux(Datapoint.class)
+                .onErrorReturn(null);
+        model.addAttribute("datapoints", new ReactiveDataDriverContextVariable(datapoints, 1));
+        return "datapoints";
+    }
     @RequestMapping(method = {RequestMethod.POST}, value = "/save/{accountName}")
     public String saveAccountChanges(@PathVariable String accountName, @Validated @ModelAttribute Account account, BindingResult bindingResult, Model model) {
         webClientBuilder.build().post().uri("/account/demo").bodyValue(account).retrieve().bodyToFlux(String.class);
