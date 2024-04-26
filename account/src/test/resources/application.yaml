@@ -1,0 +1,16 @@
+spring:
+  flyway:
+    enabled: false
+  cloud:
+    config:
+      import-check:
+        enabled: false
+  datasource:
+    url: jdbc:h2:mem:tests
+    username: sa
+    password: password
+    driverClassName:  org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true

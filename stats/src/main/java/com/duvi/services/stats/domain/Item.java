@@ -43,6 +43,21 @@ public class Item {
 
     public Item(
             String title,
+            BigDecimal amount,
+            Category category,
+            Currency currency,
+            Frequency frequency,
+            ItemType type
+    ) {
+        this.title = title;
+        this.amount = amount;
+        this.category = category;
+        this.currency = currency;
+        this.frequency = frequency;
+        this.type = type;
+    }
+    public Item(
+            String title,
             Category category,
             Currency currency,
             Frequency frequency,

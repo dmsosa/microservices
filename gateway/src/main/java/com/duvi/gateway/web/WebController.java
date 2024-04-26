@@ -1,6 +1,8 @@
 package com.duvi.gateway.web;
 
 import com.duvi.gateway.model.Account;
+import com.duvi.gateway.model.AccountContextVar;
+import com.duvi.gateway.model.Datapoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.thymeleaf.spring6.context.webflux.ReactiveDataDriverContextVariable;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
 
@@ -29,15 +33,27 @@ public class WebController {
         this.webClientBuilder = webClientBuilder;
     }
     @RequestMapping(method = {RequestMethod.GET}, value = "/index")
-    public String showIndexPage(@RegisteredOAuth2AuthorizedClient(registrationId = "gatewayClient") OAuth2AuthorizedClient authorizedClient, Model model) {
+    public String showIndexPage(
+            @RegisteredOAuth2AuthorizedClient(registrationId = "gatewayClient") OAuth2AuthorizedClient authorizedClient, Model model) {
 
-        Flux<Account> account = webClientBuilder.build()
+        Flux<Datapoint> datapoints = null;
+        Flux<AccountContextVar> accountContextVar = webClientBuilder.build()
                 .get()
-                .uri("http://gateway/account/demo")
+                .uri("http://gateway:8061/account/demo")
                 .attributes(oauth2AuthorizedClient(authorizedClient))
                 .retrieve()
-                .bodyToFlux(Account.class);
-        model.addAttribute("accounts", new ReactiveDataDriverContextVariable(account, 1));
+                .bodyToFlux(AccountContextVar.class);
+
+//        webClientBuilder.build()
+//                .get()
+//                .uri("http://gateway:8061/stats/demo")
+//                .attributes(oauth2AuthorizedClient(authorizedClient))
+//                .retrieve()
+//                .bodyToFlux(Datapoint.class)
+//                .subscribe(datapoint -> accountContextVar.subscribe(
+//                        acv -> acv.setDatapoint(datapoint)
+//                ));
+        model.addAttribute("accountContextVar", new ReactiveDataDriverContextVariable(accountContextVar, 1));
         return "index";
     }
 

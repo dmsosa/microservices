@@ -31,6 +31,13 @@ Alle die dienste in ein einzige Ort, es erfull die folgenden funktionen:
 1. Es verwendet ein WebRequest, um anfrage zu sich selbst zu senden
 2. Die Templates des Frontends zu geben 
 
+#### Die Hindernisse, mit denen wir konfrontiert waren
+
+Der Authentikation unseres WebClient, durch ein ExchangeFilterFunction gelost war.
+Da das ThymeleafTemplateEngine nur ein ReactiveDataDrivenContextVariable laden kann, wir versuchte die folgende 'Workarounds':
+
+- Ein "AccountContextVariable" klass zu erstellen, um alle die Datei zu erhalten. 
+
 #### AUTH SERVICE:
 
 Es ist ein Sicherheitserver, womit benutzere das login und register machen kann, wir nutzen OAuth2 sowohl fur ein Login mit anderen Nutzerkonto von verschiedene Dienste zu erlauben, als auch Erlaubnis von unsere Dienste notig zu machen.

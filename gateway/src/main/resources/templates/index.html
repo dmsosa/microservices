@@ -10,94 +10,124 @@
     <div class="header"></div>
     <div class="main">
         <div class="container">
-            <div class="row" th:each="account : ${accounts}">
-                <div class="col">
-                    <div class="stats-chart">
-                        <ul>
-                            <li></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col">
+            <div class="row" th:each="accountContext : ${accountContextVar}">
+                <div class="col view-col">
                     <div class="account-chart">
                         <img src="../static/images/piggy.png" th:src="@{/images/piggy.png}">
-                        <h5 th:text="${account.name}">Account name</h5>
-                        <p th:text="${account.note}">Account note come here to put additional information</p>
+                        <h5 th:text="${accountContext.account.name}">Account name</h5>
+                        <p th:text="${accountContext.account.note}">Account note come here to put additional information</p>
                     </div>
+                    <button class="btn btn-edit">Edit</button>
+                    <button class="btn btn-edit">Add or Remove Items</button>
                 </div>
-                <div class="col">
-                    <div class="item-chart">
-                        <ul th:remove="all-but-first">
-                            <li th:each="item : ${account.items}">
-                                <div class="item-profile">
-                                    <h4 th:text="${item.title}">Title</h4>
-                                    <h5 th:text="${item.amount}">Amount</h5>
-                                    <div class="field-div">
-                                        <p>Category:</p><span th:text="#{${'item.enum.category.' + item.category}}">FIXED</span>
-                                    </div>
-                                    <div class="field-div">
-                                        <p>Type:</p><span th:text="#{${'item.enum.type.' + item.type}}">EXPENSE</span>
-                                    </div>
-                                    <div class="field-div">
-                                        <p>Currency:</p><span th:text="#{${'item.enum.currency.' + item.currency}}">EUR</span>
-                                    </div>
-                                    <div class="field-div">
-                                        <p>Frequency:</p><span th:text="#{${'item.enum.frequency.' + item.frequency}}">MONTH</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="item-profile">
-                                    <h4 th:text="${item.title}">Income</h4>
-                                    <h5 th:text="${item.amount}">1000 </h5> <span th:text="#{${'item.enum.category.' + item.category}}">EUR</span>
-                                    <div class="field-div">
-                                        <p>Category:</p><span th:text="#{${'item.enum.category.' + item.category}}">FIXED</span>
-                                    </div>
-                                    <div class="field-div">
-                                        <p>Type:</p><span th:text="#{${'item.enum.type.' + item.type}}">INCOME</span>
-                                    </div>
-                                    <div class="field-div">
-                                        <p>Currency:</p><span th:text="#{${'item.enum.currency.' + item.currency}}">EUR</span>
-                                    </div>
-                                    <div class="field-div">
-                                        <p>Frequency:</p><span th:text="#{${'item.enum.frequency.' + item.frequency}}">MONTH</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="item-profile">
-                                    <h4 th:text="${item.title}">Trainings</h4>
-                                    <h5 th:text="${item.amount}">20 </h5> <span th:text="#{${'item.enum.category.' + item.category}}">EUR</span>
-                                    <div class="field-div">
-                                        <p>Category:</p><span th:text="#{${'item.enum.category.' + item.category}}">OCCASIONAL</span>
-                                    </div>
-                                    <div class="field-div">
-                                        <p>Type:</p><span th:text="#{${'item.enum.type.' + item.type}}">EXPENSE</span>
-                                    </div>
-                                    <div class="field-div">
-                                        <p>Currency:</p><span th:text="#{${'item.enum.currency.' + item.currency}}">EUR</span>
-                                    </div>
-                                    <div class="field-div">
-                                        <p>Frequency:</p><span th:text="#{${'item.enum.frequency.' + item.frequency}}">DAY</span>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <form action="#" method="POST" th:action="@{/save/{accountName}(accountName=${account.name})}" th:object="${account}">
-                            <fieldset>
-                                <input type="hidden" th:field="*{name}">
-                                <input type="hidden" th:field="*{lastSeen}">
-                                <input type="hidden" th:field="*{note}">
-                                <input type="hidden" th:field="*{items}">
-                            </fieldset>
-                            <button type="submit">Save account changes</button>
-                        </form>
-                    </div>
-                </div>
+<!--                <div class="col editor-col">-->
+<!--                    <form class="editor-form" action="#" method="post" th:object="${account}" th:action="@{/editAccountData}">-->
+<!--                        <fieldset>-->
+<!--                            <div>-->
+<!--                                <label th:for="name" th:text="#{form.label.name}">Account's name</label>-->
+<!--                                <input type="text" placeholder="#{form.placeholder.name}" th:placeholder="*{name}" th:field="*{name}">-->
+<!--                            </div>-->
+<!--                            <div>-->
+<!--                                <label th:for="note" th:text="#{form.label.note}">Account's note</label>-->
+<!--                                <input type="text" placeholder="#{form.placeholder.note}" th:placeholder="*{note}" th:field="*{note}">-->
+<!--                            </div>-->
+<!--                        </fieldset>-->
+<!--                        <button type="submit">Save changes</button>-->
+<!--                        <button class="cancel-btn" type="button" value="cancel">Cancel changes</button>-->
+<!--                    </form>-->
+<!--                </div>-->
+<!--                <div class="col item-col">-->
+<!--                    <form class="item-form" method="post" action="#" th:object="${account}" th:action="@{/editAccountItems}">-->
+<!--                        <fieldset>-->
+<!--                            <div>-->
+<!--                                <table class="item-table">-->
+<!--                                    <thead>-->
+<!--                                        <tr>-->
+<!--                                            <th></th>-->
+<!--                                            <th>Title</th>-->
+<!--                                            <th>Amount</th>-->
+<!--                                            <th>Frequency</th>-->
+<!--                                            <th>Type</th>-->
+<!--                                            <th>Category</th>-->
+<!--                                            <th>Currency</th>-->
+<!--                                            <th>Icon</th>-->
+<!--                                            <th>-->
+<!--                                                <button type="submit" name="addRow">-->
+<!--                                                    Add item-->
+<!--                                                </button>-->
+<!--                                            </th>-->
+<!--                                        </tr>-->
+<!--                                    </thead>-->
+<!--                                    <tbody>-->
+<!--                                        <tr th:each="item, statsItem : *{items}">-->
+<!--                                            <td th:text="${statsItem.count}">1</td>-->
+<!--                                            <td>-->
+<!--                                                <input type="text" th:field="*{items[__${statsItem.index}__].title}">-->
+<!--                                            </td>-->
+<!--                                            <td>-->
+<!--                                                <input type="number" th:field="*{items[__${statsItem.index}__].amount}" th:min="0" th:max="5000000">-->
+<!--                                            </td>-->
+<!--                                            <td>-->
+<!--                                                <select th:field="*{items[__${statsItem.index}__].frequency}">-->
+<!--                                                    <option th:each="frequency : ${allFrequencies}"-->
+<!--                                                            th:value="${frequency}"-->
+<!--                                                            th:text="${'enum.frequency.' + frequency.name()} ">-->
+<!--                                                        DAY-->
+<!--                                                    </option>-->
+<!--                                                </select>-->
+<!--                                            </td>-->
+<!--                                            <td>-->
+<!--                                                <select th:field="*{items[__${statsItem.index}__].type}">-->
+<!--                                                    <option th:each="type : ${allTypes}"-->
+<!--                                                            th:value="${type}"-->
+<!--                                                            th:text="${'enum.type.' + type.name()} ">-->
+<!--                                                        EXPENSE-->
+<!--                                                    </option>-->
+<!--                                                </select>-->
+<!--                                            </td>-->
+<!--                                            <td>-->
+<!--                                                <select th:field="*{items[__${statsItem.index}__].category}">-->
+<!--                                                    <option th:each="category : ${allCategories}"-->
+<!--                                                            th:value="${category}"-->
+<!--                                                            th:text="${'enum.category.' + category.name()} ">-->
+<!--                                                        FIXED-->
+<!--                                                    </option>-->
+<!--                                                </select>-->
+<!--                                            </td>-->
+<!--                                            <td>-->
+<!--                                                <select th:field="*{items[__${statsItem.index}__].currency}">-->
+<!--                                                    <option th:each="currency : ${allCurrencies}"-->
+<!--                                                            th:value="${currency}"-->
+<!--                                                            th:text="${'enum.currency.' + currency.name()} ">-->
+<!--                                                        USD-->
+<!--                                                    </option>-->
+<!--                                                </select>-->
+<!--                                            </td>-->
+<!--                                            <td>-->
+<!--                                                <select type="text" th:field="*{items[__${statsItem.index}__].icon}">-->
+<!--                                                    <option th:each="iconName : ${allIcons}" th:value="${iconName}" th:text="${#strings.replace(iconName, '.png', '')}">Pig</option>-->
+<!--                                                </select>-->
+<!--                                            </td>-->
+<!--                                            <td>-->
+<!--                                                <button type="submit" name="removeRow"-->
+<!--                                                th:value="${statsItem.index}">Remove item</button>-->
+<!--                                            </td>-->
+<!--                                        </tr>-->
+<!--                                    </tbody>-->
+<!--                                </table>-->
+<!--                            </div>-->
+<!--                        </fieldset>-->
+<!--                    </form>-->
+<!--                </div>-->
+<!--                <div class="col datapoints-col">-->
+<!--                    <div class="datapoints-chart" th:if="${accountContext.datapoint != null}">-->
+<!--                        <h1>Stats for account: <span th:text="${accountContext.datapoint.id.accountName}">demo</span></h1>-->
+<!--                        <h2>for date: <span th:text="${accountContext.datapoint.id.dataDate}">24/04/2024</span></h2>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
-
         </div>
     </div>
-    <div class="footer"></div>
+<div class="footer"></div>
 </body>
 </html>

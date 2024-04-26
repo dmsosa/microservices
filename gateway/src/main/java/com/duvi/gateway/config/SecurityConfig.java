@@ -30,7 +30,8 @@ public class SecurityConfig {
                 .authorizeExchange( exchanges ->
                         exchanges.pathMatchers("/login/**").permitAll()
                         .anyExchange().authenticated()
-                 );
+                 )
+                .oauth2ResourceServer(rs -> rs.jwt(Customizer.withDefaults()));
         return serverHttpSecurity.build();
     }
 

@@ -3,6 +3,7 @@ package com.duvi.services.account.controller;
 import com.duvi.services.account.domain.Account;
 import com.duvi.services.account.domain.Item;
 import com.duvi.services.account.domain.User;
+import com.duvi.services.account.domain.dto.AccountContextVarDTO;
 import com.duvi.services.account.domain.dto.ItemDTO;
 import com.duvi.services.account.domain.exception.EntityNotFoundException;
 import com.duvi.services.account.domain.exception.EntityExistsException;
@@ -33,9 +34,11 @@ public class AccountController {
     }
 
     @GetMapping("/{accountName}")
-    public ResponseEntity<Account> getAccountByName(@PathVariable String accountName) throws EntityNotFoundException {
+    public ResponseEntity<AccountContextVarDTO> getAccountByName(@PathVariable String accountName) throws EntityNotFoundException {
         Account account = accountService.getAccountByName(accountName);
-        return new ResponseEntity<>(account, HttpStatus.OK);
+        AccountContextVarDTO contextVarDTO = new AccountContextVarDTO();
+        contextVarDTO.setAccount(account);
+        return new ResponseEntity<>(contextVarDTO, HttpStatus.OK);
     }
 
     @PostMapping("/create")
