@@ -36,10 +36,6 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    SecurityFilter securityFilter;
-
-
     @Bean
     @Order(1)
     public SecurityFilterChain authFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -51,8 +47,7 @@ public class SecurityConfig {
                         new LoginUrlAuthenticationEntryPoint("/login"),
                         new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
                 )
-        )
-                .oauth2ResourceServer( rs -> rs.jwt(Customizer.withDefaults()));
+        ).oauth2ResourceServer( rs -> rs.jwt(Customizer.withDefaults()));
         return httpSecurity.build();
     }
     @Bean
@@ -60,7 +55,6 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(csrf -> csrf.disable()) //disable csrf
-                .cors(Customizer.withDefaults()) //using defined Bean CorsConfigurationSource
                 .headers( headers -> headers.frameOptions(fo -> fo.sameOrigin())) //allowing h2 to be displayed as a frame
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/actuator/**").permitAll()
@@ -72,13 +66,7 @@ public class SecurityConfig {
                         formLogin.loginPage("/login"))
                 .build();
     }
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfiguration);
-        return source;
-    }
+
 
 
     @Bean

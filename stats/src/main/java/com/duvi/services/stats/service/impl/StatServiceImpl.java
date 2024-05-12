@@ -7,6 +7,7 @@ import com.duvi.services.stats.repository.DatapointRepository;
 import com.duvi.services.stats.repository.ItemRepository;
 import com.duvi.services.stats.repository.StatRepository;
 import com.duvi.services.stats.service.StatService;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -31,27 +32,15 @@ public class StatServiceImpl implements StatService {
         this.accountClient = accountClient;
     }
 
-    @Override
-    public Datapoint getStatsOfAccount(AccountDTO account) {
-        DatapointId id = new DatapointId(account.getName(), account.getLastSeen());
-        Optional<Datapoint> datapoint =  datapointRepository.findById(id);
-        List<Datapoint> datapoints = datapointRepository.findAll();
-        if (datapoint.isEmpty()) {
-            System.out.println(datapoints.stream().findFirst().get().getId().getDataDate() + "  //  " + account.getLastSeen());
-            throw new RuntimeException("There are no datapoints for this account!");
-        }
-        return datapoint.get();
-    }
 
     @Override
-    public Datapoint getStatsOfAccountByName(String accountName) {
-        AccountDTO account = accountClient.getAccount(accountName);
-        DatapointId id = new DatapointId(account.getName(), account.getLastSeen());
-        Optional<Datapoint> datapoint =  datapointRepository.findById(id);
-        if (datapoint.isEmpty()) {
-            throw new RuntimeException("There are no datapoints for this account!");
-        }
-        return datapoint.get();
+    public List<Datapoint> getStatsOfAccountByName(String accountName) {
+        DatapointId id = new DatapointId();
+        id.setAccountName(accountName);
+        Datapoint exampleDatapoint = new Datapoint();
+        exampleDatapoint.setId(id);
+        List<Datapoint> datapoints =  datapointRepository.findAll(Example.of(exampleDatapoint));
+        return datapoints;
     }
 
     @Override

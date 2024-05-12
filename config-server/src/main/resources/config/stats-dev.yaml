@@ -1,4 +1,6 @@
 server:
+  servlet:
+    context-path: /api/stats
   port: 8085
 spring:
   profile: dev
@@ -6,11 +8,11 @@ spring:
     oauth2:
       resource-server:
         jwt:
-          issuer-uri: http://auth-service:9000/api/uaa
+          issuer-uri: http://localhost:9000/api/uaa
       client:
         provider:
           auth:
-            issuer-uri: http://auth-service:9000/api/uaa
+            issuer-uri: http://localhost:9000/api/uaa
         registration:
           statsClient:
             provider: auth
@@ -20,9 +22,24 @@ spring:
             scope: openid,profile
             client-name: statsService
   datasource:
-    url: jdbc:postgresql://dmservices-database:5432/${POSTGRES_DB}
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
-    driverClassName: org.postgresql.Driver
+    url: jdbc:h2:mem:demo
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
   jpa:
+    hibernate:
+      ddl-auto: none
     show-sql: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+  h2:
+    console:
+      enabled: true
+
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE

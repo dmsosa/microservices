@@ -1,0 +1,80 @@
+html {
+    box-sizing: content-box;
+    font-size: 10px;
+}
+body {
+    margin: 0;
+    padding: 0;
+}
+.header {
+    margin: 0;
+    padding: 2em;
+    background-color: rgba(255, 233, 24, 0.8);
+    height: 5rem;
+    text-align: center;
+    h1 {
+        margin: 0;
+        padding: 0;
+    }
+}
+
+.main {
+    background-color: rgba(27, 27, 27, 0.91);
+    height: calc(100vh - 9rem);
+}
+.container {
+    padding: 0 2rem;
+    margin: 0 auto;
+}
+form {
+    padding-top: 2rem;
+    h2 {
+        text-transform: uppercase;
+        color: white;
+        margin: 0;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+    fieldset {
+        border: double 0.3rem rgba(255, 229, 0, 0.91);
+        max-width: 40%;
+        margin: 0 auto;
+        padding: 2rem 0;
+    }
+    div {
+        margin: 0 auto;
+        max-width: 70%;
+        text-align: center;
+    }
+    label {
+        color: white;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-family: consolas;
+        display: block;
+    }
+    input {
+        background-color: rgba(255, 233, 24, 0.8);
+        border: solid black 0.2rem;
+        color: black;
+        margin-bottom: 2rem;
+    }
+    button {
+        border: none;
+        transition: outline 0.1s;
+        outline: solid black 0.2rem;
+        background-color: rgba(255, 233, 24, 0.8);
+        color: black;
+        padding: 0.4rem 1.25rem;
+        &:hover {
+            color: rgba(255, 229, 0, 0.91);
+            outline: solid black 0.5rem;
+        }
+        &:active {
+            background-color: rgba(20, 20, 20, 0.91);
+            color: rgba(255, 229, 0, 0.91);
+            outline: solid rgba(255, 229, 0, 0.91) 0.5rem;
+        }
+    }
+}
+

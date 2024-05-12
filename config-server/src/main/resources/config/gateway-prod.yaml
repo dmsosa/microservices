@@ -2,7 +2,7 @@ server:
   port:
     8061
 spring:
-  profile: mem
+  profile: prod
   security:
     oauth2:
       resource-server:
@@ -64,6 +64,6 @@ logging:
           client: TRACE
     org:
       springframework:
+        web: DEBUG
         cloud:
           gateway: DEBUG
-        security: DEBUG

@@ -15,9 +15,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class WebClientConfig {
 
-    private DiscoveryClient discoveryClient;
-    public WebClientConfig(DiscoveryClient discoveryClient) {
-        this.discoveryClient = discoveryClient;
+    public WebClientConfig() {
+
     }
     @Bean
     @LoadBalanced
@@ -26,6 +25,6 @@ public class WebClientConfig {
         ServerOAuth2AuthorizedClientExchangeFilterFunction oauthFilterFunction = new ServerOAuth2AuthorizedClientExchangeFilterFunction(manager);
         String clientId = "gatewayClient";
         oauthFilterFunction.setDefaultClientRegistrationId(clientId);
-        return WebClient.builder().filter(oauthFilterFunction);
+        return WebClient.builder().baseUrl("http://gateway:8061").filter(oauthFilterFunction);
     }
 }

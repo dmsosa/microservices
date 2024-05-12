@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService{
         String encryptedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
         newUser.setPassword(encryptedPassword);
         userRepository.save(newUser);
-        logger.info("New user has been registered: {}!".formatted(newUser.getUsername()));
+        logger.info("New user has been registered: %s!".formatted(newUser.getUsername()));
     }
 
     @Override

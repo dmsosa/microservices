@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2Aut
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 @RefreshScope
@@ -28,16 +29,11 @@ public class StatsController {
     public StatsController(StatService statService) {
         this.statService = statService;
     }
-    @GetMapping("")
-    public ResponseEntity<Datapoint> getStatsOfAccount(@RequestBody AccountDTO account) {
-        Datapoint datapoint = statService.getStatsOfAccount(account);
-        return new ResponseEntity<>(datapoint, HttpStatus.OK);
-    }
 
     @GetMapping("/{accountName}")
     public ResponseEntity<Datapoint> getStatsOfAccountByName(@PathVariable String accountName) {
-        Datapoint datapoint = statService.getStatsOfAccountByName(accountName);
-        return new ResponseEntity<>(datapoint, HttpStatus.OK);
+        List<Datapoint> datapoints = statService.getStatsOfAccountByName(accountName);
+        return new ResponseEntity<>(datapoints.getFirst(), HttpStatus.OK);
     }
     @PostMapping("/save")
     public void saveChanges(@RequestBody AccountDTO account) throws EntityExistsException {

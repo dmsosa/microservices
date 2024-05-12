@@ -7,9 +7,9 @@
     <title th:text="#{title}">Microservices</title>
 </head>
 <body>
-    <div class="header"></div>
+<!--    <div class="header" th:replace="~{fragments/header :: header}"></div>-->
     <div class="main">
-        <div class="container">
+        <div class="container" >
             <div class="row" th:each="account : ${accounts}">
                 <div class="col view-col">
                     <div class="account-chart">
@@ -19,112 +19,105 @@
                     </div>
                     <button class="btn btn-edit">Edit</button>
                     <button class="btn btn-edit">Add or Remove Items</button>
+                    <button class="btn btn-save">Save stats</button>
+                    <a href="/datapoints/demo" th:href="@{/datapoints/{accountName}(accountName=${account.name})}">See stats</a>
                 </div>
-<!--                <div class="col editor-col">-->
-<!--                    <form class="editor-form" action="#" method="post" th:object="${account}" th:action="@{/editAccountData}">-->
-<!--                        <fieldset>-->
-<!--                            <div>-->
-<!--                                <label th:for="name" th:text="#{form.label.name}">Account's name</label>-->
-<!--                                <input type="text" placeholder="#{form.placeholder.name}" th:placeholder="*{name}" th:field="*{name}">-->
-<!--                            </div>-->
-<!--                            <div>-->
-<!--                                <label th:for="note" th:text="#{form.label.note}">Account's note</label>-->
-<!--                                <input type="text" placeholder="#{form.placeholder.note}" th:placeholder="*{note}" th:field="*{note}">-->
-<!--                            </div>-->
-<!--                        </fieldset>-->
-<!--                        <button type="submit">Save changes</button>-->
-<!--                        <button class="cancel-btn" type="button" value="cancel">Cancel changes</button>-->
-<!--                    </form>-->
-<!--                </div>-->
-<!--                <div class="col item-col">-->
-<!--                    <form class="item-form" method="post" action="#" th:object="${account}" th:action="@{/editAccountItems}">-->
-<!--                        <fieldset>-->
-<!--                            <div>-->
-<!--                                <table class="item-table">-->
-<!--                                    <thead>-->
-<!--                                        <tr>-->
-<!--                                            <th></th>-->
-<!--                                            <th>Title</th>-->
-<!--                                            <th>Amount</th>-->
-<!--                                            <th>Frequency</th>-->
-<!--                                            <th>Type</th>-->
-<!--                                            <th>Category</th>-->
-<!--                                            <th>Currency</th>-->
-<!--                                            <th>Icon</th>-->
-<!--                                            <th>-->
-<!--                                                <button type="submit" name="addRow">-->
-<!--                                                    Add item-->
-<!--                                                </button>-->
-<!--                                            </th>-->
-<!--                                        </tr>-->
-<!--                                    </thead>-->
-<!--                                    <tbody>-->
-<!--                                        <tr th:each="item, statsItem : *{items}">-->
-<!--                                            <td th:text="${statsItem.count}">1</td>-->
-<!--                                            <td>-->
-<!--                                                <input type="text" th:field="*{items[__${statsItem.index}__].title}">-->
-<!--                                            </td>-->
-<!--                                            <td>-->
-<!--                                                <input type="number" th:field="*{items[__${statsItem.index}__].amount}" th:min="0" th:max="5000000">-->
-<!--                                            </td>-->
-<!--                                            <td>-->
-<!--                                                <select th:field="*{items[__${statsItem.index}__].frequency}">-->
-<!--                                                    <option th:each="frequency : ${allFrequencies}"-->
-<!--                                                            th:value="${frequency}"-->
-<!--                                                            th:text="${'enum.frequency.' + frequency.name()} ">-->
-<!--                                                        DAY-->
-<!--                                                    </option>-->
-<!--                                                </select>-->
-<!--                                            </td>-->
-<!--                                            <td>-->
-<!--                                                <select th:field="*{items[__${statsItem.index}__].type}">-->
-<!--                                                    <option th:each="type : ${allTypes}"-->
-<!--                                                            th:value="${type}"-->
-<!--                                                            th:text="${'enum.type.' + type.name()} ">-->
-<!--                                                        EXPENSE-->
-<!--                                                    </option>-->
-<!--                                                </select>-->
-<!--                                            </td>-->
-<!--                                            <td>-->
-<!--                                                <select th:field="*{items[__${statsItem.index}__].category}">-->
-<!--                                                    <option th:each="category : ${allCategories}"-->
-<!--                                                            th:value="${category}"-->
-<!--                                                            th:text="${'enum.category.' + category.name()} ">-->
-<!--                                                        FIXED-->
-<!--                                                    </option>-->
-<!--                                                </select>-->
-<!--                                            </td>-->
-<!--                                            <td>-->
-<!--                                                <select th:field="*{items[__${statsItem.index}__].currency}">-->
-<!--                                                    <option th:each="currency : ${allCurrencies}"-->
-<!--                                                            th:value="${currency}"-->
-<!--                                                            th:text="${'enum.currency.' + currency.name()} ">-->
-<!--                                                        USD-->
-<!--                                                    </option>-->
-<!--                                                </select>-->
-<!--                                            </td>-->
-<!--                                            <td>-->
-<!--                                                <select type="text" th:field="*{items[__${statsItem.index}__].icon}">-->
-<!--                                                    <option th:each="iconName : ${allIcons}" th:value="${iconName}" th:text="${#strings.replace(iconName, '.png', '')}">Pig</option>-->
-<!--                                                </select>-->
-<!--                                            </td>-->
-<!--                                            <td>-->
-<!--                                                <button type="submit" name="removeRow"-->
-<!--                                                th:value="${statsItem.index}">Remove item</button>-->
-<!--                                            </td>-->
-<!--                                        </tr>-->
-<!--                                    </tbody>-->
-<!--                                </table>-->
-<!--                            </div>-->
-<!--                        </fieldset>-->
-<!--                    </form>-->
-<!--                </div>-->
-                <div th:replace="~{datapoints :: dpFragment}">
-                    <h2>No datapoints yet</h2>
+                <div class="col editor-col">
+                    <form class="editor-form" action="#" method="post" th:object="${account}" th:action="@{/edit/{accountName}(accountName=${account.name})}">
+                        <fieldset>
+                            <div>
+                                <label th:for="name" th:text="#{form.label.name}">Account's name</label>
+                                <input type="text" placeholder="#{form.placeholder.name}" th:placeholder="*{name}" th:field="*{name}">
+                            </div>
+                            <div>
+                                <label th:for="note" th:text="#{form.label.note}">Account's note</label>
+                                <input type="text" placeholder="#{form.placeholder.note}" th:placeholder="*{note}" th:field="*{note}">
+                            </div>
+                            <div>
+                                <table class="item-table">
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Title</th>
+                                        <th>Amount</th>
+                                        <th>Frequency</th>
+                                        <th>Type</th>
+                                        <th>Category</th>
+                                        <th>Currency</th>
+                                        <th>Icon</th>
+                                        <th>
+                                            <button type="submit" name="addItem">
+                                                Add item
+                                            </button>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="item, statsItem : *{items}">
+                                        <td th:text="${statsItem.count}">1</td>
+                                        <td>
+                                            <input type="text" th:field="*{items[__${statsItem.index}__].title}">
+                                        </td>
+                                        <td>
+                                            <input type="number" th:field="*{items[__${statsItem.index}__].amount}" th:min="0" th:max="5000000">
+                                        </td>
+                                        <td>
+                                            <select th:field="*{items[__${statsItem.index}__].frequency}">
+                                                <option th:each="frequency : ${allFrequencies}"
+                                                        th:value="${frequency}"
+                                                        th:text="${'enum.frequency.' + frequency.name()} ">
+                                                    DAY
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select th:field="*{items[__${statsItem.index}__].type}">
+                                                <option th:each="type : ${allTypes}"
+                                                        th:value="${type}"
+                                                        th:text="${'enum.type.' + type.name()} ">
+                                                    EXPENSE
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select th:field="*{items[__${statsItem.index}__].category}">
+                                                <option th:each="category : ${allCategories}"
+                                                        th:value="${category}"
+                                                        th:text="${'enum.category.' + category.name()} ">
+                                                    FIXED
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select th:field="*{items[__${statsItem.index}__].currency}">
+                                                <option th:each="currency : ${allCurrencies}"
+                                                        th:value="${currency}"
+                                                        th:text="${'enum.currency.' + currency.name()} ">
+                                                    USD
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select type="text" th:field="*{items[__${statsItem.index}__].icon}">
+                                                <option th:each="iconName : ${allIcons}" th:value="${iconName}" th:text="${#strings.replace(iconName, '.png', '')}">Pig</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <button type="submit" name="removeItem"
+                                                    th:value="${statsItem.index}">Remove item</button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </fieldset>
+                        <button type="submit">Save changes</button>
+                        <button class="cancel-btn" type="button" value="cancel">Cancel changes</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-<div class="footer"></div>
+<div class="footer" th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

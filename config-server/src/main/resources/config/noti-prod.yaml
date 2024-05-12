@@ -3,16 +3,16 @@ server:
     context-path: /api/noti
   port: 8084
 spring:
-  profile: mem
+  profile: prod
   security:
     oauth2:
       resource-server:
         jwt:
-          issuer-uri: http://localhost:9000/api/uaa
+          issuer-uri: http://auth-service:9000/api/uaa
       client:
         provider:
           auth:
-            issuer-uri: http://localhost:9000/api/uaa
+            issuer-uri: http://auth-service:9000/api/uaa
         registration:
           notiClient:
             provider: auth
@@ -33,27 +33,18 @@ spring:
           starttls:
             enable: true
   datasource:
-    url: jdbc:h2:mem:demo
-    username: sa
-    password: password
-    driverClassName: org.h2.Driver
-  jpa:
-    hibernate:
-      ddl-auto: none
-    show-sql: true
-    defer-datasource-initialization: true
-  h2:
-    console:
-      enabled: true
-
+    url: jdbc:postgresql://dmservices-database:5432/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driverClassName: org.postgresql.Driver
 backup:
   cron: 0 0 12 * * *
   email:
-    subject: "Backup message from Duvi Dmservices Team!"
+    subject: "Backup message from Duvi Dmservices Team! - {0}"
     text: "Regards, \nDmservices Team."
     attachment: "backup.json"
 remind:
   cron: 0 0 0 * * *
   email:
-    subject: "Reminder from Dmservices Team!"
-    text: "Hey, {0}!\n It's always good to see you, consider coming back soon, your finances do not sleep!\n\nRegards,\nDmservices Team"
+    subject: "Reminder from Dmservices Team! - {0}"
+    text: "Hey, {0}!\n It's always good to see you, consider coming back soon, your finances do not sleep!\n\nRegards,\nDmservices Team - {1}"

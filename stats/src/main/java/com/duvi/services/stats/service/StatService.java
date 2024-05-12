@@ -11,8 +11,7 @@ import java.util.List;
 
 @Service
 public interface StatService {
-    Datapoint getStatsOfAccount(AccountDTO account);
-    Datapoint getStatsOfAccountByName(String accountName);
+    List<Datapoint> getStatsOfAccountByName(String accountName);
     Datapoint saveChanges(AccountDTO account) throws EntityExistsException;
     BigDecimal calculateTotal(List<Item> items);
     List<Item> calculateSavings(Datapoint datapoint, List<Item> incomes, List<Item> expenses);

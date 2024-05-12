@@ -13,10 +13,14 @@ logging:
       springframework:
         security: TRACE
 spring:
-  profile: mem
-# the RegisteredClientRepository is configured programmatically
+  profile: prod
   datasource:
     driverClassName: org.postgresql.Driver
-    username: postgres
-    password: pepeeselmejor
-    url: jdbc:postgresql://localhost:5432/dmsosa
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    #    using the container’s name as hostname
+    url: jdbc:postgresql://dmservices-database:5432/${POSTGRES_DB}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true

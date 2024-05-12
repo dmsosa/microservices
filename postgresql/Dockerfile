@@ -2,7 +2,7 @@ FROM postgres:16
 MAINTAINER Durian Sosa <dmsosa21@outlook.com>
 
 #create our custom pg image,
-#just using a default postgres image but creating the schemas for our microservices
+#just using a default postgres image but creating the databases for our microservices
 
 ENV POSTGRES_USER=${POSTGRES_USER}\
     POSTGRES_PASSWORD=${POSTGRES_PASSWORD}

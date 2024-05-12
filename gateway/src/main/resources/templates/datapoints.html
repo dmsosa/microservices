@@ -1,19 +1,26 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title th:text="#{title}">Microservices</title>
-</head>
-<body>
-    <div class="row" th:each="datapoint : ${datapoints}" th:fragment="dpFragment">
-        <div class="col datapoints-col">
-            <div class="datapoints-chart" th:if="${datapoint != null}">
-                <h1>Stats for account: <span th:text="${datapoint.id.accountName}">demo</span></h1>
-                <h2>for date: <span th:text="${datapoint.id.dataDate}">24/04/2024</span></h2>
+    <head>
+        <meta charset="UTF-8">
+        <title th:text="#{title}">Microservices</title>
+    </head>
+    <body>
+        <div class="header" th:replace="~{fragments/header :: header}"></div>
+        <div class="main">
+            <div th:each="a : ${datas}">
+                <h1 th:text="${a.note}"></h1>
             </div>
-            <h2>Fragment Von Datapointss</h2>
+            <div class="row" th:each="datapoint : ${datapoints}">
+                <div class="col datapoints-col">
+                    <div class="datapoints-chart" th:if="${datapoint.id != null}">
+                        <h1>Stats for account: <span th:text="${datapoint.id.accountName}">demo</span></h1>
+                        <h2>for date: <span th:text="${datapoint.id.dataDate}">24/04/2024</span></h2>
+                    </div>
+                    <h2 th:remove="all" th:if="${datapoint.id != null}">No for this account datapoints yet</h2>
+                </div>
+            </div>
         </div>
-    </div>
-</body>
+        <div class="footer" th:replace="~{fragments/footer :: footer}"></div>
+    </body>
 </html>

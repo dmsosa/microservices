@@ -1,5 +1,6 @@
 package com.duvi.authservice.controller;
 
+import com.duvi.authservice.client.AccountClient;
 import com.duvi.authservice.model.*;
 import com.duvi.authservice.model.exception.UserExistsException;
 import com.duvi.authservice.model.exception.UserNotExistsException;
@@ -26,6 +27,7 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.session.DefaultWebSessionManager;
 import org.springframework.web.server.session.InMemoryWebSessionStore;
 
@@ -40,11 +42,15 @@ public class AuthController {
     private UserService userService;
     private AuthenticationManager authenticationManager;
     private DiscoveryClient discoveryClient;
+    private AccountClient accountClient;
     private SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
     private SecurityContextHolderStrategy contextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
 
-
-    public AuthController(UserService userService, AuthenticationManager authenticationManager, DiscoveryClient discoveryClient) {
+    public AuthController(UserService userService,
+                          AuthenticationManager authenticationManager,
+                          AccountClient accountClient,
+                          DiscoveryClient discoveryClient) {
+        this.accountClient = accountClient;
         this.userService = userService;
         this.authenticationManager = authenticationManager;
         this.discoveryClient = discoveryClient;
@@ -56,17 +62,12 @@ public class AuthController {
         return new ResponseEntity<>(principal, HttpStatus.OK);
     }
 
-    @PostMapping("/registerFromPage")
-    public void registerUserFromPage(@Validated @ModelAttribute User user, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws UserExistsException {
-        userService.saveUser(user);
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), user.getAuthorities());
-        Authentication authentication = authenticationManager.authenticate(authToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        logger.info("Successfully registered and authenticated");
-    }
-    @PostMapping("/register")
+    @PostMapping(path = {"/register"}, consumes = "application/x-www-form-urlencoded")
     public void registerUser(@Validated @ModelAttribute User user, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws UserExistsException {
+        //Saving user and creating account
         userService.saveUser(user);
+        accountClient.createAccount(user.getUsername());
+
         //Setting authentication
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), user.getAuthorities());
         Authentication authentication = authenticationManager.authenticate(authToken);
@@ -76,7 +77,7 @@ public class AuthController {
 
         //Finding gateway instances
         ServiceInstance gatewayInstance = discoveryClient.getInstances("gateway").getFirst();
-        String redirectURL = gatewayInstance.getUri() + "/index";
+        String redirectURL = gatewayInstance.getUri() + "/uaaRedirect";
 
         logger.info("Successfully registered and authenticated" + gatewayInstance.getUri());
 
@@ -85,10 +86,16 @@ public class AuthController {
         //storing SecurityContext in Repository
         contextHolderStrategy.setContext(context);
         securityContextRepository.saveContext(context, request, response);
+
         //redirect
         response.setStatus(302);
         response.setHeader("Location", redirectURL);
 
+    }
+
+    @PutMapping("/{username}")
+    public void editUser(@PathVariable String username, User newUser) {
+        userService.updateUser(username, newUser);
     }
     @DeleteMapping("/{username}")
     public void deleteUser(@PathVariable String username) throws UserNotExistsException {

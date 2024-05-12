@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface AccountService {
-    Account createAccount(User user) throws EntityExistsException ;
+    void createAccount(String accountName) throws EntityExistsException ;
     Account editAccount(String name, Account account);
     Account getAccountByName(String name) throws EntityNotFoundException;
     void deleteAccountByName(String name) throws EntityNotFoundException;

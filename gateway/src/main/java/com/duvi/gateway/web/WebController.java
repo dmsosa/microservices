@@ -1,25 +1,31 @@
 package com.duvi.gateway.web;
 
-import com.duvi.gateway.model.Account;
-import com.duvi.gateway.model.AccountContextVar;
-import com.duvi.gateway.model.Datapoint;
+import com.duvi.gateway.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
+
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.server.ServerWebExchange;
+import org.thymeleaf.spring6.context.webflux.IReactiveDataDriverContextVariable;
 import org.thymeleaf.spring6.context.webflux.ReactiveDataDriverContextVariable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.net.URI;
 
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
@@ -29,39 +35,83 @@ import static org.springframework.security.oauth2.client.web.reactive.function.c
 public class WebController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private WebClient.Builder webClientBuilder;
-    public WebController(WebClient.Builder webClientBuilder ) {
+    public WebController(WebClient.Builder webClientBuilder, ReactiveClientRegistrationRepository clientRegistrationRepository) {
         this.webClientBuilder = webClientBuilder;
     }
+
+
+    //Authentication endpoints **Login, Register and Redirect to AuthServer
+
     @RequestMapping(method = {RequestMethod.GET}, value = "/index")
     public String showIndexPage(
-            @RegisteredOAuth2AuthorizedClient(registrationId = "gatewayClient") OAuth2AuthorizedClient authorizedClient, Model model) {
-
-        Flux<Account> accountContextVar = webClientBuilder.build()
+            @RegisteredOAuth2AuthorizedClient(registrationId = "gatewayClient")
+            OAuth2AuthorizedClient gatewayClient,
+            Authentication authentication,
+            Model model) {
+        DefaultOidcUser user = (DefaultOidcUser) authentication.getPrincipal();
+        String username = user.getName();
+        for ( String key : user.getAttributes().keySet()) {
+            System.out.println("key: " + key + " value: " + user.getAttributes().get(key));
+        }
+        for ( GrantedAuthority authority : user.getAuthorities()) {
+            System.out.println("authority: " + authority);
+        }
+        Flux<Account> accounts = webClientBuilder.build()
                 .get()
-                .uri("http://gateway:8061/account/demo")
-                .attributes(oauth2AuthorizedClient(authorizedClient))
+                .uri("/account/" + username)
+                .attributes(oauth2AuthorizedClient(gatewayClient))
                 .retrieve()
                 .bodyToFlux(Account.class);
-
-        model.addAttribute("accounts", new ReactiveDataDriverContextVariable(accountContextVar, 1));
+        IReactiveDataDriverContextVariable accountDataDriver = new ReactiveDataDriverContextVariable(accounts, 1);
+        model.addAttribute("accounts", accountDataDriver);
         return "index";
     }
-    @RequestMapping(value = "/datapoints")
-    public String showDatapoints(Model model) {
+    @RequestMapping(value = "/datapoints/{accountName}")
+    public String showDatapointsPage(@PathVariable String accountName, Model model) {
         Flux<Datapoint> datapoints = webClientBuilder.build()
                 .get()
-                .uri("http://gateway:8061/stats/demo")
+                .uri("/stats/" + accountName)
                 .retrieve()
                 .bodyToFlux(Datapoint.class)
-                .onErrorReturn(null);
+                .onErrorReturn(new Datapoint());
         model.addAttribute("datapoints", new ReactiveDataDriverContextVariable(datapoints, 1));
         return "datapoints";
     }
-    @RequestMapping(method = {RequestMethod.POST}, value = "/save/{accountName}")
-    public String saveAccountChanges(@PathVariable String accountName, @Validated @ModelAttribute Account account, BindingResult bindingResult, Model model) {
-        webClientBuilder.build().post().uri("/account/demo").bodyValue(account).retrieve().bodyToFlux(String.class);
-        Flux<Account> accountFlux = webClientBuilder.build().get().uri("/account/demo").retrieve().bodyToFlux(Account.class);
-        model.addAttribute("accounts", new ReactiveDataDriverContextVariable(accountFlux, 1));
-        return "index";
+
+    //CRUD Operations
+    //Register user and create account
+
+    @RequestMapping(method = {RequestMethod.POST}, value = "/edit/{accountName}")
+    public String editAccount(@PathVariable String accountName, @ModelAttribute Account account, BindingResult bindingResult, Model model) {
+        webClientBuilder.build()
+                .post()
+                .uri("http://gateway:8061/account/edit/" + accountName)
+                .bodyValue(account)
+                .retrieve()
+                .toBodilessEntity()
+                .subscribe( v -> v.getStatusCode());
+        return "redirect:/index";
+    }
+    @RequestMapping(method = {RequestMethod.POST}, value = "/save")
+    public String saveAccountStats(@ModelAttribute Account account, BindingResult bindingResult, Model model) {
+        webClientBuilder.build()
+                .post()
+                .uri("http://gateway:8061/stats/" + account.getName())
+                .bodyValue(account)
+                .retrieve()
+                .toBodilessEntity()
+                .subscribe( v -> v.getStatusCode());
+        return "redirect:/index";
+    }
+
+    @RequestMapping(method = {RequestMethod.POST}, value = "/save", params = {"addItem"})
+    public String addItemRow(@ModelAttribute Account account, BindingResult bindingResult, Model model) {
+        account.getItems().add(new Item());
+        return "redirect:/index";
+    }
+    @RequestMapping(method = {RequestMethod.POST}, value = "/save", params = {"removeItem"})
+    public String addItemRow(@RequestParam Long removeItemId, @ModelAttribute Account account, BindingResult bindingResult, Model model) {
+        account.getItems().remove(removeItemId);
+        return "redirect:/index";
     }
 }

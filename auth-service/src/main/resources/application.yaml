@@ -1,13 +1,13 @@
 spring:
   profiles:
-    active: mem
+    active: dev
   application:
     name: auth-service
   config:
     import: optional:configserver:/
   cloud:
     config:
-      profile: mem
+      profile: dev
       username: username
       password: password
       discovery:

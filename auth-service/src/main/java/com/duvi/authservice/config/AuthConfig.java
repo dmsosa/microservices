@@ -9,24 +9,18 @@ import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.config.annotation.web.configurers.DefaultLoginPageConfigurer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.server.authorization.authentication.ClientSecretAuthenticationProvider;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
-import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
-import org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter;
 
 import javax.sql.DataSource;
 import java.security.KeyPair;
@@ -36,7 +30,6 @@ import java.security.interfaces.RSAPublicKey;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Configuration
@@ -48,8 +41,10 @@ public class AuthConfig  {
         return AuthorizationServerSettings.builder().build();
     }
 
+
+    //In production, JdbcRegisteredClientRepository is used
     @Bean
-    @Profile("dev")
+    @Profile("prod")
     JdbcTemplate getJdbcTemplate(DataSource dataSource) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         jdbcTemplate.execute("CREATE TABLE oauth2_registered_client (\n" +
@@ -113,10 +108,10 @@ public class AuthConfig  {
         return jdbcTemplate;
     }
 
-    //in memory registered client repository
+    //jdbcClientRepository bean
     @Bean
-    @Profile("dev")
-    public RegisteredClientRepository inMemoryClientRepository(JdbcTemplate jdbcTemplate) {
+    @Profile("prod")
+    public RegisteredClientRepository jdbcClientRepository(JdbcTemplate jdbcTemplate) {
 
         RegisteredClient accountClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("accountClient")
@@ -152,13 +147,13 @@ public class AuthConfig  {
                 .clientName("noti")
                 .build();
         RegisteredClient browserClient = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("browserClient")
-                .clientSecret("$2a$10$vUUeMi5ICnYMmCHeekyQ4O.z0t9Ff.il0FBrrPYKaVUFZOCVSn0VW")
+                .clientId("gatewayClient")
+                .clientSecret("$2a$10$PnrjC9wfF5WHipaczbRif..XO0Ydc5cjECFRrBJWWU5byrYPUNptK")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .redirectUri("http://127.0.0.1:8061/login/oauth2/code/browserClient")
-                .clientName("browserClient")
+                .clientName("gatewayClient")
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
                 .build();
@@ -172,10 +167,11 @@ public class AuthConfig  {
     }
 
 
-
+    //in memory ClientRepository for dev profile
     @Bean
-    @Profile("mem")
+    @Profile("dev")
     RegisteredClientRepository inMemoryRegisteredClientRepository() {
+
         RegisteredClient accountClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("accountClient")
                 //password encoded with BCrypt via Spring CLI, I do not include {bcrypt} since BCryptPasswordEncoder does not strip those characters.
@@ -210,7 +206,7 @@ public class AuthConfig  {
                 .scope(OidcScopes.EMAIL)
                 .clientName("notiService")
                 .build();
-        RegisteredClient browserClient = RegisteredClient.withId(UUID.randomUUID().toString())
+        RegisteredClient gatewayClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("gatewayClient")
                 .clientSecret("$2a$10$T4a55gT79PMGRPWdFxntSeapLSKjssYNXxi7/qXPXfteoaujy/sqy")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
@@ -220,7 +216,7 @@ public class AuthConfig  {
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
                 .build();
-        return new InMemoryRegisteredClientRepository(List.of(accountClient, statsClient, notiClient, browserClient));
+        return new InMemoryRegisteredClientRepository(List.of(accountClient, statsClient, notiClient, gatewayClient));
     }
     //token source
     @Bean

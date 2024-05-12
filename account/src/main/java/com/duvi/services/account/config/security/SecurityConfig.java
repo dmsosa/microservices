@@ -28,8 +28,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/create").permitAll()
                         .requestMatchers(HttpMethod.GET, "/demo").permitAll()
                         .requestMatchers(HttpMethod.POST, "/demo").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/**").hasAuthority("SCOPE_PROFILE")
-                        .anyRequest().permitAll())
+                        .requestMatchers(HttpMethod.GET, "/**").hasAuthority("SCOPE_profile")
+                        .anyRequest().authenticated())
                 .oauth2Client(Customizer.withDefaults())
 //                //Very simple Security Config, just indicating the type of tokens supported by our server here.
                 .oauth2ResourceServer(rs -> rs.jwt(Customizer.withDefaults()))
