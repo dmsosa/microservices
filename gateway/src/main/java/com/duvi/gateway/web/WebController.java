@@ -48,6 +48,7 @@ public class WebController {
             OAuth2AuthorizedClient gatewayClient,
             Authentication authentication,
             Model model) {
+        Mono<Account> accountMono;
         DefaultOidcUser user = (DefaultOidcUser) authentication.getPrincipal();
         String username = user.getName();
         for ( String key : user.getAttributes().keySet()) {
@@ -56,14 +57,22 @@ public class WebController {
         for ( GrantedAuthority authority : user.getAuthorities()) {
             System.out.println("authority: " + authority);
         }
-        Flux<Account> accounts = webClientBuilder.build()
-                .get()
-                .uri("/account/" + username)
-                .attributes(oauth2AuthorizedClient(gatewayClient))
-                .retrieve()
-                .bodyToFlux(Account.class);
-        IReactiveDataDriverContextVariable accountDataDriver = new ReactiveDataDriverContextVariable(accounts, 1);
-        model.addAttribute("accounts", accountDataDriver);
+        //If account is null (is not created yet), then the gateway creates the new account
+        try {
+            accountMono = webClientBuilder.build().get().uri(URI.create("/account/" + username)).retrieve().bodyToMono(Account.class);
+        } catch (Exception e) {
+            logger.info("Exception Catched: " + e + ": " + e.getMessage());
+            accountMono = webClientBuilder.build().post().uri(URI.create("/account/create/" + username)).retrieve().bodyToMono(Account.class);
+        }
+//        Flux<Account> accounts = webClientBuilder.build()
+//                .get()
+//                .uri("/account/" + username)
+//                .attributes(oauth2AuthorizedClient(gatewayClient))
+//                .retrieve()
+//                .bodyToFlux(Account.class);
+//        IReactiveDataDriverContextVariable accountDataDriver = new ReactiveDataDriverContextVariable(accounts, 1);
+//        model.addAttribute("accounts", accountDataDriver);
+        model.addAttribute("account", accountMono);
         return "index";
     }
     @RequestMapping(value = "/datapoints/{accountName}")

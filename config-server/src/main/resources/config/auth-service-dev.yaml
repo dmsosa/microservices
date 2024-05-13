@@ -22,3 +22,10 @@ spring:
     username: postgres
     password: pepeeselmejor
     url: jdbc:postgresql://localhost:5432/dmsosa
+  thymeleaf:
+    cache: false
+  devtools:
+    restart:
+      exclude: /static/**,/templates/**
+    livereload:
+      port: 35730

@@ -27,7 +27,7 @@ public class AccountServiceImpl implements AccountService {
         this.accountRepository = accountRepository;
     }
     @Override
-    public void createAccount(String accountName) throws EntityExistsException {
+    public Account createAccount(String accountName) throws EntityExistsException {
         if (accountRepository.existsByName(accountName)) {
             throw new RuntimeException("Account Already Exists"); //todo exception
         }
@@ -36,7 +36,7 @@ public class AccountServiceImpl implements AccountService {
         account.setName(accountName);
         account.setLastSeen(LocalDateTime.now());
         account.setNote("I'm using microservices!");
-        accountRepository.save(account);
+        return accountRepository.save(account);
     }
 
     @Override

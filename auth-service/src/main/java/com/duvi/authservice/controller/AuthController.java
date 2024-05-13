@@ -1,6 +1,5 @@
 package com.duvi.authservice.controller;
 
-import com.duvi.authservice.client.AccountClient;
 import com.duvi.authservice.model.*;
 import com.duvi.authservice.model.exception.UserExistsException;
 import com.duvi.authservice.model.exception.UserNotExistsException;
@@ -27,9 +26,6 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.server.session.DefaultWebSessionManager;
-import org.springframework.web.server.session.InMemoryWebSessionStore;
 
 
 import java.security.Principal;
@@ -42,15 +38,12 @@ public class AuthController {
     private UserService userService;
     private AuthenticationManager authenticationManager;
     private DiscoveryClient discoveryClient;
-    private AccountClient accountClient;
     private SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
     private SecurityContextHolderStrategy contextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
 
     public AuthController(UserService userService,
                           AuthenticationManager authenticationManager,
-                          AccountClient accountClient,
                           DiscoveryClient discoveryClient) {
-        this.accountClient = accountClient;
         this.userService = userService;
         this.authenticationManager = authenticationManager;
         this.discoveryClient = discoveryClient;
@@ -64,9 +57,8 @@ public class AuthController {
 
     @PostMapping(path = {"/register"}, consumes = "application/x-www-form-urlencoded")
     public void registerUser(@Validated @ModelAttribute User user, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws UserExistsException {
-        //Saving user and creating account
+        //Saving user
         userService.saveUser(user);
-        accountClient.createAccount(user.getUsername());
 
         //Setting authentication
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), user.getAuthorities());

@@ -28,7 +28,7 @@ body {
 }
 form {
     padding-top: 2rem;
-    h2 {
+    caption {
         text-transform: uppercase;
         color: white;
         margin: 0;

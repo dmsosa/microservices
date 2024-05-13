@@ -56,6 +56,10 @@ spring:
           filters:
             - PrefixPath=/api
             - DmFilterFactory=DMSERVICES WORKING IN DEV FOR NOTI, false, true
+  devtools:
+    livereload:
+      enabled: false
+#logging
 logging:
   level:
     reactor:

@@ -47,11 +47,12 @@ public class AccountController {
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
-    @PostMapping(path = {"/create"}, params = {"accountName"})
-    public void createAccount(@RequestParam String accountName) throws EntityExistsException {
+    @PostMapping(path = {"/create/{accountName}"})
+    public ResponseEntity<Account> createAccount(@PathVariable String accountName) throws EntityExistsException {
         //create account
         logger.info("creating account... " + accountName);
-        accountService.createAccount(accountName);
+        Account account = accountService.createAccount(accountName);
+        return new ResponseEntity<>(account, HttpStatus.CREATED);
     }
     @PostMapping("/save")
     public void saveChanges(Principal principal) throws EntityNotFoundException {

@@ -58,9 +58,8 @@ public class SecurityConfig {
                 .headers( headers -> headers.frameOptions(fo -> fo.sameOrigin())) //allowing h2 to be displayed as a frame
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/actuator/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/clients").permitAll()
                         .requestMatchers(HttpMethod.POST, "/register").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/login/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(formLogin ->
                         formLogin.loginPage("/login"))

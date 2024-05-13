@@ -1,0 +1,70 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dmservices - Register Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="../static/css/styles.css" th:href="@{../static/css}"/>
+</head>
+
+<body>
+<div class="header">
+    <h1>Dmservices</h1>
+</div>
+<div class="main">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <form th:fragment="registerForm" class="form" method="post" action="#" th:action="@{/register}" th:object="${user}">
+                    <caption class="form-caption">Register into Dmservices!</caption>
+                    <fieldset>
+                        <div>
+                            <label for="username" th:for="username">Write your username</label>
+                            <input
+                                    id="username"
+                                    type="text"
+                                    placeholder="Your account name"
+                                    name="username"
+                                    required
+                                    autofocus
+                                    th:field="*{username}"
+                                    th:name="username"
+                            />
+                        </div>
+                        <div>
+                            <label for="email" th:for="email">Please, give your email</label>
+                            <input
+                                id="email"
+                                type="email"
+                                placeholder="Your email"
+                                name="email"
+                                required
+                                autofocus
+                                th:field="*{email}"
+                                th:name="email"
+                            />
+                        </div>
+                        <div>
+                            <label for="password">Password</label>
+                            <input
+                                id="password"
+                                type="password"
+                                placeholder="Your super secret password"
+                                name="password"
+                                required
+                                th:field="*{password}"
+                                th:name="password"
+                            />
+                        </div>
+                        <div>
+                            <button type="submit">Register</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer"></div>
+</body>
+</html>
