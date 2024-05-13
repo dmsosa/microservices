@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.core.Authentication;
@@ -26,6 +27,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.util.List;
+import java.util.function.Predicate;
 
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
@@ -58,21 +61,21 @@ public class WebController {
             System.out.println("authority: " + authority);
         }
         //If account is null (is not created yet), then the gateway creates the new account
-        try {
-            accountMono = webClientBuilder.build().get().uri(URI.create("/account/" + username)).retrieve().bodyToMono(Account.class);
-        } catch (Exception e) {
-            logger.info("Exception Catched: " + e + ": " + e.getMessage());
-            accountMono = webClientBuilder.build().post().uri(URI.create("/account/create/" + username)).retrieve().bodyToMono(Account.class);
-        }
-//        Flux<Account> accounts = webClientBuilder.build()
-//                .get()
-//                .uri("/account/" + username)
-//                .attributes(oauth2AuthorizedClient(gatewayClient))
-//                .retrieve()
-//                .bodyToFlux(Account.class);
-//        IReactiveDataDriverContextVariable accountDataDriver = new ReactiveDataDriverContextVariable(accounts, 1);
-//        model.addAttribute("accounts", accountDataDriver);
+        accountMono = webClientBuilder
+                    .build()
+                    .get()
+                    .uri("/account/" + username)
+                    .retrieve()
+                    .bodyToMono(Account.class)
+                    .onErrorResume((e -> {
+                        logger.info("Exception Catched: " + e.getMessage());
+                        return webClientBuilder.build().post().uri("/account/create/" + username)
+                                .retrieve().bodyToMono(Account.class);}));
+        //Get statistics of account
+        Mono<Datapoint[]> datapoints = webClientBuilder.build().get().uri("/stats/" + "demo")
+                .retrieve().bodyToMono(Datapoint[].class);
         model.addAttribute("account", accountMono);
+        model.addAttribute("datapoints", datapoints);
         return "index";
     }
     @RequestMapping(value = "/datapoints/{accountName}")

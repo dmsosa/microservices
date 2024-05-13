@@ -10,14 +10,21 @@
 <!--    <div class="header" th:replace="~{fragments/header :: header}"></div>-->
     <div class="main">
         <div class="container" >
-            <div><h1 th:text="${account.name}"></h1></div>
-<!--            <div class="row" th:each="account : ${accounts}">-->
-<!--                <div class="col view-col">-->
-<!--                    <div class="account-chart">-->
-<!--                        <img src="../static/images/piggy.png" th:src="@{/images/piggy.png}">-->
-<!--                        <h5 th:text="${account.name}">Account name</h5>-->
-<!--                        <p th:text="${account.note}">Account note come here to put additional information</p>-->
-<!--                    </div>-->
+            <div class="row">
+                <div class="col view-col">
+                    <div class="account-card">
+                        <img src="../static/images/piggy.png" th:src="@{/images/piggy.png}">
+                        <h5 th:text="${account.name}">Account name</h5>
+                        <p th:text="${account.note}">Account note come here to put additional information</p>
+                    </div>
+                </div>
+                <div class="col" th:unless="${datapoints.length < 1}">
+                    <div class="datapoints-card" th:each="datapoint : ${datapoints}">
+                        <h2 th:text="${datapoint.id.accountName + datapoint.id.dataDate}"></h2>
+                    </div>
+                </div>
+            </div>
+
 <!--                    <button class="btn btn-edit">Edit</button>-->
 <!--                    <button class="btn btn-edit">Add or Remove Items</button>-->
 <!--                    <button class="btn btn-save">Save stats</button>-->
