@@ -12,6 +12,7 @@ import java.util.List;
 public class AccountDTO {
     private String name;
     private LocalDateTime lastSeen;
-    private List<ItemDTO> items;
+    private List<Item> incomes;
+    private List<Item> expenses;
     private String note;
 }

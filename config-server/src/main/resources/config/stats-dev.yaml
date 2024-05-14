@@ -6,9 +6,6 @@ spring:
   profile: dev
   security:
     oauth2:
-      resource-server:
-        jwt:
-          issuer-uri: http://localhost:9000/api/uaa
       client:
         provider:
           auth:
@@ -37,7 +34,9 @@ spring:
   h2:
     console:
       enabled: true
-
+  devtools:
+    livereload:
+      enabled: false
 logging:
   level:
     org:

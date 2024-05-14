@@ -2,8 +2,8 @@ package com.duvi.services.account.service.impl;
 
 import com.duvi.services.account.client.AuthClient;
 import com.duvi.services.account.client.StatClient;
-import com.duvi.services.account.domain.Account;
-import com.duvi.services.account.domain.User;
+import com.duvi.services.account.domain.*;
+import com.duvi.services.account.domain.dto.AccountDTO;
 import com.duvi.services.account.domain.exception.EntityNotFoundException;
 import com.duvi.services.account.domain.exception.EntityExistsException;
 import com.duvi.services.account.repository.AccountRepository;
@@ -11,6 +11,8 @@ import com.duvi.services.account.service.AccountService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,36 +28,54 @@ public class AccountServiceImpl implements AccountService {
         this.statClient = statClient;
         this.accountRepository = accountRepository;
     }
+
+    //the DTO organizes the incomes and expenses before sending them to the stats service or any other client
     @Override
-    public Account createAccount(String accountName) throws EntityExistsException {
+    public AccountDTO createDTO(Account account) {
+        List<Item> incomes = new ArrayList<Item>();
+        List<Item> expenses = new ArrayList<Item>();
+        for (Item item : account.getItems()) {
+            if (item.getType() == Type.INCOME) {
+                incomes.add(item);
+            } else if (item.getType() == Type.EXPENSE) {
+                expenses.add(item);
+            } else {
+                continue;
+            }
+        }
+        return new AccountDTO(account.getName(), account.getLastSeen(), account.getNote(), incomes, expenses);
+    }
+    @Override
+    public AccountDTO createAccount(String accountName) throws EntityExistsException {
         if (accountRepository.existsByName(accountName)) {
-            throw new RuntimeException("Account Already Exists"); //todo exception
+            throw new EntityExistsException("Account with name: \"%s\" does not exists!".formatted(accountName));
         }
 
         Account account = new Account();
         account.setName(accountName);
         account.setLastSeen(LocalDateTime.now());
         account.setNote("I'm using microservices!");
-        return accountRepository.save(account);
+        return createDTO(accountRepository.save(account));
     }
 
     @Override
-    public Account editAccount(String name, Account account) {
+    public AccountDTO editAccount(String name, Account account) {
         Account oldAccount = accountRepository.findById(name).get();
         oldAccount.setLastSeen(LocalDateTime.now());
         oldAccount.setItems(account.getItems());
         oldAccount.setNote(account.getNote());
-        statClient.saveAccount(account);
-        return accountRepository.findById(account.getName()).get();
+        AccountDTO dto = this.createDTO(account);
+        statClient.saveAccount(dto);
+        return dto;
     }
 
     @Override
-    public Account getAccountByName(String name) throws EntityNotFoundException {
+    public AccountDTO getAccountByName(String name) throws EntityNotFoundException {
         Optional<Account> optionalAccount = accountRepository.findById(name);
         if (optionalAccount.isEmpty()) {
             throw new EntityNotFoundException("Account with name: \"%s\" does not exists!".formatted(name));
         }
-        return optionalAccount.get();
+        return this.createDTO(optionalAccount.get());
     }
 
     @Override
@@ -69,7 +89,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void saveChanges(Account account) {
+    public void saveChanges(AccountDTO account) {
 
         //todo accountDTO + itemDTO
         statClient.saveAccount(account);

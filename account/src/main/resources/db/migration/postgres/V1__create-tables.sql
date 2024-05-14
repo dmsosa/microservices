@@ -1,4 +1,4 @@
-CREATE TYPE frequencies AS enum ('DAY', 'MONTH', 'QUARTER', 'YEAR');
+CREATE TYPE frequencies AS enum ('DAY', 'WEEK', 'MONTH');
 CREATE TYPE categories AS enum ('FIXED', 'OCCASIONAL');
 CREATE TYPE currencies as ENUM ('EUR', 'GBP', 'USD');
 CREATE TYPE item_types as ENUM('INCOME', 'EXPENSE', 'SAVING');

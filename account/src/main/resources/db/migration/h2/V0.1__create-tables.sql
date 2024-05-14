@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS items (
     amount NUMERIC,
     category ENUM('FIXED', 'OCCASIONAL'),
     currency ENUM('USD', 'EUR', 'GBP'),
-    frequency ENUM('DAY', 'MONTH', 'QUARTER', 'YEAR'),
+    frequency ENUM('DAY', 'WEEK', 'MONTH'),
     type ENUM('INCOME', 'EXPENSE', 'SAVING'),
     PRIMARY KEY (id),
     FOREIGN KEY (account_name) REFERENCES accounts (name)

@@ -56,9 +56,12 @@ spring:
           filters:
             - PrefixPath=/api
             - DmFilterFactory=DMSERVICES WORKING IN DEV FOR NOTI, false, true
+#thymeleaf and dev tools
+  thymeleaf:
+    cache: false
   devtools:
-    livereload:
-      enabled: false
+    restart:
+      exclude: /static/**,/templates/**
 #logging
 logging:
   level:

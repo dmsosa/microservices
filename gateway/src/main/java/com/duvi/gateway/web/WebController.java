@@ -4,10 +4,7 @@ import com.duvi.gateway.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.MediaType;
-import org.springframework.http.server.reactive.ServerHttpResponse;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -20,17 +17,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.server.ServerWebExchange;
 import org.thymeleaf.spring6.context.webflux.IReactiveDataDriverContextVariable;
 import org.thymeleaf.spring6.context.webflux.ReactiveDataDriverContextVariable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
-import java.util.List;
-import java.util.function.Predicate;
 
-import static org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
 
 
@@ -51,15 +43,15 @@ public class WebController {
             OAuth2AuthorizedClient gatewayClient,
             Authentication authentication,
             Model model) {
+
+        //Initializing account Mono, we define it later.
+        // Because it is necessary to check if the account already exists
+
+        //Getting username from the resource owner's authentication
         Mono<Account> accountMono;
         DefaultOidcUser user = (DefaultOidcUser) authentication.getPrincipal();
         String username = user.getName();
-        for ( String key : user.getAttributes().keySet()) {
-            System.out.println("key: " + key + " value: " + user.getAttributes().get(key));
-        }
-        for ( GrantedAuthority authority : user.getAuthorities()) {
-            System.out.println("authority: " + authority);
-        }
+
         //If account is null (is not created yet), then the gateway creates the new account
         accountMono = webClientBuilder
                     .build()
@@ -71,23 +63,14 @@ public class WebController {
                         logger.info("Exception Catched: " + e.getMessage());
                         return webClientBuilder.build().post().uri("/account/create/" + username)
                                 .retrieve().bodyToMono(Account.class);}));
+
         //Get statistics of account
-        Mono<Datapoint[]> datapoints = webClientBuilder.build().get().uri("/stats/" + "demo")
-                .retrieve().bodyToMono(Datapoint[].class);
+        Flux<Stats> statsFlux = webClientBuilder.build().get().uri("/stats/" + username)
+                .retrieve().bodyToFlux(Stats.class);
+        IReactiveDataDriverContextVariable contextVariable = new ReactiveDataDriverContextVariable(statsFlux);
         model.addAttribute("account", accountMono);
-        model.addAttribute("datapoints", datapoints);
+        model.addAttribute("stats", contextVariable);
         return "index";
-    }
-    @RequestMapping(value = "/datapoints/{accountName}")
-    public String showDatapointsPage(@PathVariable String accountName, Model model) {
-        Flux<Datapoint> datapoints = webClientBuilder.build()
-                .get()
-                .uri("/stats/" + accountName)
-                .retrieve()
-                .bodyToFlux(Datapoint.class)
-                .onErrorReturn(new Datapoint());
-        model.addAttribute("datapoints", new ReactiveDataDriverContextVariable(datapoints, 1));
-        return "datapoints";
     }
 
     //CRUD Operations

@@ -13,5 +13,5 @@ public interface ItemService {
     Item createItem(ItemDTO itemDTO) throws EntityNotFoundException;
     Item updateItem(String title, ItemDTO itemDTO) throws EntityNotFoundException;
     void deleteItem(String accountName, String title) throws EntityNotFoundException;
-    List<Item> getItemsByAccount(Account account);
+    List<Item> getItemsByAccountName(String accountName) throws EntityNotFoundException;
 }

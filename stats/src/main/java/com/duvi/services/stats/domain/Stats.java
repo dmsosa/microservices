@@ -1,6 +1,5 @@
 package com.duvi.services.stats.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -8,7 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 @Table(name = "stats")
 @Entity
@@ -16,22 +17,22 @@ import java.util.Map;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
-public class Stat {
+public class Stats {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumns({
-            @JoinColumn(name = "account_name"),
-            @JoinColumn(name = "data_date")
-    })
-    @JsonIgnore
-    private Datapoint datapoint;
+    private String accountName;
+
+    private LocalDateTime statsDate;
+
+    @OneToMany(mappedBy = "stats", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Item> items;
+
     private BigDecimal totalIncomes;
+
     private BigDecimal totalExpenses;
-    private BigDecimal totalSavings;
 
     //todo rates
 }

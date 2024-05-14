@@ -76,7 +76,13 @@ public class ItemServiceImpl implements ItemService {
 
 
     @Override
-    public List<Item> getItemsByAccount(Account account) {
-        return itemRepository.findByAccount(account);
+    public List<Item> getItemsByAccountName(String accountName) throws EntityNotFoundException {
+        Optional<Account> optional = accountRepository.findById(accountName);
+        if (optional.isPresent()) {
+            return itemRepository.findByAccount(optional.get());
+        } else {
+            throw new EntityNotFoundException("Account with name: \"%s\" does not exists!".formatted(accountName));
+        }
+
     }
 }

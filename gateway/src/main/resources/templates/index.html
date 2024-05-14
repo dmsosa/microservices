@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="#{title}">Microservices</title>
+    <title>Beispiel</title>
+    <script src="http://localhost:35729/livereload.js"></script>
 </head>
 <body>
 <!--    <div class="header" th:replace="~{fragments/header :: header}"></div>-->
@@ -14,15 +14,18 @@
                 <div class="col view-col">
                     <div class="account-card">
                         <img src="../static/images/piggy.png" th:src="@{/images/piggy.png}">
-                        <h5 th:text="${account.name}">Account name</h5>
+                        <h2 th:text="${account.name}">Account name</h2>
                         <p th:text="${account.note}">Account note come here to put additional information</p>
                     </div>
                 </div>
-                <div class="col" th:unless="${datapoints.length < 1}">
-                    <div class="datapoints-card" th:each="datapoint : ${datapoints}">
-                        <h2 th:text="${datapoint.id.accountName + datapoint.id.dataDate}"></h2>
+                <div class="col" th:unless="${stats == null}">
+                    <div class="stats-card" th:each="stat : ${stats}">
+                        <h2 th:text="${stat.accountName + stat.statsDate}"></h2>
+                        <h1 th:each="item : ${stat.items}" th:text="${item.title}"></h1>
+                        <p th:text="${stat.totalIncomes}"></p>
                     </div>
                 </div>
+            </div>
             </div>
 
 <!--                    <button class="btn btn-edit">Edit</button>-->

@@ -33,7 +33,7 @@ INSERT INTO items (account_name, title, icon, amount, category, currency, freque
     55,
     'FIXED',
     'USD',
-    'MONTH',
+    'WEEK',
     'EXPENSE'
 );
 
@@ -44,7 +44,7 @@ INSERT INTO items (account_name, title, icon, amount, category, currency, freque
     420,
     'FIXED',
     'USD',
-    'QUARTER',
+    'MONTH',
     'EXPENSE'
 );
 

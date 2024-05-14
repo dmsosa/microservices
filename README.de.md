@@ -1,8 +1,6 @@
 ## Microdienste Projekt
 
 [![English Readme](https://img.shields.io/badge/lang-en-green)](https://github.com/dmsosa/microservices/blob/main/README.md)
-[![Deutsch Readme](https://img.shields.io/badge/lang-de-blue)](https://github.com/dmsosa/microservices/blob/main/README.de.md)
-
 Microdienste Projekt ist nach "Piggymetrics" von  @sqshq "Alexander Lukyanchikov" inspiriert. Aber mit dieses Implementation benutzer wir PostgreSQL und ein einfacher Statsdienst, der Wirkung das Programm ist nicht die Gleiche, aber der Hauptsziele ist, ein Mikrodienstearchitektur zu zeigen.
 
 Jedes Dienst verfügt über eine eigene Dokumentation, dessen mit S[README.md](README.md)wagger erstellt wurde, und auch jedes seine eigenen Tests.
@@ -11,7 +9,6 @@ Jedes Dienst verfügt über eine eigene Dokumentation, dessen mit S[README.md](R
 
 ZU MACHEN:
 * Unit test fur jeder Dienst
-  * WebTestClient Nutzen (AUTH Dienst)
 * CSRF Token zu hinzufugen
 * Customize Swagger Docs page
 * Encrypt client secrets

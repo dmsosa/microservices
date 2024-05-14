@@ -2,24 +2,21 @@ package com.duvi.services.account.controller;
 
 import com.duvi.services.account.domain.Account;
 import com.duvi.services.account.domain.Item;
-import com.duvi.services.account.domain.User;
+import com.duvi.services.account.domain.dto.AccountDTO;
 import com.duvi.services.account.domain.dto.ItemDTO;
 import com.duvi.services.account.domain.exception.EntityNotFoundException;
 import com.duvi.services.account.domain.exception.EntityExistsException;
 import com.duvi.services.account.service.AccountService;
 import com.duvi.services.account.service.ItemService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.View;
 
 import java.security.Principal;
 import java.util.List;
@@ -42,29 +39,29 @@ public class AccountController {
     }
 
     @GetMapping("/{accountName}")
-    public ResponseEntity<Account> getAccountByName(@PathVariable String accountName) throws EntityNotFoundException {
-        Account account = accountService.getAccountByName(accountName);
+    public ResponseEntity<AccountDTO> getAccountByName(@PathVariable String accountName) throws EntityNotFoundException {
+        AccountDTO account = accountService.getAccountByName(accountName);
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
     @PostMapping(path = {"/create/{accountName}"})
-    public ResponseEntity<Account> createAccount(@PathVariable String accountName) throws EntityExistsException {
+    public ResponseEntity<AccountDTO> createAccount(@PathVariable String accountName) throws EntityExistsException {
         //create account
         logger.info("creating account... " + accountName);
-        Account account = accountService.createAccount(accountName);
+        AccountDTO account = accountService.createAccount(accountName);
         return new ResponseEntity<>(account, HttpStatus.CREATED);
     }
     @PostMapping("/save")
     public void saveChanges(Principal principal) throws EntityNotFoundException {
-        Account account = accountService.getAccountByName(principal.getName());
+        AccountDTO account = accountService.getAccountByName(principal.getName());
         accountService.saveChanges(account);
-        logger.info("Changes for account %1$s at %2$s saved successfully".formatted(account.getName(), account.getLastSeen()));
+        logger.info("Changes for account %1$s at %2$s saved successfully".formatted(account.name(), account.lastSeen()));
     }
     @PostMapping("/save/{accountName}")
     public void saveChanges(@PathVariable String accountName) throws EntityNotFoundException {
-        Account account = accountService.getAccountByName(accountName);
+        AccountDTO account = accountService.getAccountByName(accountName);
         accountService.saveChanges(account);
-        logger.info("Changes for account %1$s at %2$s saved successfully".formatted(account.getName(), account.getLastSeen()));
+        logger.info("Changes for account %1$s at %2$s saved successfully".formatted(account.name(), account.lastSeen()));
     }
     @DeleteMapping("/{username}")
     public ResponseEntity<String> deleteAccount(@PathVariable String accountName) throws EntityNotFoundException {
@@ -76,8 +73,8 @@ public class AccountController {
     //Item methods
     @GetMapping("/item/{accountName}")
     public ResponseEntity<List<Item>> createItem(@PathVariable String accountName) throws EntityNotFoundException {
-        Account account = accountService.getAccountByName(accountName);
-        List<Item> itemList = itemService.getItemsByAccount(account);
+        AccountDTO account = accountService.getAccountByName(accountName);
+        List<Item> itemList = itemService.getItemsByAccountName(account.name());
         return new ResponseEntity<>(itemList, HttpStatus.OK);
     }
     @PostMapping("/item")
