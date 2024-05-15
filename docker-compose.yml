@@ -10,13 +10,21 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     container_name: config-server
     build: config-server
+    expose:
+      - "8888"
     ports:
-      - 8888:8888
+      - 127.0.0.1:8888:8888
+    networks:
+      - dmnetwork
   service-registry:
     container_name: service-registry
     build: service-registry
+    expose:
+      - "8761"
     ports:
-      - 8761:8761
+      - 127.0.0.1:8761:8761
+    networks:
+      - dmnetwork
   auth-service:
     depends_on:
       config-server:
@@ -30,8 +38,12 @@ services:
       POSTGRES_DB: authdb
     container_name: auth-service
     build: auth-service
+    expose:
+      - "9000"
     ports:
-      - 9000:9000
+      - 127.0.0.1:9000:9000
+    networks:
+      - dmnetwork
   gateway:
     depends_on:
       config-server:
@@ -44,8 +56,12 @@ services:
       SERVICE_REGISTRY_URL: ${SERVICE_REGISTRY_URL}
     container_name: gateway
     build: gateway
+    expose:
+      - "8061"
     ports:
-      - 8061:8061
+      - 127.0.0.1:8061:8061
+    networks:
+      - dmnetwork
 #services
   account:
     depends_on:
@@ -58,8 +74,12 @@ services:
       POSTGRES_DB: accountdb
     container_name: account
     build: account
+    expose:
+      - "8083"
     ports:
-      - 8083:8083
+      - 127.0.0.1:8083:8083
+    networks:
+      - dmnetwork
   stats:
     depends_on:
       auth-service:
@@ -71,8 +91,12 @@ services:
       POSTGRES_DB: statsdb
     container_name: stats
     build: stats
+    expose:
+      - "8085"
     ports:
-      - 8085:8085
+      - 127.0.0.1:8085:8085
+    networks:
+      - dmnetwork
   noti:
     depends_on:
       auth-service:
@@ -84,16 +108,28 @@ services:
       POSTGRES_DB: notidb
     container_name: noti
     build: noti
+    expose:
+      - "8084"
     ports:
-      - 8084:8084
-#database a single PG container with all the databases for the microservices
+      - 127.0.0.1:8084:8084
+    networks:
+      - dmnetwork
+  #database a single PG container with all the databases for the microservices
   dmservices-database:
     container_name: dmservices-database
     build: postgresql
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    expose:
+      - "5000"
     ports:
-      - 5000:5432
+      - 127.0.0.1:5000:5432
+    networks:
+      - dmnetwork
 volumes:
   dmservicesvol:
+networks:
+  dmnetwork:
+    name: dmnetwork
+    external: true

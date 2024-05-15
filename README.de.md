@@ -58,3 +58,7 @@ Unseres Gateway eine Art Kunde sein, um die anfrage zu jedes Dienst zu senden, a
 #### STATS SERVICE / STAT DIENST:
 
 * Ich gilt es, dieses Dienst vollreaktiv zu machen, aber es nutzen RDBMS mit JPA, vielleicht spater ein MongoDB implementiert werden konnen
+
+#### DOCKER CONTAINERS ZU LAUFEN
+
+* Das Eureka Server wirkts und die Dienste kann miteinander kommunizieren, aber Eureka gibst die IP Addresse den Dienste, z.B '127.23.0.5', also unsere Docker Host (Locale Machine) kann der Dienste nicht erreichen. Denn wenn du ein Anfrag zu 'http://localhost:8888/' sendest, es ging, aber nicht mit 'http://127.23.0.4:8888/', dass machst der Dienste nicht erreichbar von unseres Machine . Aus dieses grund, der "hostname" jeder Dienst ist als "localhost" eingestellt.
