@@ -17,26 +17,11 @@ services:
     build: service-registry
     ports:
       - 8761:8761
-  gateway:
-    depends_on:
-      config-server:
-        condition: service_healthy
-      service-registry:
-        condition: service_healthy
-    environment:
-      SERVICE_REGISTRY_URL: ${SERVICE_REGISTRY_URL}
-    container_name: gateway
-    build: gateway
-    ports:
-      - 8061:8061
-#services
   auth-service:
     depends_on:
       config-server:
         condition: service_healthy
       service-registry:
-        condition: service_healthy
-      gateway:
         condition: service_healthy
     environment:
       SERVICE_REGISTRY_URL: ${SERVICE_REGISTRY_URL}
@@ -47,6 +32,21 @@ services:
     build: auth-service
     ports:
       - 9000:9000
+  gateway:
+    depends_on:
+      config-server:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+    environment:
+      SERVICE_REGISTRY_URL: ${SERVICE_REGISTRY_URL}
+    container_name: gateway
+    build: gateway
+    ports:
+      - 8061:8061
+#services
   account:
     depends_on:
       auth-service:

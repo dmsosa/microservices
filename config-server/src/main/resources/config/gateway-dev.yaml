@@ -3,24 +3,6 @@ server:
     8061
 spring:
   profile: dev
-  security:
-    oauth2:
-      resource-server:
-        jwt:
-          issuer-uri: http://localhost:9000/api/uaa
-      client:
-        registration:
-          gatewayClient:
-            provider: auth
-            client-id: gatewayClient
-            client-secret: gateway
-            authorization-grant-types: authorization_code,refresh_token
-            client-authentication-method: client_secret_basic
-            scope: openid,profile
-            redirect-uri: "http://127.0.0.1:8061/login/oauth2/code/gatewayClient"
-        provider:
-          auth:
-            issuer-uri: http://localhost:9000/api/uaa
   cloud:
     gateway:
       metrics:

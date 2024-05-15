@@ -12,8 +12,6 @@ logging:
     org:
       springframework:
         security: TRACE
-
-oauth2: WARN
 spring:
   profile: dev
 # the RegisteredClientRepository is configured programmatically

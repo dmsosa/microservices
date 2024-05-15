@@ -1,6 +1,5 @@
 package com.duvi.services.account.controller;
 
-import com.duvi.services.account.domain.Account;
 import com.duvi.services.account.domain.Item;
 import com.duvi.services.account.domain.dto.AccountDTO;
 import com.duvi.services.account.domain.dto.ItemDTO;
@@ -29,13 +28,10 @@ public class AccountController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private AccountService accountService;
     private ItemService itemService;
-    private DiscoveryClient discoveryClient;
     public AccountController(AccountService accountService,
-                             ItemService itemService,
-                             DiscoveryClient discoveryClient) {
+                             ItemService itemService) {
         this.accountService = accountService;
         this.itemService = itemService;
-        this.discoveryClient = discoveryClient;
     }
 
     @GetMapping("/{accountName}")

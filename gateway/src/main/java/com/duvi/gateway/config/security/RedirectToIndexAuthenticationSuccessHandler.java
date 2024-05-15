@@ -1,4 +1,4 @@
-package com.duvi.gateway.config;
+package com.duvi.gateway.config.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +16,9 @@ public class RedirectToIndexAuthenticationSuccessHandler  implements ServerAuthe
     private ServerRedirectStrategy redirectStrategy = new DefaultServerRedirectStrategy();
     @Override
     public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
+        if (logger.isTraceEnabled()) {
+            logger.trace("Authentication successful!, redirecting to /index by default...");
+        };
         return redirectStrategy.sendRedirect(webFilterExchange.getExchange(), URI.create("/index"));
     }
 }

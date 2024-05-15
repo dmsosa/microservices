@@ -1,26 +1,25 @@
-package com.duvi.services.stats.config.security;
+package com.duvi.gateway.config.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtDecoders;
-import org.springframework.security.oauth2.jwt.JwtValidators;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class JwtCustomizer implements Customizer<OAuth2ResourceServerConfigurer<HttpSecurity>.JwtConfigurer> {
+public class JwtCustomizer implements Customizer<ServerHttpSecurity.OAuth2ResourceServerSpec.JwtSpec> {
 
     private static Logger logger = LoggerFactory.getLogger(JwtCustomizer.class);
     private DiscoveryClient discoveryClient;
@@ -29,17 +28,24 @@ public class JwtCustomizer implements Customizer<OAuth2ResourceServerConfigurer<
     public JwtCustomizer(DiscoveryClient discoveryClient) {
         this.discoveryClient = discoveryClient;
     }
-    @Override
-    public void customize(OAuth2ResourceServerConfigurer<HttpSecurity>.JwtConfigurer jwtConfigurer) {
-        if (logger.isTraceEnabled()) {
-            logger.trace("Customizing jwtConfigurer ...");
-        }
+
+    @Bean
+    public ReactiveJwtDecoder reactiveJwtDecoder() {
         String issuerUri = this.findIssuerUri();
-        NimbusJwtDecoder jwtDecoder = (NimbusJwtDecoder) JwtDecoders.fromIssuerLocation(issuerUri);
+        NimbusReactiveJwtDecoder jwtDecoder = (NimbusReactiveJwtDecoder) ReactiveJwtDecoders.fromIssuerLocation(issuerUri);
         OAuth2TokenValidator<Jwt> withIssuer = JwtValidators.createDefaultWithIssuer(issuerUri);
         OAuth2TokenValidator<Jwt> withAudience = new DelegatingOAuth2TokenValidator<>(withIssuer, jwtValidator);
         jwtDecoder.setJwtValidator(withAudience);
-        jwtConfigurer.decoder(jwtDecoder);
+        return jwtDecoder;
+    }
+
+    @Override
+    public void customize(ServerHttpSecurity.OAuth2ResourceServerSpec.JwtSpec jwtSpec) {
+        if (logger.isTraceEnabled()) {
+            logger.trace("Customizing jwtConfigurer ...");
+        }
+
+        jwtSpec.jwtDecoder(reactiveJwtDecoder());
     }
     private String findIssuerUri() {
         List<ServiceInstance> authInstances = discoveryClient.getInstances("auth-service");
@@ -56,9 +62,9 @@ public class JwtCustomizer implements Customizer<OAuth2ResourceServerConfigurer<
 
         @Override
         public OAuth2TokenValidatorResult validate(Jwt token) {
-            if (token.getAudience().contains("stats-service")) {
+            if (token.getAudience().contains("gateway-service")) {
                 if (logger.isTraceEnabled()) {
-                    logger.trace("stats-service audience found, Bruder!, token is valid");
+                    logger.trace("gateway-service audience found, Bruder!, token is valid");
                 }
                 return OAuth2TokenValidatorResult.success();
             } else {

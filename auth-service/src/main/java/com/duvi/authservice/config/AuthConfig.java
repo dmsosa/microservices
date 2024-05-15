@@ -215,6 +215,7 @@ public class AuthConfig  {
                 .redirectUri("http://127.0.0.1:8061/login/oauth2/code/gatewayClient")
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
+                .clientName("gatewayService")
                 .build();
         return new InMemoryRegisteredClientRepository(List.of(accountClient, statsClient, notiClient, gatewayClient));
     }

@@ -4,20 +4,6 @@ server:
   port: 8085
 spring:
   profile: dev
-  security:
-    oauth2:
-      client:
-        provider:
-          auth:
-            issuer-uri: http://localhost:9000/api/uaa
-        registration:
-          statsClient:
-            provider: auth
-            client-id: statsClient
-            client-secret: stats
-            authorization-grant-type: client_credentials
-            scope: openid,profile
-            client-name: statsService
   datasource:
     url: jdbc:h2:mem:demo
     username: sa

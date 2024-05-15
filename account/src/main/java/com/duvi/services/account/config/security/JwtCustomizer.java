@@ -1,4 +1,4 @@
-package com.duvi.services.stats.config.security;
+package com.duvi.services.account.config.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,9 +26,12 @@ public class JwtCustomizer implements Customizer<OAuth2ResourceServerConfigurer<
     private DiscoveryClient discoveryClient;
     private OAuth2TokenValidator<Jwt> jwtValidator = new JwtValidator();
 
+
     public JwtCustomizer(DiscoveryClient discoveryClient) {
         this.discoveryClient = discoveryClient;
     }
+
+
     @Override
     public void customize(OAuth2ResourceServerConfigurer<HttpSecurity>.JwtConfigurer jwtConfigurer) {
         if (logger.isTraceEnabled()) {
@@ -56,9 +59,9 @@ public class JwtCustomizer implements Customizer<OAuth2ResourceServerConfigurer<
 
         @Override
         public OAuth2TokenValidatorResult validate(Jwt token) {
-            if (token.getAudience().contains("stats-service")) {
+            if (token.getAudience().contains("account-service")) {
                 if (logger.isTraceEnabled()) {
-                    logger.trace("stats-service audience found, Bruder!, token is valid");
+                    logger.trace("account-service audience found, Bruder!, token is valid");
                 }
                 return OAuth2TokenValidatorResult.success();
             } else {
