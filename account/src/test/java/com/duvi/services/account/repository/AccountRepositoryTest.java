@@ -1,6 +1,6 @@
 package com.duvi.services.account.repository;
 
-import com.duvi.services.account.domain.Account;
+import com.duvi.services.account.model.Account;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

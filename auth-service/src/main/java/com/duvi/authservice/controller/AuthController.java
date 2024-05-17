@@ -15,6 +15,7 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -50,12 +51,13 @@ public class AuthController {
     }
 
 
-    @GetMapping("/current")
-    public ResponseEntity<Principal> getUser(Principal principal) {
-        return new ResponseEntity<>(principal, HttpStatus.OK);
+    @GetMapping("/{username}")
+    public ResponseEntity<User> getUser(@PathVariable String username) throws UserNotExistsException {
+        User user = userService.findUserByUsername(username);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PostMapping(path = {"/register"}, consumes = "application/x-www-form-urlencoded")
+    @PostMapping(path = {"/save"}, consumes = "application/x-www-form-urlencoded")
     public void registerUser(@Validated @ModelAttribute User user, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws UserExistsException {
         //Saving user
         userService.saveUser(user);
@@ -69,7 +71,7 @@ public class AuthController {
 
         //Finding gateway instances
         ServiceInstance gatewayInstance = discoveryClient.getInstances("gateway").getFirst();
-        String redirectURL = gatewayInstance.getUri() + "/uaaRedirect";
+        String redirectURL = gatewayInstance.getUri() + "/index";
 
         logger.info("Successfully registered and authenticated" + gatewayInstance.getUri());
 
@@ -82,11 +84,10 @@ public class AuthController {
         //redirect
         response.setStatus(302);
         response.setHeader("Location", redirectURL);
-
     }
 
     @PutMapping("/{username}")
-    public void editUser(@PathVariable String username, User newUser) {
+    public void editUser(@PathVariable String username, @RequestBody User newUser) {
         userService.updateUser(username, newUser);
     }
     @DeleteMapping("/{username}")

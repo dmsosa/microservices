@@ -1,3 +1,5 @@
+database: postgres
+
 server:
   servlet:
     context-path: /api/uaa
@@ -14,6 +16,12 @@ logging:
         security: TRACE
 spring:
   profile: prod
+  security:
+    oauth2:
+      resource-server:
+        issuer-uri: http://localhost:9000/api/uaa
+  flyway:
+    locations: classpath:db/migration/${database}
   datasource:
     driverClassName: org.postgresql.Driver
     username: ${POSTGRES_USER}

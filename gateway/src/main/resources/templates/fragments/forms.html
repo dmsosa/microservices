@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Beispiel</title>
+    <script src="http://localhost:35729/livereload.js"></script>
+</head>
+<body>
+<div class="header" th:replace="~{/fragments/header :: header}">
+    <h1>Dmservices</h1>
+</div>
+<div class="main">
+    <div th:fragment="editorForm">
+        <form th:action="@{/edit/{accountName}(accountName=${account.name})}" th:method="post" th:object="${account}" action="#" class="formation-form">
+            <fieldset>
+                <div>
+                    <label for="accountIcon">Account Icon</label>
+                    <select th:field="*{icon}" id="accountIcon" th:remove="all-but-first">
+                        <option th:value="${iconName}" th:each="iconName : ${iconNames}" th:text="#{${'icons.' + iconName}}">piggy</option>
+                        <option>bear</option>
+                        <option>fox</option>
+                        <option>boss</option>
+                        <option>cow</option>
+                        <option>secretary</option>
+                        <option>elephant</option>
+                        <option>rabbit</option>
+                        <option>turtle</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="accountName" >Account Name</label>
+                    <input id="accountName" th:name="accountName" type="text" th:field="*{name}">
+                </div>
+                <div>
+                    <label for="accountNote" >Account Note</label>
+                    <input id="accountNote" th:name="accountNote" type="text" th:field="*{note}">
+                </div>
+                <div th:each="item, stat : *{incomes}">
+                    <input type="hidden" th:type="hidden" th:field="*{incomes[__${stat.index}__].title}" th:value="${item.title}">
+                    <input type="hidden" th:type="hidden" th:field="*{incomes[__${stat.index}__].icon}" th:value="${item.icon}">
+                    <input type="hidden" th:type="hidden" th:field="*{incomes[__${stat.index}__].amount}" th:value="${item.amount}">
+                    <input type="hidden" th:type="hidden" th:field="*{incomes[__${stat.index}__].category}" th:value="${item.category}">
+                    <input type="hidden" th:type="hidden" th:field="*{incomes[__${stat.index}__].currency}" th:value="${item.currency}">
+                    <input type="hidden" th:type="hidden" th:field="*{incomes[__${stat.index}__].frequency}" th:value="${item.frequency}">
+                    <input type="hidden" th:type="hidden" th:field="*{incomes[__${stat.index}__].type}" th:value="${item.type}">
+                </div>
+                <div th:each="item, stat : *{expenses}">
+                    <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].title}" th:value="${item.title}">
+                    <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].icon}" th:value="${item.icon}">
+                    <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].amount}" th:value="${item.amount}">
+                    <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].category}" th:value="${item.category}">
+                    <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].currency}" th:value="${item.currency}">
+                    <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].frequency}" th:value="${item.frequency}">
+                    <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].type}" th:value="${item.type}">
+                </div>
+                <button type="submit">Save changes</button>
+            </fieldset>
+        </form>
+    </div>
+    <div th:fragment="itemsForm">
+        <form th:action="@{/editItems/{accountName}(accountName=${account.name})}" th:method="post" th:object="${account}" action="#" class="formation-form">
+            <fieldset>
+                <input type="hidden" th:field="*{name}"/>
+                <input type="hidden" th:field="*{note}"/>
+                <input type="hidden" th:field="*{icon}"/>
+                <table>
+                    <caption>Items</caption>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Title</th>
+                            <th>Amount</th>
+                            <th>Category</th>
+                            <th>Currency</th>
+                            <th>Frequency</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item, stat : *{incomes}">
+                            <td th:text="${stat.count}"></td>
+                            <td>
+                                <input type="text" th:field="*{items[__${stat.index}__].title}" th:text="${item.title}"/>
+                            </td>
+                            <td>
+                                <input type="number" min="0" max="50000" th:field="*{items[__${stat.index}__].amount" th:placeholder="${item.amount}">
+                            </td>
+                            <td th:text="${stat.count}"></td>
+                            <td th:text="${stat.count}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="submit">Save items</button>
+            </fieldset>
+        </form>
+    </div>
+</div>
+</body>
+</html>

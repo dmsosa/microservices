@@ -14,5 +14,7 @@ public class Account {
     private String name;
     private LocalDateTime lastSeen;
     private String note;
-    private List<Item> items;
+    private String icon;
+    private List<Item> incomes;
+    private List<Item> expenses;
 }

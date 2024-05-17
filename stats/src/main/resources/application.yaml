@@ -15,9 +15,8 @@ spring:
         serviceId: config-server
 eureka:
   instance:
-        instance-id: ${spring.application.name}:${random.value}
-        prefer-ip-address: true
-  client:
+    instance-id: ${spring.application.name}:${random.value}
+    prefer-ip-address: true  client:
     serviceUrl:
       defaultZone: ${SERVICE_REGISTRY_URL:http://localhost:8761/eureka/}
 management:

@@ -6,6 +6,8 @@ import com.duvi.authservice.model.exception.UserNotExistsException;
 import com.duvi.authservice.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,11 +32,11 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User findUserByUsername(String username) throws UserNotExistsException {
-        Optional<User> user = userRepository.findById(username);
-        if (user.isEmpty()) {
+        User user = (User) userRepository.findByUsername(username);
+        if (user == null) {
             throw new UserNotExistsException("The user with username: \"%s\" does not exist!".formatted(username));
         }
-        return user.get();
+        return user;
     }
 
     @Override
@@ -74,22 +76,20 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User updateUser(String oldUserId, User updatedUser) {
-        Optional<User> oldUser = userRepository.findById(oldUserId);
-        if (oldUser.isEmpty()) {
-            User newUser = userRepository.save(updatedUser);
-            return newUser;
+        User oldUser = (User) userRepository.findByUsername(oldUserId);
+        if (oldUser == null) {
+            return userRepository.save(updatedUser);
         }
-        oldUser.get().updateWithUser(updatedUser);
-        User newUser = userRepository.save(oldUser.get());
-        return newUser;
+        oldUser.updateWithUser(updatedUser);
+        return userRepository.save(oldUser);
     }
 
     @Override
     public void deleteUser(String username) throws UserNotExistsException {
-        Optional<User> user = userRepository.findById(username);
-        if (user.isEmpty()) {
+        User user = (User) userRepository.findByUsername(username);
+        if (user == null) {
             throw new UserNotExistsException("The user with username: \"%s\" does not exist!".formatted(username));
         }
-        userRepository.delete(user.get());
+        userRepository.delete(user);
     }
 }

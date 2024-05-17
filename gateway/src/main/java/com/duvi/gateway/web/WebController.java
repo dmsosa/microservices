@@ -5,25 +5,32 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+import org.springframework.cloud.gateway.filter.WeightCalculatorWebFilter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
 
+import org.springframework.security.oauth2.client.web.server.OAuth2AuthorizationCodeGrantWebFilter;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.security.web.server.authorization.AuthorizationWebFilter;
+import org.springframework.security.web.server.authorization.ExceptionTranslationWebFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.thymeleaf.spring6.context.webflux.IReactiveDataDriverContextVariable;
 import org.thymeleaf.spring6.context.webflux.ReactiveDataDriverContextVariable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-
-
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
 
 
 @Controller
@@ -35,6 +42,11 @@ public class WebController {
     }
 
 
+    @ModelAttribute(name = "iconNames")
+    public List<String> loadIconNames() {
+        String[] iconNames = {"piggy", "bear", "fox", "boss", "cow", "secretary", "horse", "rabbit", "elephant", "turtle"};
+        return Arrays.asList(iconNames);
+    }
     //Authentication endpoints **Login, Register and Redirect to AuthServer
 
     @RequestMapping(method = {RequestMethod.GET}, value = "/index")
@@ -52,46 +64,57 @@ public class WebController {
         DefaultOidcUser user = (DefaultOidcUser) authentication.getPrincipal();
         String username = user.getName();
 
-        //If account is null (is not created yet), then the gateway creates the new account
+        if (model.getAttribute("account") != null) {
+            return "index";
+
+        }
+        //If account is null, then the gateway gets it or creates a new account
         accountMono = webClientBuilder
-                    .build()
-                    .get()
-                    .uri("/account/" + username)
-                    .retrieve()
-                    .bodyToMono(Account.class)
-                    .onErrorResume((e -> {
-                        logger.info("Exception Catched: " + e.getMessage());
-                        return webClientBuilder.build().post().uri("/account/create/" + username)
-                                .retrieve().bodyToMono(Account.class);}));
+                .build()
+                .get()
+                .uri("/account/" + username)
+                .retrieve()
+                .bodyToMono(Account.class)
+                .switchIfEmpty( webClientBuilder.build()
+                        .post()
+                        .uri("/account/create/" + username)
+                        .retrieve().bodyToMono(Account.class))
+                .onErrorResume((e -> {
+                    logger.info("Exception Catched: " + e.getMessage());
+                    return webClientBuilder
+                            .build()
+                            .get()
+                            .uri("/account/" + username)
+                            .retrieve()
+                            .bodyToMono(Account.class)
+                            .timeout(Duration.ofSeconds(3));}));
 
         //Get statistics of account
-        Flux<Stats> statsFlux = webClientBuilder.build().get().uri("/stats/" + username)
-                .retrieve().bodyToFlux(Stats.class);
-        IReactiveDataDriverContextVariable contextVariable = new ReactiveDataDriverContextVariable(statsFlux);
         model.addAttribute("account", accountMono);
-        model.addAttribute("stats", contextVariable);
         return "index";
     }
+
 
     //CRUD Operations
     //Register user and create account
 
     @RequestMapping(method = {RequestMethod.POST}, value = "/edit/{accountName}")
     public String editAccount(@PathVariable String accountName, @ModelAttribute Account account, BindingResult bindingResult, Model model) {
-        webClientBuilder.build()
+        Mono<Account> updatedAccount = webClientBuilder.build()
                 .post()
-                .uri("http://gateway:8061/account/edit/" + accountName)
-                .bodyValue(account)
+                .uri("/account/edit/" + accountName)
+                .bodyValue(BodyInserters.fromValue(account))
                 .retrieve()
-                .toBodilessEntity()
-                .subscribe( v -> v.getStatusCode());
-        return "redirect:/index";
+                .bodyToMono(Account.class)
+                .doOnError(error -> error.printStackTrace());
+        model.addAttribute("account", updatedAccount);
+    return "redirect:/index";
     }
     @RequestMapping(method = {RequestMethod.POST}, value = "/save")
     public String saveAccountStats(@ModelAttribute Account account, BindingResult bindingResult, Model model) {
         webClientBuilder.build()
                 .post()
-                .uri("http://gateway:8061/stats/" + account.getName())
+                .uri("/stats/" + account.getName())
                 .bodyValue(account)
                 .retrieve()
                 .toBodilessEntity()
@@ -99,14 +122,14 @@ public class WebController {
         return "redirect:/index";
     }
 
-    @RequestMapping(method = {RequestMethod.POST}, value = "/save", params = {"addItem"})
-    public String addItemRow(@ModelAttribute Account account, BindingResult bindingResult, Model model) {
-        account.getItems().add(new Item());
+    @RequestMapping(method = {RequestMethod.POST}, value = "/save", params = {"addIncome"})
+    public String addIncomeRow(@ModelAttribute Account account, BindingResult bindingResult, Model model) {
+        account.getIncomes().add(new Item());
         return "redirect:/index";
     }
-    @RequestMapping(method = {RequestMethod.POST}, value = "/save", params = {"removeItem"})
-    public String addItemRow(@RequestParam Long removeItemId, @ModelAttribute Account account, BindingResult bindingResult, Model model) {
-        account.getItems().remove(removeItemId);
+    @RequestMapping(method = {RequestMethod.POST}, value = "/save", params = {"removeIncomeId"})
+    public String removeIncomeRow(@RequestParam Long removeIncomeId, @ModelAttribute Account account, BindingResult bindingResult, Model model) {
+        account.getIncomes().remove(removeIncomeId);
         return "redirect:/index";
     }
 }

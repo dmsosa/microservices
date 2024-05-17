@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS accounts (
     name VARCHAR(40) UNIQUE NOT NULL,
     last_seen TIMESTAMP,
     note VARCHAR(3000),
+    icon TEXT,
     PRIMARY KEY (name)
 );
 

@@ -1,3 +1,5 @@
+database: h2
+
 server:
   servlet:
     context-path: /api/uaa
@@ -15,11 +17,27 @@ logging:
 spring:
   profile: dev
 # the RegisteredClientRepository is configured programmatically
+  security:
+    oauth2:
+      resource-server:
+        issuer-uri: http://localhost:9000/api/uaa
+  flyway:
+    user: sa
+    password: password
+    url: jdbc:h2:mem:demo
+    locations: classpath:db/migration/${database}
   datasource:
-    driverClassName: org.postgresql.Driver
-    username: postgres
-    password: pepeeselmejor
-    url: jdbc:postgresql://localhost:5432/dmsosa
+    url: jdbc:h2:mem:demo
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  h2:
+    console:
+      enabled: true
   thymeleaf:
     cache: false
   devtools:

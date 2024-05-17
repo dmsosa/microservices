@@ -13,13 +13,11 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 public class Item {
-    private Long id;
-    private String accountName;
     private String title;
     private String icon;
     private BigDecimal amount;
-    private Frequency frequency;
-    private Type type;
     private Category category;
     private Currency currency;
+    private Frequency frequency;
+    private Type type;
 }

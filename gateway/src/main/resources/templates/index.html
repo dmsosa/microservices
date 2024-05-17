@@ -1,32 +1,46 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+    lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Beispiel</title>
     <script src="http://localhost:35729/livereload.js"></script>
 </head>
 <body>
-<!--    <div class="header" th:replace="~{fragments/header :: header}"></div>-->
+    <div class="header" th:replace="~{/fragments/header :: header}">
+        <h1>Dmservices</h1>
+    </div>
     <div class="main">
         <div class="container" >
             <div class="row">
                 <div class="col view-col">
                     <div class="account-card">
-                        <img src="../static/images/piggy.png" th:src="@{/images/piggy.png}">
+                        <img src="../static/images/piggy.png" th:src="@{/images/{icon}(icon=${account.icon + '.png'})}" alt="account-icon">
                         <h2 th:text="${account.name}">Account name</h2>
                         <p th:text="${account.note}">Account note come here to put additional information</p>
                     </div>
                 </div>
-                <div class="col" th:unless="${stats == null}">
-                    <div class="stats-card" th:each="stat : ${stats}">
-                        <h2 th:text="${stat.accountName + stat.statsDate}"></h2>
-                        <h1 th:each="item : ${stat.items}" th:text="${item.title}"></h1>
-                        <p th:text="${stat.totalIncomes}"></p>
-                    </div>
+                <div class="col col-buttons">
+                    <button id="editButton" class="btn btn-edit">Edit Konto</button>
+                    <button id="manageButton" class="btn btn-edit">Manage Items</button>
                 </div>
+                <div class="col col-forms">
+                    <form th:replace="~{/fragments/forms :: editorForm}" th:action="@{/edit/accountName}" th:object="${account}" action="#" class="formation-form">
+                    </form>
+                </div>
+                <div class="col col-forms">
+                    <form th:replace="~{/fragments/forms :: itemsForm}" th:action="@{/editItems/accountName}" th:object="${account}" action="#" class="formation-form">
+                    </form>
+                </div>
+                <div class="col" th:if="${#lists.isEmpty(account.incomes) && #lists.isEmpty(account.expenses)}">
+                    <h2>No items yet</h2>
+                </div>
+                <div class="col col-tables" th:replace="~{/fragments/itemTables :: itemTables}">
+                </div>
+
             </div>
-            </div>
+        </div>
 
 <!--                    <button class="btn btn-edit">Edit</button>-->
 <!--                    <button class="btn btn-edit">Add or Remove Items</button>-->
@@ -129,6 +143,8 @@
 <!--            </div>-->
 <!--        </div>-->
     </div>
-<div class="footer" th:replace="~{fragments/footer :: footer}"></div>
+    <div class="footer" th:replace="~{/fragments/footer :: footer}">
+        <p>cool Copy 2024</p>
+    </div>
 </body>
 </html>

@@ -1,7 +1,8 @@
-INSERT INTO accounts (name, last_seen, note) VALUES (
+INSERT INTO accounts (name, last_seen, note, icon) VALUES (
     'demo',
     '2024-03-04',
-    'demo notes!'
+    'demo notes!',
+    'piggy'
 );
 
 INSERT INTO items (account_name, title, icon, amount, category, currency, frequency, type) VALUES (

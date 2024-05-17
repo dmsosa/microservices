@@ -2,10 +2,10 @@ package com.duvi.services.account.service.impl;
 
 import com.duvi.services.account.client.AuthClient;
 import com.duvi.services.account.client.StatClient;
-import com.duvi.services.account.domain.*;
-import com.duvi.services.account.domain.dto.AccountDTO;
-import com.duvi.services.account.domain.exception.EntityNotFoundException;
-import com.duvi.services.account.domain.exception.EntityExistsException;
+import com.duvi.services.account.model.*;
+import com.duvi.services.account.model.dto.AccountDTO;
+import com.duvi.services.account.model.exception.EntityNotFoundException;
+import com.duvi.services.account.model.exception.EntityExistsException;
 import com.duvi.services.account.repository.AccountRepository;
 import com.duvi.services.account.service.AccountService;
 import org.springframework.stereotype.Service;
@@ -14,6 +14,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -43,7 +46,7 @@ public class AccountServiceImpl implements AccountService {
                 continue;
             }
         }
-        return new AccountDTO(account.getName(), account.getLastSeen(), account.getNote(), incomes, expenses);
+        return new AccountDTO(account.getName(), account.getLastSeen(), account.getNote(), account.getIcon(), incomes, expenses);
     }
     @Override
     public AccountDTO createAccount(String accountName) throws EntityExistsException {
@@ -59,14 +62,38 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountDTO editAccount(String name, Account account) {
-        Account oldAccount = accountRepository.findById(name).get();
-        oldAccount.setLastSeen(LocalDateTime.now());
-        oldAccount.setItems(account.getItems());
-        oldAccount.setNote(account.getNote());
-        AccountDTO dto = this.createDTO(account);
-        statClient.saveAccount(dto);
-        return dto;
+    public AccountDTO editAccount(String name, AccountDTO accountDTO) {
+
+        //updating user
+        User oldUser = authClient.getUser(name);
+        oldUser.setUsername(accountDTO.name());
+        authClient.editUser(name, oldUser);
+
+        //updating account
+        accountRepository.deleteById(name);
+
+        Account updatedAccount = new Account();
+        updatedAccount.setName(accountDTO.name());
+        updatedAccount.setLastSeen(LocalDateTime.now());
+        updatedAccount.setNote(accountDTO.note());
+        updatedAccount.setIcon(accountDTO.icon());
+
+        Set<Item> itemSet = Stream.concat(accountDTO.incomes().stream(), accountDTO.expenses().stream()).collect(Collectors.toSet());
+        updatedAccount.setItems(itemSet);
+
+        return this.createDTO(accountRepository.save(updatedAccount));
+    }
+    @Override
+    public AccountDTO editItems(String name, AccountDTO accountDTO) {
+
+        //updating account
+        Account account = accountRepository.findById(name).get();
+
+        Set<Item> itemSet = Stream.concat(accountDTO.incomes().stream(), accountDTO.expenses().stream()).collect(Collectors.toSet());
+        account.setItems(itemSet);
+        account.setLastSeen(LocalDateTime.now());
+
+        return this.createDTO(accountRepository.save(account));
     }
 
     @Override

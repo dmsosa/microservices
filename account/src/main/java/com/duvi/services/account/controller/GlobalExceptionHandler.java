@@ -1,8 +1,8 @@
 package com.duvi.services.account.controller;
 
-import com.duvi.services.account.domain.exception.EntityNotFoundException;
-import com.duvi.services.account.domain.exception.ApiError;
-import com.duvi.services.account.domain.exception.EntityExistsException;
+import com.duvi.services.account.model.exception.EntityNotFoundException;
+import com.duvi.services.account.model.exception.ApiError;
+import com.duvi.services.account.model.exception.EntityExistsException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
