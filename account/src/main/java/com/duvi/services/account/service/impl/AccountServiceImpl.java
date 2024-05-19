@@ -4,10 +4,12 @@ import com.duvi.services.account.client.AuthClient;
 import com.duvi.services.account.client.StatClient;
 import com.duvi.services.account.model.*;
 import com.duvi.services.account.model.dto.AccountDTO;
+import com.duvi.services.account.model.dto.ItemDTO;
 import com.duvi.services.account.model.exception.EntityNotFoundException;
 import com.duvi.services.account.model.exception.EntityExistsException;
 import com.duvi.services.account.repository.AccountRepository;
 import com.duvi.services.account.service.AccountService;
+import com.duvi.services.account.service.ItemService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,29 +26,33 @@ public class AccountServiceImpl implements AccountService {
     private AccountRepository accountRepository;
     private AuthClient authClient;
     private StatClient statClient;
+    private ItemService itemService;
     public AccountServiceImpl(AccountRepository accountRepository,
                               AuthClient authClient,
-                              StatClient statClient) {
+                              StatClient statClient,
+                              ItemService itemService) {
         this.authClient = authClient;
         this.statClient = statClient;
         this.accountRepository = accountRepository;
+        this.itemService = itemService;
     }
 
     //the DTO organizes the incomes and expenses before sending them to the stats service or any other client
     @Override
     public AccountDTO createDTO(Account account) {
-        List<Item> incomes = new ArrayList<Item>();
-        List<Item> expenses = new ArrayList<Item>();
-        for (Item item : account.getItems()) {
-            if (item.getType() == Type.INCOME) {
+        List<ItemDTO> dtoList = itemService.createDTOForAll(account.getItems());
+        List<ItemDTO> incomes = new ArrayList<ItemDTO>();
+        List<ItemDTO> expenses = new ArrayList<ItemDTO>();
+        for (ItemDTO item : dtoList) {
+            if (item.type() == Type.INCOME) {
                 incomes.add(item);
-            } else if (item.getType() == Type.EXPENSE) {
+            } else if (item.type() == Type.EXPENSE) {
                 expenses.add(item);
             } else {
                 continue;
             }
         }
-        return new AccountDTO(account.getName(), account.getLastSeen(), account.getNote(), account.getIcon(), incomes, expenses);
+        return new AccountDTO(account.getName(), account.getLastSeen(), account.getNote(), account.getIcon(), incomes, expenses, account.getCurrency());
     }
     @Override
     public AccountDTO createAccount(String accountName) throws EntityExistsException {
@@ -62,35 +68,31 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountDTO editAccount(String name, AccountDTO accountDTO) {
+    public AccountDTO editAccountDetails(String name, AccountDTO accountDTO) {
 
         //updating user
-        User oldUser = authClient.getUser(name);
-        oldUser.setUsername(accountDTO.name());
-        authClient.editUser(name, oldUser);
+        User userToUpdate = authClient.getUser(name);
+        userToUpdate.setUsername(accountDTO.name());
+        authClient.editUser(name, userToUpdate);
 
         //updating account
-        accountRepository.deleteById(name);
+        Account accountToUpdate = accountRepository.findByName(name).get();
 
-        Account updatedAccount = new Account();
-        updatedAccount.setName(accountDTO.name());
-        updatedAccount.setLastSeen(LocalDateTime.now());
-        updatedAccount.setNote(accountDTO.note());
-        updatedAccount.setIcon(accountDTO.icon());
+        accountToUpdate.setName(accountDTO.name());
+        accountToUpdate.setNote(accountDTO.note());
+        accountToUpdate.setIcon(accountDTO.icon());
 
-        Set<Item> itemSet = Stream.concat(accountDTO.incomes().stream(), accountDTO.expenses().stream()).collect(Collectors.toSet());
-        updatedAccount.setItems(itemSet);
-
-        return this.createDTO(accountRepository.save(updatedAccount));
+        return this.createDTO(accountRepository.save(accountToUpdate));
     }
     @Override
     public AccountDTO editItems(String name, AccountDTO accountDTO) {
 
         //updating account
-        Account account = accountRepository.findById(name).get();
+        Account account = accountRepository.findByName(name).get();
 
-        Set<Item> itemSet = Stream.concat(accountDTO.incomes().stream(), accountDTO.expenses().stream()).collect(Collectors.toSet());
-        account.setItems(itemSet);
+        Set<ItemDTO> itemSet = Stream.concat(accountDTO.incomes().stream(), accountDTO.expenses().stream()).collect(Collectors.toSet());
+        Set<Item> items = itemService.editOrCreateAll(itemSet);
+        account.setItems(items);
         account.setLastSeen(LocalDateTime.now());
 
         return this.createDTO(accountRepository.save(account));
@@ -98,7 +100,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountDTO getAccountByName(String name) throws EntityNotFoundException {
-        Optional<Account> optionalAccount = accountRepository.findById(name);
+        Optional<Account> optionalAccount = accountRepository.findByName(name);
         if (optionalAccount.isEmpty()) {
             throw new EntityNotFoundException("Account with name: \"%s\" does not exists!".formatted(name));
         }
@@ -107,12 +109,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void deleteAccountByName(String name) throws EntityNotFoundException {
-        Optional<Account> optionalAccount = accountRepository.findById(name);
+        Optional<Account> optionalAccount = accountRepository.findByName(name);
         if (optionalAccount.isEmpty()) {
             throw new EntityNotFoundException("Account with name: \"%s\" does not exists!".formatted(name));
         }
         authClient.deleteUser(name);
-        accountRepository.deleteById(name);
+        accountRepository.delete(optionalAccount.get());
     }
 
     @Override

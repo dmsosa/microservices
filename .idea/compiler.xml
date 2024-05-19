@@ -12,8 +12,8 @@
         <module name="noti" />
         <module name="stats" />
         <module name="service-registry" />
-        <module name="account" />
         <module name="gateway" />
+        <module name="account" />
       </profile>
     </annotationProcessing>
   </component>

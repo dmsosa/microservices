@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public interface AccountService {
     AccountDTO createDTO(Account account);
     AccountDTO createAccount(String accountName) throws EntityExistsException ;
-    AccountDTO editAccount(String name, AccountDTO accountDTO);
+    AccountDTO editAccountDetails(String name, AccountDTO accountDTO);
     AccountDTO editItems(String name, AccountDTO accountDTO);
     AccountDTO getAccountByName(String name) throws EntityNotFoundException;
     void deleteAccountByName(String name) throws EntityNotFoundException;

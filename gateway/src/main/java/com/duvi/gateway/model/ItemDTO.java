@@ -1,18 +1,20 @@
 package com.duvi.gateway.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.validation.constraints.NotNull;
+import com.duvi.gateway.model.enums.Category;
+import com.duvi.gateway.model.enums.Currency;
+import com.duvi.gateway.model.enums.Frequency;
+import com.duvi.gateway.model.enums.Type;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 
 import java.math.BigDecimal;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class Item {
+public class ItemDTO {
+    private String accountName;
     private String title;
     private String icon;
     private BigDecimal amount;

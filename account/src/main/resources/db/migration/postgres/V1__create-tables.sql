@@ -4,20 +4,23 @@ CREATE TYPE currencies as ENUM ('EUR', 'GBP', 'USD');
 CREATE TYPE item_types as ENUM('INCOME', 'EXPENSE', 'SAVING');
 
 CREATE TABLE IF NOT EXISTS accounts (
-    name VARCHAR(40) NOT NULL UNIQUE PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(40) NOT NULL UNIQUE,
     last_seen TIMESTAMP,
-    note VARCHAR(20000)
+    note VARCHAR(20000),
+    icon TEXT,
+    currency currencies DEFAULT 'USD'
 );
 
 CREATE TABLE IF NOT EXISTS items (
     id SERIAL PRIMARY KEY,
-    account_name VARCHAR(40) NOT NULL,
-    title VARCHAR(40),
+    account_id INTEGER NOT NULL,
+    title VARCHAR(40) NOT NULL UNIQUE,
     icon TEXT,
     amount INTEGER,
     category categories,
     currency currencies,
     frequency frequencies,
     type item_types,
-    FOREIGN KEY (account_name) REFERENCES accounts (name)
+    FOREIGN KEY (account_id) REFERENCES accounts (id)
 );

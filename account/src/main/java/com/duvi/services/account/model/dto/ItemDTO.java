@@ -12,9 +12,9 @@ public record ItemDTO(
         String title,
         String icon,
         BigDecimal amount,
+        Category category,
         Currency currency,
         Frequency frequency,
-        Type type,
-        Category category
+        Type type
 ){
 }

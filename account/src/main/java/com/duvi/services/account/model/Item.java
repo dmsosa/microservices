@@ -1,6 +1,7 @@
 package com.duvi.services.account.model;
 
 
+import com.duvi.services.account.model.dto.ItemDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -26,7 +27,7 @@ public class Item {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "account_name")
+    @JoinColumn(name = "account_id")
     @JsonIgnore
     private Account account;
 
@@ -39,18 +40,26 @@ public class Item {
     @NotNull
     @Min(0)
     private BigDecimal amount;
-
+    @NotNull
+    private Category category;
     @NotNull
     private Currency currency;
     @NotNull
     private Frequency frequency;
     @NotNull
     private Type type;
-    @NotNull
-    private Category category;
 
 
 
+    public Item(ItemDTO itemDTO) {
+        this.title = itemDTO.title();
+        this.icon = itemDTO.icon();
+        this.amount = itemDTO.amount();
+        this.category = itemDTO.category();
+        this.currency = itemDTO.currency();
+        this.frequency = itemDTO.frequency();
+        this.type = itemDTO.type();
+    }
 
 
 }

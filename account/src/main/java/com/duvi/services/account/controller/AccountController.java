@@ -38,7 +38,7 @@ public class AccountController {
     }
     @PostMapping("/edit/{accountName}")
     public ResponseEntity<AccountDTO> editAccount(@PathVariable String accountName, @RequestBody AccountDTO accountDTO) throws EntityNotFoundException {
-        AccountDTO updatedAccount = accountService.editAccount(accountName, accountDTO);
+        AccountDTO updatedAccount = accountService.editAccountDetails(accountName, accountDTO);
         return new ResponseEntity<>(updatedAccount, HttpStatus.OK);
     }
     @PostMapping("/save/{accountName}")

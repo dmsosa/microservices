@@ -15,6 +15,7 @@
     <div th:fragment="editorForm">
         <form th:action="@{/edit/{accountName}(accountName=${account.name})}" th:method="post" th:object="${account}" action="#" class="formation-form">
             <fieldset>
+                <input type="hidden" th:field="*{lastSeen}" th:value="*{lastSeen}"/>
                 <div>
                     <label for="accountIcon">Account Icon</label>
                     <select th:field="*{icon}" id="accountIcon" th:remove="all-but-first">
@@ -31,11 +32,11 @@
                 </div>
                 <div>
                     <label for="accountName" >Account Name</label>
-                    <input id="accountName" th:name="accountName" type="text" th:field="*{name}">
+                    <input id="accountName" th:name="accountName" type="text" th:field="*{name}" th:value="*{name}">
                 </div>
                 <div>
                     <label for="accountNote" >Account Note</label>
-                    <input id="accountNote" th:name="accountNote" type="text" th:field="*{note}">
+                    <input id="accountNote" th:name="accountNote" type="text" th:field="*{note}" th:value="*{note}">
                 </div>
                 <div th:each="item, stat : *{incomes}">
                     <input type="hidden" th:type="hidden" th:field="*{incomes[__${stat.index}__].title}" th:value="${item.title}">
@@ -62,9 +63,10 @@
     <div th:fragment="itemsForm">
         <form th:action="@{/editItems/{accountName}(accountName=${account.name})}" th:method="post" th:object="${account}" action="#" class="formation-form">
             <fieldset>
-                <input type="hidden" th:field="*{name}"/>
-                <input type="hidden" th:field="*{note}"/>
-                <input type="hidden" th:field="*{icon}"/>
+                <input type="hidden" th:field="*{name}" th:value="*{name}"/>
+                <input type="hidden" th:field="*{note}" th:value="*{note}"/>
+                <input type="hidden" th:field="*{icon}" th:value="*{icon}"/>
+                <input type="hidden" th:field="*{currency}" th:value="*{currency}"/>
                 <table>
                     <caption>Items</caption>
                     <thead>
@@ -75,19 +77,38 @@
                             <th>Category</th>
                             <th>Currency</th>
                             <th>Frequency</th>
+                            <th>
+                                <button name="addIncome" type="submit">Add income</button>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each="item, stat : *{incomes}">
                             <td th:text="${stat.count}"></td>
                             <td>
-                                <input type="text" th:field="*{items[__${stat.index}__].title}" th:text="${item.title}"/>
+                                <input type="text" th:field="*{incomes[__${stat.index}__].title}" th:text="${item.title}" th:value="${item.title}"/>
                             </td>
                             <td>
-                                <input type="number" min="0" max="50000" th:field="*{items[__${stat.index}__].amount" th:placeholder="${item.amount}">
+                                <input type="number" min="0" max="50000" th:field="*{incomes[__${stat.index}__].amount}" th:value="${item.amount}">
                             </td>
-                            <td th:text="${stat.count}"></td>
-                            <td th:text="${stat.count}"></td>
+                            <td>
+                                <select th:field="*{incomes[__${stat.index}__].category}">
+                                    <option th:each="category : ${allCategories}" th:value="${category}" th:text="#{${'categories.' + category}}"></option>
+                                </select>
+                            </td>
+                            <td>
+                                <select th:field="*{incomes[__${stat.index}__].currency}">
+                                    <option th:each="currency : ${allCurrencies}" th:value="${currency}" th:text="#{${'currencies.' + currency}}"></option>
+                                </select>
+                            </td>
+                            <td>
+                                <select th:field="*{incomes[__${stat.index}__].frequency}">
+                                    <option th:each="frequency : ${allFrequencies}" th:value="${frequency}" th:text="#{${'frequencies.' + frequency}}"></option>
+                                </select>
+                            </td>
+                            <td>
+                                <button name="removeIncome" type="submit" th:value="${stat.count}">Remove Income</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
