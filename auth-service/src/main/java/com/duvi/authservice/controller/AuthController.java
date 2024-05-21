@@ -85,11 +85,6 @@ public class AuthController {
         response.setStatus(302);
         response.setHeader("Location", redirectURL);
     }
-
-    @PutMapping("/{username}")
-    public void editUser(@PathVariable String username, @RequestBody User newUser) {
-        userService.updateUser(username, newUser);
-    }
     @DeleteMapping("/{username}")
     public void deleteUser(@PathVariable String username) throws UserNotExistsException {
         userService.deleteUser(username);

@@ -31,9 +31,4 @@ public interface AuthClient {
     )
     public void deleteUser(@PathVariable("username") String username) throws EntityNotFoundException;
 
-    @RequestMapping(
-            method = RequestMethod.PUT,
-            value = "/api/uaa/{username}"
-    )
-    public void editUser(@PathVariable("username") String username, @RequestBody User newUser);
 }

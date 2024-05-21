@@ -15,6 +15,7 @@
     <div th:fragment="editorForm">
         <form th:action="@{/edit/{accountName}(accountName=${account.name})}" th:method="post" th:object="${account}" action="#" class="formation-form">
             <fieldset>
+                <input type="hidden" th:field="*{name}" th:value="*{name}"/>
                 <input type="hidden" th:field="*{lastSeen}" th:value="*{lastSeen}"/>
                 <div>
                     <label for="accountIcon">Account Icon</label>
@@ -29,10 +30,6 @@
                         <option>rabbit</option>
                         <option>turtle</option>
                     </select>
-                </div>
-                <div>
-                    <label for="accountName" >Account Name</label>
-                    <input id="accountName" th:name="accountName" type="text" th:field="*{name}" th:value="*{name}">
                 </div>
                 <div>
                     <label for="accountNote" >Account Note</label>
@@ -61,12 +58,21 @@
         </form>
     </div>
     <div th:fragment="itemsForm">
-        <form th:action="@{/editItems/{accountName}(accountName=${account.name})}" th:method="post" th:object="${account}" action="#" class="formation-form">
+        <form th:action="@{/editItems/{accountName}(accountName=${account.name})}" th:method="get" th:object="${account}" action="#" class="formation-form">
             <fieldset>
                 <input type="hidden" th:field="*{name}" th:value="*{name}"/>
                 <input type="hidden" th:field="*{note}" th:value="*{note}"/>
                 <input type="hidden" th:field="*{icon}" th:value="*{icon}"/>
                 <input type="hidden" th:field="*{currency}" th:value="*{currency}"/>
+                <div th:each="item, stat : *{expenses}">
+                    <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].title}" th:value="${item.title}">
+                    <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].icon}" th:value="${item.icon}">
+                    <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].amount}" th:value="${item.amount}">
+                    <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].category}" th:value="${item.category}">
+                    <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].currency}" th:value="${item.currency}">
+                    <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].frequency}" th:value="${item.frequency}">
+                    <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].type}" th:value="${item.type}">
+                </div>
                 <table>
                     <caption>Items</caption>
                     <thead>
@@ -78,12 +84,13 @@
                             <th>Currency</th>
                             <th>Frequency</th>
                             <th>
-                                <button name="addIncome" type="submit">Add income</button>
+                                <button type="submit" name="addIncome" >Add income</button>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each="item, stat : *{incomes}">
+                            <input type="hidden" th:field="*{incomes[__${stat.index}__].type}" th:value="INCOME">
                             <td th:text="${stat.count}"></td>
                             <td>
                                 <input type="text" th:field="*{incomes[__${stat.index}__].title}" th:text="${item.title}" th:value="${item.title}"/>
@@ -107,7 +114,7 @@
                                 </select>
                             </td>
                             <td>
-                                <button name="removeIncome" type="submit" th:value="${stat.count}">Remove Income</button>
+                                <button name="removeIncome" type="submit" th:value="${stat.index}">Remove Income</button>
                             </td>
                         </tr>
                     </tbody>

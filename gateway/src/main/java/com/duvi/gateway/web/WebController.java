@@ -40,15 +40,15 @@ public class WebController {
         String[] iconNames = {"piggy", "bear", "fox", "boss", "cow", "secretary", "horse", "rabbit", "elephant", "turtle"};
         return Arrays.asList(iconNames);
     }
-    @ModelAttribute(name = "AllCategories")
+    @ModelAttribute(name = "allCategories")
     public List<Category> loadCategories() {
         return Arrays.asList(Category.ALL);
     }
-    @ModelAttribute(name = "AllCurrencies")
+    @ModelAttribute(name = "allCurrencies")
     public List<Currency> loadCurrencies() {
         return Arrays.asList(Currency.ALL);
     }
-    @ModelAttribute(name = "AllFrequencies")
+    @ModelAttribute(name = "allFrequencies")
     public List<Frequency> loadFrequencies() {
         return Arrays.asList(Frequency.ALL);
     }
@@ -114,8 +114,11 @@ public class WebController {
         model.addAttribute("account", updatedAccount);
         return "index";
     }
-    @RequestMapping(method = {RequestMethod.POST}, value = "/editItems/{accountName}")
-    public String editAccountItems(@PathVariable String accountName, @ModelAttribute(name = "account") AccountDTO account, BindingResult bindingResult, Model model) {
+    @RequestMapping(value = "/editItems/{accountName}")
+    public String editAccountItems(@PathVariable String accountName,
+                                   @ModelAttribute(name = "account") AccountDTO account,
+                                   BindingResult bindingResult,
+                                   Model model) {
         Mono<AccountDTO> updatedAccount = webClientBuilder.build()
                 .post()
                 .uri("/account/items/" + accountName)
@@ -126,15 +129,18 @@ public class WebController {
         return "index";
     }
 
-    @RequestMapping(method = {RequestMethod.POST}, value = "/editItems/{accountName}", params = {"addIncome"})
+    @RequestMapping(value = "/editItems/{accountName}", params = {"addIncome"})
     public String addIncomeRow(@ModelAttribute AccountDTO account, BindingResult bindingResult, Model model) {
         account.getIncomes().add(new ItemDTO());
-        return "redirect:/index";
+        model.addAttribute("account", account);
+        return "index";
     }
-    @RequestMapping(method = {RequestMethod.POST}, value = "/editItems/{accountName}", params = {"removeIncome"})
-    public String removeIncomeRow(@RequestParam Long removeIncome, @ModelAttribute AccountDTO account, BindingResult bindingResult, Model model) {
-        account.getIncomes().remove(removeIncome);
-        return "redirect:/index";
+    @RequestMapping(value = "/editItems/{accountName}", params = {"removeIncome"})
+    public String removeIncomeRow(@RequestParam Integer removeIncome, @ModelAttribute AccountDTO account, BindingResult bindingResult, Model model) {
+        ItemDTO toRemove = account.getIncomes().get(removeIncome);
+        account.getIncomes().remove(toRemove);
+        model.addAttribute("account", account);
+        return "index";
     }
 
     @RequestMapping(method = {RequestMethod.POST}, value = "/save")

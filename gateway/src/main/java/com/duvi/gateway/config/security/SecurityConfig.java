@@ -1,22 +1,19 @@
 package com.duvi.gateway.config.security;
 
-import com.netflix.appinfo.InstanceInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
+
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.InMemoryReactiveClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
+
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.web.server.SecurityWebFilterChain;
@@ -44,7 +41,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity serverHttpSecurity) throws Exception {
-
         serverHttpSecurity
                 .csrf(csrf -> csrf.disable())
                 .oauth2Login(spec -> spec.authenticationSuccessHandler(redirectSuccessHandler()))
@@ -66,6 +62,16 @@ public class SecurityConfig {
     @Bean
     ServerAuthenticationSuccessHandler redirectSuccessHandler() {
         return new RedirectToIndexAuthenticationSuccessHandler();
+    }
+    @Bean
+    ServerAuthenticationFailureHandler failureHandler() {
+        return new ServerAuthenticationFailureHandler() {
+            @Override
+            public Mono<Void> onAuthenticationFailure(WebFilterExchange webFilterExchange, AuthenticationException exception) {
+                exception.printStackTrace();
+                return Mono.empty();
+            }
+        };
     }
 
     @Bean

@@ -70,15 +70,9 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountDTO editAccountDetails(String name, AccountDTO accountDTO) {
 
-        //updating user
-        User userToUpdate = authClient.getUser(name);
-        userToUpdate.setUsername(accountDTO.name());
-        authClient.editUser(name, userToUpdate);
-
         //updating account
         Account accountToUpdate = accountRepository.findByName(name).get();
 
-        accountToUpdate.setName(accountDTO.name());
         accountToUpdate.setNote(accountDTO.note());
         accountToUpdate.setIcon(accountDTO.icon());
 
