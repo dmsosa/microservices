@@ -1,7 +1,6 @@
 package com.duvi.services.account.service.impl;
 
-import com.duvi.services.account.client.AuthClient;
-import com.duvi.services.account.client.StatClient;
+
 import com.duvi.services.account.model.Account;
 import com.duvi.services.account.model.Item;
 import com.duvi.services.account.model.dto.ItemDTO;
@@ -36,7 +35,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDTO createDTO(Item item) {
-        return new ItemDTO(item.getAccount().getName(),
+        return new ItemDTO(item.getId(), item.getAccount().getName(),
                 item.getTitle(), item.getIcon(),
                 item.getAmount(), item.getCategory(),
                 item.getCurrency(), item.getFrequency(),
@@ -44,16 +43,11 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item editOrCreateByTitle(String title, ItemDTO itemDTO) {
+    public Item editOrCreateById(Long idToUpdate, ItemDTO itemDTO) {
         Item itemToReturn;
-        Optional<Item> itemToUpdate = itemRepository.findByTitle(title);
-        if (itemToUpdate.isEmpty()) {
-            itemToReturn = new Item(itemDTO);
-            Account account = accountRepository.findByName(itemDTO.accountName()).get();
-            itemToReturn.setAccount(account);
-            return itemRepository.save(itemToReturn);
-        } else {
-            itemToReturn = itemToUpdate.get();
+
+        if (idToUpdate != null) {
+            itemToReturn = itemRepository.findById(idToUpdate).get();
             itemToReturn.setTitle(itemDTO.title());
             itemToReturn.setIcon(itemDTO.icon());
             itemToReturn.setAmount(itemDTO.amount());
@@ -61,15 +55,19 @@ public class ItemServiceImpl implements ItemService {
             itemToReturn.setCategory(itemDTO.category());
             itemToReturn.setType(itemDTO.type());
             itemToReturn.setFrequency(itemDTO.frequency());
-            return itemRepository.save(itemToReturn);
+        } else {
+            itemToReturn = new Item(itemDTO);
+            Account account = accountRepository.findByName(itemDTO.accountName()).get();
+            itemToReturn.setAccount(account);
         }
+        return itemRepository.save(itemToReturn);
     }
 
     @Override
     public Set<Item> editOrCreateAll(Iterable<ItemDTO> itemIterable) {
         Set<Item> itemSet = new HashSet<Item>();
         for (ItemDTO itemToUpdate : itemIterable) {
-            Item updatedItem = this.editOrCreateByTitle(itemToUpdate.title(), itemToUpdate);
+            Item updatedItem = this.editOrCreateById(itemToUpdate.id(), itemToUpdate);
             itemSet.add(updatedItem);
         }
         return itemSet;

@@ -20,7 +20,7 @@
                 <div>
                     <label for="accountIcon">Account Icon</label>
                     <select th:field="*{icon}" id="accountIcon" th:remove="all-but-first">
-                        <option th:value="${iconName}" th:each="iconName : ${iconNames}" th:text="#{${'icons.' + iconName}}">piggy</option>
+                        <option th:value="${icon.name()}" th:each="icon : ${allAccountIcons}" th:text="#{${'icons.' + icon}}">piggy</option>
                         <option>bear</option>
                         <option>fox</option>
                         <option>boss</option>
@@ -65,6 +65,8 @@
                 <input type="hidden" th:field="*{icon}" th:value="*{icon}"/>
                 <input type="hidden" th:field="*{currency}" th:value="*{currency}"/>
                 <div th:each="item, stat : *{expenses}">
+                    <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].id}" th:value=${item.id}>
+                    <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].accountName}" th:value=${item.accountName}>
                     <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].title}" th:value="${item.title}">
                     <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].icon}" th:value="${item.icon}">
                     <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].amount}" th:value="${item.amount}">
@@ -90,6 +92,8 @@
                     </thead>
                     <tbody>
                         <tr th:each="item, stat : *{incomes}">
+                            <input type="hidden" th:field="*{incomes[__${stat.index}__].id}" th:value=${item.id}>
+                            <input type="hidden" th:field="*{incomes[__${stat.index}__].accountName}" th:value=${item.accountName}>
                             <input type="hidden" th:field="*{incomes[__${stat.index}__].type}" th:value="INCOME">
                             <td th:text="${stat.count}"></td>
                             <td>
@@ -97,6 +101,11 @@
                             </td>
                             <td>
                                 <input type="number" min="0" max="50000" th:field="*{incomes[__${stat.index}__].amount}" th:value="${item.amount}">
+                            </td>
+                            <td>
+                                <select th:field="*{incomes[__${stat.index}__].icon}">
+                                    <option th:each="icon : ${allItemIcons}" th:value="${icon.name()}" th:text="#{${'icons.' + icon.name()}}"></option>
+                                </select>
                             </td>
                             <td>
                                 <select th:field="*{incomes[__${stat.index}__].category}">

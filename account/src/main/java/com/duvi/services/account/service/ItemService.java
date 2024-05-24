@@ -11,7 +11,7 @@ import java.util.Set;
 public interface ItemService {
     public List<ItemDTO> createDTOForAll(Iterable<Item> items);
     public ItemDTO createDTO(Item item);
-    public Item editOrCreateByTitle(String title, ItemDTO itemDTO);
+    public Item editOrCreateById(Long idToUpdate, ItemDTO itemDTO);
 
     public Set<Item> editOrCreateAll(Iterable<ItemDTO> itemIterable);
 }

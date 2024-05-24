@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 public class ItemDTO {
+    private Long id;
     private String accountName;
     private String title;
     private String icon;

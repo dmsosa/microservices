@@ -1,9 +1,7 @@
 package com.duvi.gateway.web;
 
 import com.duvi.gateway.model.*;
-import com.duvi.gateway.model.enums.Category;
-import com.duvi.gateway.model.enums.Currency;
-import com.duvi.gateway.model.enums.Frequency;
+import com.duvi.gateway.model.enums.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.oidc.session.InMemoryOidcSessionRegistry;
+import org.springframework.security.oauth2.client.oidc.session.OidcSessionRegistry;
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
 
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.server.adapter.DefaultServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -35,10 +36,13 @@ public class WebController {
     }
 
 
-    @ModelAttribute(name = "iconNames")
-    public List<String> loadIconNames() {
-        String[] iconNames = {"piggy", "bear", "fox", "boss", "cow", "secretary", "horse", "rabbit", "elephant", "turtle"};
-        return Arrays.asList(iconNames);
+    @ModelAttribute(name = "allAccountIcons")
+    public List<AccountIcon> allAccountIcons() {
+        return Arrays.asList(AccountIcon.ALL);
+    }
+    @ModelAttribute(name = "allItemIcons")
+    public List<ItemIcon> allItemIcons() {
+        return Arrays.asList(ItemIcon.ALL);
     }
     @ModelAttribute(name = "allCategories")
     public List<Category> loadCategories() {
@@ -68,7 +72,6 @@ public class WebController {
         Mono<AccountDTO> accountMono;
         DefaultOidcUser user = (DefaultOidcUser) authentication.getPrincipal();
         String username = user.getName();
-
         if (model.getAttribute("account") != null) {
             return "index";
         }
@@ -91,7 +94,7 @@ public class WebController {
                             .uri("/account/" + username)
                             .retrieve()
                             .bodyToMono(AccountDTO.class)
-                            .timeout(Duration.ofSeconds(3));}));
+                            .timeout(Duration.ofSeconds(5));}));
 
         //Get statistics of account
         model.addAttribute("account", accountMono);

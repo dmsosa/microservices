@@ -1,0 +1,8 @@
+package com.duvi.gateway.model.enums;
+
+public enum ItemIcon {
+    BOOK, CAR, CLEAN, EDUCATION, ENTERTAINMENT, FOOD, HEALTH, HOUSE, INCOME, SPORT, TAX, TOOLS, TRANSFER, WORK;
+
+    public static final ItemIcon[] ALL = {BOOK, CAR, CLEAN, EDUCATION, ENTERTAINMENT, FOOD, HEALTH, HOUSE, INCOME, SPORT, TAX, TOOLS, TRANSFER, WORK};
+
+}

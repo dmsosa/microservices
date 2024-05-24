@@ -8,6 +8,7 @@ import com.duvi.services.account.model.Type;
 import java.math.BigDecimal;
 
 public record ItemDTO(
+        Long id,
         String accountName,
         String title,
         String icon,
