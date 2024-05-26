@@ -2,6 +2,7 @@ package com.duvi.services.account.config.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.security.config.Customizer;
@@ -23,6 +24,8 @@ import java.util.List;
 public class JwtCustomizer implements Customizer<OAuth2ResourceServerConfigurer<HttpSecurity>.JwtConfigurer> {
 
     private static Logger logger = LoggerFactory.getLogger(JwtCustomizer.class);
+    @Value("${app.issuer-uri}")
+    private String hostIssuerUri;
     private DiscoveryClient discoveryClient;
     private OAuth2TokenValidator<Jwt> jwtValidator = new JwtValidator();
 
@@ -47,7 +50,8 @@ public class JwtCustomizer implements Customizer<OAuth2ResourceServerConfigurer<
     private String findIssuerUri() {
         List<ServiceInstance> authInstances = discoveryClient.getInstances("auth-service");
         ServiceInstance authService = authInstances.getFirst();
-        return authService.getUri().toString() + "/api/uaa";
+        String issuerUri = !hostIssuerUri.isBlank() ? hostIssuerUri : authService.getUri().toString();
+        return issuerUri + "/api/uaa";
     }
 
     static class JwtValidator implements OAuth2TokenValidator<Jwt> {

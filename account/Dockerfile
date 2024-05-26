@@ -1,7 +1,7 @@
 FROM openjdk:21 as builder
 WORKDIR app
-COPY ./target/accountDTO-0.0.1-SNAPSHOT.jar ./app/
-RUN java -Djarmode=layertools -jar ./app/accountDTO-0.0.1-SNAPSHOT.jar extract
+COPY ./target/account-0.0.1-SNAPSHOT.jar ./app/
+RUN java -Djarmode=layertools -jar ./app/account-0.0.1-SNAPSHOT.jar extract
 
 FROM openjdk:21
 

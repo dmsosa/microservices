@@ -1,5 +1,6 @@
 package com.duvi.services.account.config.security;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +27,8 @@ import java.util.Map;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
+    @Value("${app.issuer-uri}")
+    private String hostIssuerUri;
 
     private DiscoveryClient discoveryClient;
     public SecurityConfig(DiscoveryClient discoveryClient) {
@@ -77,11 +80,11 @@ public class SecurityConfig {
     private Map<String, String> findAuthServiceUris() {
         //finding auth instances
         ServiceInstance authInstance = discoveryClient.getInstances("auth-service").getFirst();
-
+        String issuerUri = !hostIssuerUri.isBlank() ? hostIssuerUri : authInstance.getUri().toString();
         Map<String, String> map = new HashMap<>();
-        map.put("issuerUri", authInstance.getUri() + "/api/uaa");
-        map.put("tokenUri", authInstance.getUri() + "/api/uaa/oauth2/token");
-        map.put("authorizationUri", authInstance.getUri() + "/api/uaa/oauth2/authorize");
+        map.put("issuerUri", issuerUri + "/api/uaa");
+        map.put("tokenUri", issuerUri + "/api/uaa/oauth2/token");
+        map.put("authorizationUri", issuerUri + "/api/uaa/oauth2/authorize");
         return map;
     }
 

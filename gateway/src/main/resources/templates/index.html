@@ -16,7 +16,7 @@
             <div class="row">
                 <div class="col view-col">
                     <div class="account-card">
-                        <img src="../static/images/account/piggy.png" th:src="@{/images/{icon}(icon=${account.icon + '.png'})}" alt="account-icon">
+                        <img src="../static/images/account/piggy.png" th:src="@{/images/account/{icon}(icon=${account.icon + '.png'})}" alt="account-icon">
                         <h2 th:text="${account.name}">Account name</h2>
                         <p th:text="${account.note}">Account note come here to put additional information</p>
                     </div>

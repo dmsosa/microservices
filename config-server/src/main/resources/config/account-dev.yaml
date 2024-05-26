@@ -1,5 +1,6 @@
 database: h2
-
+app:
+  issuer-uri: ${HOST_ISSUER_URI:}
 server:
   servlet:
     context-path: /api/account

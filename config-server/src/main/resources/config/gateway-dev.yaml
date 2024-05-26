@@ -1,6 +1,8 @@
 server:
   port:
     8061
+app:
+  issuer-uri: ${HOST_ISSUER_URI:}
 spring:
   profile: dev
   cloud:
