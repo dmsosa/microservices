@@ -1,7 +1,1 @@
-account/target/*
-auth-service/target/*
-config-server/target/*
-gateway/target/*
-noti/target/*
-service-registry/target/*
-stats/target/*
+**/target/**
