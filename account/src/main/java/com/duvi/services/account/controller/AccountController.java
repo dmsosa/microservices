@@ -41,6 +41,12 @@ public class AccountController {
         AccountDTO updatedAccount = accountService.editAccountDetails(accountName, accountDTO);
         return new ResponseEntity<>(updatedAccount, HttpStatus.OK);
     }
+    //Item methods
+    @PostMapping("/items/{accountName}")
+    public ResponseEntity<AccountDTO> updateItems(@PathVariable String accountName, @RequestBody AccountDTO accountDTO) throws EntityNotFoundException {
+        AccountDTO account = accountService.editItems(accountName, accountDTO);
+        return new ResponseEntity<>(account, HttpStatus.OK);
+    }
     @PostMapping("/save/{accountName}")
     public void saveChanges(@PathVariable String accountName) throws EntityNotFoundException {
         AccountDTO account = accountService.getAccountByName(accountName);
@@ -54,10 +60,5 @@ public class AccountController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //Item methods
-    @PostMapping("/items/{accountName}")
-    public ResponseEntity<AccountDTO> updateItems(@PathVariable String accountName, @RequestBody AccountDTO accountDTO) throws EntityNotFoundException {
-        AccountDTO account = accountService.editItems(accountName, accountDTO);
-        return new ResponseEntity<>(account, HttpStatus.OK);
-    }
+
 }

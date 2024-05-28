@@ -1,5 +1,7 @@
 package com.duvi.services.stats.domain;
 
+import com.duvi.services.stats.domain.enums.Currency;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Map;

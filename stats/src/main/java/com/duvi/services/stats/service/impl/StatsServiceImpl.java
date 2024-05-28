@@ -2,6 +2,9 @@ package com.duvi.services.stats.service.impl;
 
 import com.duvi.services.stats.client.AccountClient;
 import com.duvi.services.stats.domain.*;
+import com.duvi.services.stats.domain.dto.AccountDTO;
+import com.duvi.services.stats.domain.dto.ItemDTO;
+import com.duvi.services.stats.domain.dto.StatsDTO;
 import com.duvi.services.stats.domain.exception.EntityExistsException;
 import com.duvi.services.stats.repository.ItemRepository;
 import com.duvi.services.stats.repository.StatsRepository;
@@ -28,25 +31,40 @@ public class StatsServiceImpl implements StatsService {
         this.accountClient = accountClient;
     }
 
-
     @Override
-    public Flux<Stats> getStatsOfAccountByName(String accountName) {
-        return Flux.fromStream(statsRepository.findAllByAccountName(accountName).stream());
+    public StatsDTO createDTO(Stats stats) {
+        return new StatsDTO(
+                stats.getId(),
+                stats.getAccountName(),
+                stats.getStatsDate(),
+                stats.getTotalIncomes(),
+                stats.getTotalExpenses()
+        );
+    }
+    @Override
+    public Flux<StatsDTO> getStatsOfAccountByName(String accountName) {
+        List<Stats> statsList = statsRepository.findAllByAccountNameOrderByStatsDateDesc(accountName);
+        Stream<StatsDTO> dtoStream = statsList.stream().map(this::createDTO);
+        return Flux.fromStream(dtoStream);
     }
 
     @Override
-    public Mono<Stats> createStats(AccountDTO account) {
+    public Mono<StatsDTO> createStats(AccountDTO account) throws EntityExistsException {
 
         Boolean nullIncomes = account.getIncomes() == null || account.getIncomes().isEmpty();
         Boolean nullExpenses = account.getExpenses() == null || account.getExpenses().isEmpty();
         if (nullIncomes && nullExpenses) {
             throw new RuntimeException("This account have no items yet!");
         }
+        if (statsRepository.findByAccountNameAndStatsDate(account.getName(), account.getLastSeen()).isPresent()) {
+            throw new EntityExistsException("Stats for this date already exist!");
+        }
         //CREATE STATS
         Stats stats = new Stats();
         stats.setAccountName(account.getName());
         stats.setStatsDate(account.getLastSeen());
-        List<Item> allItems = Stream.concat(account.getIncomes().stream(), account.getExpenses().stream()).toList();
+
+        List<ItemDTO> allItems = Stream.concat(account.getIncomes().stream(), account.getExpenses().stream()).toList();
 
         //Calculate total Incomes and total Expenses
         BigDecimal totalIncomes = calculateTotal(account.getIncomes());
@@ -54,19 +72,33 @@ public class StatsServiceImpl implements StatsService {
         stats.setTotalIncomes(totalIncomes);
         stats.setTotalExpenses(totalExpenses);
 
+        //Create new item if it does not exist
         //Set stat to each item and save
-        //Cascade Type is Merge, so while saving the items, the stats will be saved as well
-        allItems.forEach(item -> item.setStats(stats));
-        itemRepository.saveAll(allItems);
+        //Cascade Type is Merge, so when items are saved, so are the stats
+        Stats savedStats = statsRepository.save(stats);
 
-        return Mono.just(stats);
+        allItems.forEach(itemDTO -> {
+            Item item;
+            item = new Item();
+            item.setTitle(itemDTO.title());
+            item.setAmount(itemDTO.amount());
+            item.setCategory(itemDTO.category());
+            item.setCurrency(itemDTO.currency());
+            item.setFrequency(itemDTO.frequency());
+            item.setType(itemDTO.type());
+            item.setStats(savedStats);
+            item.setStatsDate(savedStats.getStatsDate());
+            itemRepository.save(item);
+        });
+
+        return Mono.just(this.createDTO(savedStats));
     }
 
     @Override
-    public BigDecimal calculateTotal(List<Item> items) {
+    public BigDecimal calculateTotal(List<ItemDTO> items) {
         BigDecimal total = BigDecimal.valueOf(0);
-        for (Item i : items) {
-            BigDecimal value = i.getAmount().multiply(i.getFrequency().getRepetition());
+        for (ItemDTO i : items) {
+            BigDecimal value = i.amount().multiply(i.frequency().getRepetition());
             total = total.add(value);
         }
         return total.setScale(2, RoundingMode.HALF_UP);

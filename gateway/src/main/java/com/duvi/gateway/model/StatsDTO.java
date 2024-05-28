@@ -12,10 +12,9 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class StatsDTO {
+    private Long id;
     private String accountName;
     private LocalDateTime statsDate;
-    private List<ItemDTO> itemDTOS;
     private BigDecimal totalIncomes;
     private BigDecimal totalExpenses;
-    private BigDecimal totalSavings;
 }

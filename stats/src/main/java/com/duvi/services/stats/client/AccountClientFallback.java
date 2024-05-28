@@ -1,6 +1,6 @@
 package com.duvi.services.stats.client;
 
-import com.duvi.services.stats.domain.AccountDTO;
+import com.duvi.services.stats.domain.dto.AccountDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

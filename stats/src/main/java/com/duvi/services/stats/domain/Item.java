@@ -1,6 +1,10 @@
 package com.duvi.services.stats.domain;
 
 
+import com.duvi.services.stats.domain.enums.Category;
+import com.duvi.services.stats.domain.enums.Currency;
+import com.duvi.services.stats.domain.enums.Frequency;
+import com.duvi.services.stats.domain.enums.ItemType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 
 @Table(name = "items")
@@ -27,6 +32,7 @@ public class Item {
     @JoinColumn(name = "stats_id")
     @JsonIgnore
     private Stats stats;
+    private LocalDateTime statsDate;
 
     private String title;
 

@@ -20,6 +20,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.adapter.DefaultServerWebExchange;
+import org.thymeleaf.spring6.context.webflux.IReactiveDataDriverContextVariable;
+import org.thymeleaf.spring6.context.webflux.ReactiveDataDriverContextVariable;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -72,32 +75,40 @@ public class WebController {
         Mono<AccountDTO> accountMono;
         DefaultOidcUser user = (DefaultOidcUser) authentication.getPrincipal();
         String username = user.getName();
-        if (model.getAttribute("account") != null) {
-            return "index";
-        }
-        //If account is null, then the gateway gets it or creates a new account
-        accountMono = webClientBuilder
-                .build()
-                .get()
-                .uri("/account/" + username)
-                .retrieve()
-                .bodyToMono(AccountDTO.class)
-                .switchIfEmpty( webClientBuilder.build()
-                        .post()
-                        .uri("/account/create/" + username)
-                        .retrieve().bodyToMono(AccountDTO.class))
-                .onErrorResume((e -> {
-                    logger.info("Exception Catched: " + e.getMessage());
-                    return webClientBuilder
-                            .build()
-                            .get()
-                            .uri("/account/" + username)
-                            .retrieve()
-                            .bodyToMono(AccountDTO.class)
-                            .timeout(Duration.ofSeconds(5));}));
 
-        //Get statistics of account
-        model.addAttribute("account", accountMono);
+        //If account is null, then the gateway gets it or creates a new account
+
+        if (model.getAttribute("account") == null) {
+            accountMono = webClientBuilder
+                    .build()
+                    .get()
+                    .uri("/account/" + username)
+                    .retrieve()
+                    .bodyToMono(AccountDTO.class)
+                    .switchIfEmpty( webClientBuilder.build()
+                            .post()
+                            .uri("/account/create/" + username)
+                            .retrieve().bodyToMono(AccountDTO.class));
+
+            model.addAttribute("account", accountMono);
+
+            //Get stats of account or null if empty
+            Flux<StatsDTO> statsDTOFlux = webClientBuilder.build()
+                    .get()
+                    .uri("/stats/" + username)
+                    .retrieve()
+                    .bodyToFlux(StatsDTO.class)
+                    .switchIfEmpty(Flux.just(new StatsDTO()))
+                    .onErrorResume(e ->
+                            {
+                                System.out.println("catched error " + e.getMessage());
+                                return Flux.just(new StatsDTO());
+                            }
+                    );
+
+            IReactiveDataDriverContextVariable statsVariable = new ReactiveDataDriverContextVariable(statsDTOFlux);
+            model.addAttribute("stats", statsVariable);
+        }
 
         return "index";
     }
@@ -134,7 +145,10 @@ public class WebController {
 
     @RequestMapping(value = "/editItems/{accountName}", params = {"addIncome"})
     public String addIncomeRow(@ModelAttribute AccountDTO account, BindingResult bindingResult, Model model) {
-        account.getIncomes().add(new ItemDTO());
+        ItemDTO itemToAdd = new ItemDTO();
+        itemToAdd.setAccountName(account.getName());
+        itemToAdd.setType(Type.INCOME);
+        account.getIncomes().add(itemToAdd);
         model.addAttribute("account", account);
         return "index";
     }
@@ -146,15 +160,28 @@ public class WebController {
         return "index";
     }
 
-    @RequestMapping(method = {RequestMethod.POST}, value = "/save")
+    @RequestMapping(method = {RequestMethod.POST}, value = "/saveStats")
     public String saveAccountStats(@ModelAttribute AccountDTO accountDTO, BindingResult bindingResult, Model model) {
-        webClientBuilder.build()
+        Flux<StatsDTO> statsDTOFlux = webClientBuilder.build()
                 .post()
-                .uri("/stats/" + accountDTO.getName())
+                .uri("/stats/save")
                 .bodyValue(accountDTO)
                 .retrieve()
-                .toBodilessEntity()
-                .subscribe( v -> v.getStatusCode());
-        return "redirect:/index";
+                .bodyToFlux(StatsDTO.class)
+                .onErrorResume(e ->
+                        {
+                            System.out.println("catched error " + e.getMessage());
+                            return webClientBuilder.build()
+                                    .get()
+                                    .uri("/stats/" + accountDTO.getName())
+                                    .retrieve()
+                                    .bodyToFlux(StatsDTO.class);
+                        }
+                );
+
+        IReactiveDataDriverContextVariable statsVariable = new ReactiveDataDriverContextVariable(statsDTOFlux);
+        model.addAttribute("account", accountDTO);
+        model.addAttribute("stats", statsVariable);
+        return "index";
     }
 }

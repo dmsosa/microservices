@@ -12,6 +12,6 @@ public interface ItemService {
     public List<ItemDTO> createDTOForAll(Iterable<Item> items);
     public ItemDTO createDTO(Item item);
     public Item editOrCreateById(Long idToUpdate, ItemDTO itemDTO);
-
     public Set<Item> editOrCreateAll(Iterable<ItemDTO> itemIterable);
+    public void compareAndDeleteItems(Set<Item> oldItems, Set<Item> items);
 }

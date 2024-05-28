@@ -1,6 +1,7 @@
-package com.duvi.services.stats.domain;
+package com.duvi.services.stats.domain.dto;
 
 
+import com.duvi.services.stats.domain.Item;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +13,7 @@ import java.util.List;
 public class AccountDTO {
     private String name;
     private LocalDateTime lastSeen;
-    private List<Item> incomes;
-    private List<Item> expenses;
+    private List<ItemDTO> incomes;
+    private List<ItemDTO> expenses;
     private String note;
 }

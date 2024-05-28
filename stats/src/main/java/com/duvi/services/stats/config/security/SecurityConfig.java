@@ -37,6 +37,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().authenticated())
+                .oauth2Client(Customizer.withDefaults())
                 .oauth2ResourceServer(rs -> rs.jwt(jwtConfigCustomizer()))
                 .build();
     }
@@ -73,7 +74,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    ClientRegistrationRepository clientRegistrationRepository() {
+    public ClientRegistrationRepository clientRegistrationRepository() {
         return new InMemoryClientRegistrationRepository(clientRegistration());
     }
 }

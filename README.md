@@ -1,63 +1,153 @@
-## Microdienste Projekt
+# Microservices project
 
-[![English Readme](https://img.shields.io/badge/lang-en-green)](https://github.com/dmsosa/microservices/blob/main/README.md)
-[![Deutsch Readme](https://img.shields.io/badge/lang-de-blue)](https://github.com/dmsosa/microservices/blob/main/README.de.md)
 
-Microdienste Projekt ist nach "Piggymetrics" von  @sqshq "Alexander Lukyanchikov" inspiriert. Aber mit dieses Implementation benutzer wir PostgreSQL und ein einfacher Statsdienst, der Wirkung das Programm ist nicht die Gleiche, aber der Hauptsziele ist, ein Mikrodienstearchitektur zu zeigen.
 
-Jedes Dienst verfügt über eine eigene Dokumentation, dessen mit S[README.md](README.md)wagger erstellt wurde, und auch jedes seine eigenen Tests.
+ 
 
-### Status: Development
 
-ZU MACHEN:
-* Unit test fur jeder Dienst
-  * WebTestClient Nutzen (AUTH Dienst)
-* CSRF Token zu hinzufugen
-* Customize Swagger Docs page
-* Encrypt client secrets
-* Auth mit OAuth
-  * Password Grant (JWT Token) fur Kunden
-  * Client Grant fur Inneresdienstekommunikation
-  
 
-### Dokumentation:
+[![English Readme](https://img.shields.io/badge/lang-en-green)](https://github.com/dmsosa/microservices/blob/main/README.md) [![German Readme](https://img.shields.io/badge/lang-de-blue)](https://github.com/dmsosa/microservices/blob/main/readmes/README.de.md) [![French Readme](https://img.shields.io/badge/lang-de-blue)](https://github.com/dmsosa/microservices/blob/main/readmes/README.fr.md)
 
-Die Dokumentation unsere APIs mit Swagger entwickelt war, um en ein einfaches, verstandliche Weise die seinen Funktionen zu erklaren.
 
-### DIENST / SERVICES:
 
-##### GATEWAY SERVICE /  GATEWAY DIENST:
+ 
 
-Alle die dienste in ein einzige Ort, es erfull die folgenden funktionen:
 
-1. Es verwendet ein WebRequest, um anfrage zu sich selbst zu senden
-2. Die Templates des Frontends zu geben 
 
-##### Die Hindernisse, mit denen wir konfrontiert waren
+Microservices project is inspired by [ piggymetrics ](https://github.com/sqshq/piggymetrics/tree/master) by @sqshq "Alexander Lukyanchikov", but this implementation uses PostgreSQL and a simple business logic, the main goals of this project is an example of microservices.
 
-Der Authentikation unseres WebClient, durch ein ExchangeFilterFunction gelost war.
-Da das ThymeleafTemplateEngine nur ein ReactiveDataDrivenContextVariable laden kann, wir versuchte die folgende 'Workarounds':
 
-- Ein "AccountContextVariable" klass zu erstellen, um alle die Datei zu erhalten (dieses schauen sie in commit 370a8824572c0d4832e1c21726307de5d3174131 mit Titel 'AccountContextVariable'), wennschon dieses Losung gelauft hat, ich nutzen es nicht am liebsten, denn man einfach vorstellen wenn wir Datei von 10 APIs nutzen brauchen, es wurde ein grosse Kopfschmerzen werden.
-- "portlets" nutzen.
-- Ein View fur jedes API Datei erstellen.
 
-#### AUTH SERVICE / AUTH DIENST:
+TechStack: PostgreSQL, Spring, Docker
 
-Es ist ein Sicherheitserver, womit benutzere das login und register machen kann, wir nutzen OAuth2 sowohl fur ein Login mit anderen Nutzerkonto von verschiedene Dienste zu erlauben, als auch Erlaubnis von unsere Dienste notig zu machen.
+
+
+The obstacles that I found during the development of the project can be found in other "somewhat . md" files, because I did not want to make this text either very large or mixed in topics.
+
+
+
+### Documentation:
+
+
+
+The documentation of our APIs developed with Swagger was to explain its features.
+
+
+
+### SERVICES:
+
+##### GATEWAY SERVICE:
+
+
+
+Through the gateway it is possible to communicate with any service.
+
+
+
+It was also used to display templates with Thymeleaf for a simple UI.
+
+
+
+#### AUTH SERVICE:
+
+
+
+Security server that allows customers to login and register in our app. OAuth2 security can also be set up for service-to-service communication.
+
+
 
 Grant Types:
 
-1. Client Credentials:
-Es ist benutz, so ein Dienst anfragen zu ein anderes authorisiert werden konnen, ohne neuen Beglaubigungsschreiben zu geben
+
+
+1. Client Credentials (used for every service except the gateway):
+
+
+
+It is used so that one service request to another can be authorized without giving a new credential
+
+
 
 2. Authorization Code:
-Unseres Gateway eine Art Kunde sein, um die anfrage zu jedes Dienst zu senden, aber es muss autorisiert bei die AuthService sein.
 
-#### ACCOUNT SERVICE / ACCOUNT DIENST:
 
-* Example of MVC Rest API, blocking, synchronous
 
-#### STATS SERVICE / STAT DIENST:
+Our gateway must be a type of customer to send the request to any service, but it must be authorized by the AuthService.
 
-* Ich gilt es, dieses Dienst vollreaktiv zu machen, aber es nutzen RDBMS mit JPA, vielleicht spater ein MongoDB implementiert werden konnen
+
+
+#### ACCOUNT SERVICE:
+
+
+
+Example of a Restful API, blocking, synchronous, it will save, receive and give customer accounts and the current items of each account.
+
+
+
+**Context Path:** /api/stats/
+
+
+
+  Open Endpoint:
+
+| Method | Endpoints| Request Body | Description |
+
+|--|--|--|--|
+
+| GET | /demo | | get demo account|
+
+| POST | /save/demo | | Save stats for demo account |
+
+
+
+
+
+  Secured endpoints
+
+| Method | Endpoints | Description |
+
+|--|--|--|
+
+| GET | /{accountName} | Get account by name|
+
+| POST | /create/{accountName} | Create Account |
+
+| POST | /save/{accountName} | Save account stats |
+
+| POST | /edit/{accountName} | Edit Account|
+
+| POST | /items/{accountName} | Edit Account Items|
+
+| DELETE| /{accountName} | Remove account by name|
+
+
+
+#### STAT SERVICE:
+
+
+
+Example of a Reactive API, nonblocking, asynchronous, it will save, receive and give account statistics and all the items of each account. I aim to make this service fully reactive, but it will use RDBMS with JPA, perhaps a MongoDB can be implemented later
+
+
+
+  Open Endpoint:
+
+| Method | Endpoints |Request Body | Description |
+
+|--|--|--|--|
+
+| GET | /demo | | get demo stats |
+
+
+
+
+
+  Secured endpoints
+
+| Method | Endpoints |Request Body| Description |
+
+|--|--|--|--|
+
+| GET| /{accountName}| | Get stats for account
+
+| POST | /save| AccountDTO| Save stats for account |

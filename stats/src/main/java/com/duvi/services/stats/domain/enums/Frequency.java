@@ -1,4 +1,4 @@
-package com.duvi.services.stats.domain;
+package com.duvi.services.stats.domain.enums;
 
 import java.math.BigDecimal;
 

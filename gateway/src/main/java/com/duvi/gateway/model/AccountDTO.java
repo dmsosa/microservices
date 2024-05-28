@@ -14,9 +14,9 @@ import java.util.List;
 public class AccountDTO {
     private String name;
     private LocalDateTime lastSeen;
-    private String note;
-    private String icon;
     private List<ItemDTO> incomes;
     private List<ItemDTO> expenses;
+    private String note;
+    private String icon;
     private Currency currency;
 }

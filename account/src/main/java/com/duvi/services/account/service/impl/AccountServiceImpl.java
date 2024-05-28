@@ -86,6 +86,10 @@ public class AccountServiceImpl implements AccountService {
 
         Set<ItemDTO> itemSet = Stream.concat(accountDTO.incomes().stream(), accountDTO.expenses().stream()).collect(Collectors.toSet());
         Set<Item> items = itemService.editOrCreateAll(itemSet);
+        Set<Item> oldItems = account.getItems();
+
+        itemService.compareAndDeleteItems(oldItems, items);
+
         account.setItems(items);
         account.setLastSeen(LocalDateTime.now());
 

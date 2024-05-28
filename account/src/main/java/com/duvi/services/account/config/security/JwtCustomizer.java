@@ -24,8 +24,6 @@ import java.util.List;
 public class JwtCustomizer implements Customizer<OAuth2ResourceServerConfigurer<HttpSecurity>.JwtConfigurer> {
 
     private static Logger logger = LoggerFactory.getLogger(JwtCustomizer.class);
-    @Value("${app.issuer-uri}")
-    private String hostIssuerUri;
     private DiscoveryClient discoveryClient;
     private OAuth2TokenValidator<Jwt> jwtValidator = new JwtValidator();
 
@@ -50,8 +48,7 @@ public class JwtCustomizer implements Customizer<OAuth2ResourceServerConfigurer<
     private String findIssuerUri() {
         List<ServiceInstance> authInstances = discoveryClient.getInstances("auth-service");
         ServiceInstance authService = authInstances.getFirst();
-        String issuerUri = !hostIssuerUri.isBlank() ? hostIssuerUri : authService.getUri().toString();
-        return issuerUri + "/api/uaa";
+        return authService.getUri().toString() + "/api/uaa";
     }
 
     static class JwtValidator implements OAuth2TokenValidator<Jwt> {

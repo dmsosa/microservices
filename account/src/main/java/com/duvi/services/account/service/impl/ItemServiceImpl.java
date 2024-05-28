@@ -72,4 +72,13 @@ public class ItemServiceImpl implements ItemService {
         }
         return itemSet;
     }
+    @Override
+    public void compareAndDeleteItems(Set<Item> oldItems, Set<Item> items) {
+        for (Item oldItem : oldItems) {
+            if (!items.contains(oldItem)) {
+                itemRepository.delete(oldItem);
+            }
+        }
+    }
+
 }

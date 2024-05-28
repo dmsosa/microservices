@@ -1,7 +1,8 @@
 package com.duvi.services.stats.controller;
 
-import com.duvi.services.stats.domain.AccountDTO;
-import com.duvi.services.stats.domain.Stats;
+import com.duvi.services.stats.domain.dto.AccountDTO;
+import com.duvi.services.stats.domain.dto.StatsDTO;
+import com.duvi.services.stats.domain.exception.EntityExistsException;
 import com.duvi.services.stats.service.StatsService;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -17,11 +18,11 @@ public class StatsController {
     }
 
     @GetMapping("/{accountName}")
-    public Flux<Stats> getStatsOfAccount(@PathVariable String accountName) {
+    public Flux<StatsDTO> getStatsOfAccount(@PathVariable String accountName) {
         return statsService.getStatsOfAccountByName(accountName);
     }
     @PostMapping("/save")
-    public Mono<Stats> saveStatsOfAccount(@RequestBody AccountDTO accountDTO) {
+    public Mono<StatsDTO> saveStatsOfAccount(@RequestBody AccountDTO accountDTO) throws EntityExistsException {
         return statsService.createStats(accountDTO);
     }
 }

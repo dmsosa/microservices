@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface StatsRepository extends JpaRepository<Stats, Long> {
     List<Stats> findAllByAccountName(String accountName);
+    List<Stats> findAllByAccountNameOrderByStatsDateDesc(String accountName);
 
     Optional<Stats> findByAccountNameAndStatsDate(String accountName, LocalDateTime statsDate);
 
