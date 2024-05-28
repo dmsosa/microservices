@@ -83,71 +83,42 @@ Our gateway must be a type of customer to send the request to any service, but i
 Example of a Restful API, blocking, synchronous, it will save, receive and give customer accounts and the current items of each account.
 
 
-
-**Context Path:** /api/stats/
-
+**Context Path:** /api/account/
 
 
-  Open Endpoint:
-
+    Open Endpoint:
 | Method | Endpoints| Request Body | Description |
-
 |--|--|--|--|
-
 | GET | /demo | | get demo account|
-
 | POST | /save/demo | | Save stats for demo account |
 
-
-
-
-
-  Secured endpoints
-
+    Secured endpoints
 | Method | Endpoints | Description |
-
 |--|--|--|
-
 | GET | /{accountName} | Get account by name|
-
 | POST | /create/{accountName} | Create Account |
-
 | POST | /save/{accountName} | Save account stats |
-
 | POST | /edit/{accountName} | Edit Account|
-
 | POST | /items/{accountName} | Edit Account Items|
-
 | DELETE| /{accountName} | Remove account by name|
 
 
 
 #### STAT SERVICE:
 
-
+**Context Path:** /api/stats/
 
 Example of a Reactive API, nonblocking, asynchronous, it will save, receive and give account statistics and all the items of each account. I aim to make this service fully reactive, but it will use RDBMS with JPA, perhaps a MongoDB can be implemented later
 
 
-
-  Open Endpoint:
-
+    Open Endpoints:
 | Method | Endpoints |Request Body | Description |
-
 |--|--|--|--|
-
 | GET | /demo | | get demo stats |
 
 
-
-
-
-  Secured endpoints
-
+    Secured endpoints
 | Method | Endpoints |Request Body| Description |
-
 |--|--|--|--|
-
-| GET| /{accountName}| | Get stats for account
-
+| GET| /{accountName}| | Get stats for account |
 | POST | /save| AccountDTO| Save stats for account |
