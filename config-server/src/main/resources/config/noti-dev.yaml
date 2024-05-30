@@ -1,26 +1,15 @@
+database: h2
+
 server:
   servlet:
     context-path: /api/noti
   port: 8084
 spring:
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
   profile: dev
-  security:
-    oauth2:
-      resource-server:
-        jwt:
-          issuer-uri: http://localhost:9000/api/uaa
-      client:
-        provider:
-          auth:
-            issuer-uri: http://localhost:9000/api/uaa
-        registration:
-          notiClient:
-            provider: auth
-            client-id: notiClient
-            client-secret: noti
-            authorization-grant-type: client_credentials
-            scope: openid,email
-            client-name: notiService
   mail:
     host: smtp.gmail.com
     port: 587
@@ -41,19 +30,21 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
-    defer-datasource-initialization: true
+    defer-datasource-initialization: false
   h2:
     console:
       enabled: true
+  flyway:
+    locations: classpath:/db/migration/${database}
 
 backup:
-  cron: 0 0 12 * * *
+  cron: "*/10 * * * * *"
   email:
     subject: "Backup message from Duvi Dmservices Team!"
-    text: "Regards, \nDmservices Team."
+    text: "Hey, {0}!\n We hope you're doing well, in the next section you can find your backup data for this {1}.\nRegards,\n\nDmservices Team."
     attachment: "backup.json"
 remind:
-  cron: 0 0 0 * * *
+  cron: "*/10 * * * * *"
   email:
     subject: "Reminder from Dmservices Team!"
-    text: "Hey, {0}!\n It's always good to see you, consider coming back soon, your finances do not sleep!\n\nRegards,\nDmservices Team"
+    text: "Hey, {0}!\n It's always good to see you, we are committed to remind you every {1} to consider coming back, your finances do not sleep!\nThis is an automatic notification, if you do reply to this email february 30th will come before you get an answer..\n\nRegards,\n\nDmservices Team."

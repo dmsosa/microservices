@@ -1,23 +1,17 @@
 package com.duvi.services.noti.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import com.duvi.services.noti.domain.enums.Frequency;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
-@Entity
-@Table(name = "recipients")
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class Recipient {
-    @Id
     private String accountName;
     private String email;
-
-    @OneToMany(mappedBy = "recipient")
-    private Set<NotiSettings> notiSettings;
+    private String frequencyValue;
 }

@@ -1,6 +1,6 @@
 package com.duvi.services.account.model.converter;
 
-import com.duvi.services.account.model.Frequency;
+import com.duvi.services.account.model.enums.Frequency;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

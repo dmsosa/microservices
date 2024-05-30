@@ -13,9 +13,6 @@
 </div>
 <div class="main">
     <div class="col" th:each="stat : ${stats}" th:fragment="statsChart">
-        <div th:unless="${stat.statsDate != null}">
-            <h2>No stats yet</h2>
-        </div>
         <div class="stats-chart" th:if="${stat.statsDate != null}">
             <h1 th:text="${stat.accountName}">Stats</h1>
             <span th:text="${stat.statsDate}"></span>

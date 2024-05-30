@@ -1,6 +1,6 @@
 package com.duvi.services.account.model.converter;
 
-import com.duvi.services.account.model.Type;
+import com.duvi.services.account.model.enums.Type;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

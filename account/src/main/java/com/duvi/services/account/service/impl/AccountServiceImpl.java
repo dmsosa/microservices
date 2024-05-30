@@ -1,10 +1,11 @@
 package com.duvi.services.account.service.impl;
 
 import com.duvi.services.account.client.AuthClient;
-import com.duvi.services.account.client.StatClient;
+import com.duvi.services.account.client.StatsClient;
 import com.duvi.services.account.model.*;
 import com.duvi.services.account.model.dto.AccountDTO;
 import com.duvi.services.account.model.dto.ItemDTO;
+import com.duvi.services.account.model.enums.Type;
 import com.duvi.services.account.model.exception.EntityNotFoundException;
 import com.duvi.services.account.model.exception.EntityExistsException;
 import com.duvi.services.account.repository.AccountRepository;
@@ -25,14 +26,14 @@ public class AccountServiceImpl implements AccountService {
 
     private AccountRepository accountRepository;
     private AuthClient authClient;
-    private StatClient statClient;
+    private StatsClient statsClient;
     private ItemService itemService;
     public AccountServiceImpl(AccountRepository accountRepository,
                               AuthClient authClient,
-                              StatClient statClient,
+                              StatsClient statsClient,
                               ItemService itemService) {
         this.authClient = authClient;
-        this.statClient = statClient;
+        this.statsClient = statsClient;
         this.accountRepository = accountRepository;
         this.itemService = itemService;
     }
@@ -85,12 +86,10 @@ public class AccountServiceImpl implements AccountService {
         Account account = accountRepository.findByName(name).get();
 
         Set<ItemDTO> itemSet = Stream.concat(accountDTO.incomes().stream(), accountDTO.expenses().stream()).collect(Collectors.toSet());
-        Set<Item> items = itemService.editOrCreateAll(itemSet);
-        Set<Item> oldItems = account.getItems();
+        Set<Item> itemsToSave = itemService.editOrCreateAll(itemSet);
 
-        itemService.compareAndDeleteItems(oldItems, items);
+        itemService.compareAndDeleteItems(account, itemsToSave);
 
-        account.setItems(items);
         account.setLastSeen(LocalDateTime.now());
 
         return this.createDTO(accountRepository.save(account));
@@ -119,6 +118,6 @@ public class AccountServiceImpl implements AccountService {
     public void saveChanges(AccountDTO account) {
 
         //todo accountDTO + itemDTO
-        statClient.saveAccount(account);
+        statsClient.saveAccountStats(account);
     }
 }

@@ -1,7 +1,6 @@
 package com.duvi.services.account.model.dto;
 
-import com.duvi.services.account.model.Currency;
-import com.duvi.services.account.model.Item;
+import com.duvi.services.account.model.enums.Currency;
 
 import java.time.LocalDateTime;
 import java.util.List;

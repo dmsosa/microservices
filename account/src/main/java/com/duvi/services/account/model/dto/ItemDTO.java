@@ -1,9 +1,9 @@
 package com.duvi.services.account.model.dto;
 
-import com.duvi.services.account.model.Category;
-import com.duvi.services.account.model.Currency;
-import com.duvi.services.account.model.Frequency;
-import com.duvi.services.account.model.Type;
+import com.duvi.services.account.model.enums.Category;
+import com.duvi.services.account.model.enums.Currency;
+import com.duvi.services.account.model.enums.Frequency;
+import com.duvi.services.account.model.enums.Type;
 
 import java.math.BigDecimal;
 

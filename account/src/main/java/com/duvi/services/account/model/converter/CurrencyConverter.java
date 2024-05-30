@@ -1,6 +1,6 @@
 package com.duvi.services.account.model.converter;
 
-import com.duvi.services.account.model.Currency;
+import com.duvi.services.account.model.enums.Currency;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

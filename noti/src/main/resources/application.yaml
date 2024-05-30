@@ -6,6 +6,9 @@ spring:
   config:
     import: optional:configserver:/
   cloud:
+    circuitbreaker:
+      resilience4j:
+        enabled: true
     config:
       username: username
       password: password
@@ -13,6 +16,7 @@ spring:
       discovery:
         enabled: true
         serviceId: config-server
+
 eureka:
   client:
     serviceUrl:

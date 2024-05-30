@@ -2,6 +2,10 @@ package com.duvi.services.account.model;
 
 
 import com.duvi.services.account.model.dto.ItemDTO;
+import com.duvi.services.account.model.enums.Category;
+import com.duvi.services.account.model.enums.Currency;
+import com.duvi.services.account.model.enums.Frequency;
+import com.duvi.services.account.model.enums.Type;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -26,7 +30,7 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "account_id")
     @JsonIgnore
     private Account account;

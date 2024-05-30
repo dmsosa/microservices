@@ -10,6 +10,7 @@ import com.duvi.services.account.service.ItemService;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -73,9 +74,15 @@ public class ItemServiceImpl implements ItemService {
         return itemSet;
     }
     @Override
-    public void compareAndDeleteItems(Set<Item> oldItems, Set<Item> items) {
-        for (Item oldItem : oldItems) {
-            if (!items.contains(oldItem)) {
+    public void compareAndDeleteItems(Account accountOldItems, Set<Item> itemsToSave) {
+
+        Set<Item> oldItems = accountOldItems.getItems();
+        Set<Item> clone = new HashSet<>(oldItems);
+        List<Long> idToPersist = itemsToSave.stream().map(Item::getId).toList();
+
+        for (Item oldItem : clone) {
+            if (!idToPersist.contains(oldItem.getId())) {
+                oldItems.remove(oldItem);
                 itemRepository.delete(oldItem);
             }
         }

@@ -1,3 +1,5 @@
+database: postgres
+
 server:
   servlet:
     context-path: /api/noti
@@ -21,6 +23,8 @@ spring:
             authorization-grant-type: client_credentials
             scope: openid,email
             client-name: notiService
+  flyway:
+    locations: classpath://db/migration/${database}
   mail:
     host: smtp.gmail.com
     port: 587

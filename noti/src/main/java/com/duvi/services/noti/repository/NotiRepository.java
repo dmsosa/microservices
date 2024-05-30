@@ -1,8 +1,8 @@
 package com.duvi.services.noti.repository;
 
-import com.duvi.services.noti.domain.NotiSettings;
-import com.duvi.services.noti.domain.NotiType;
-import com.duvi.services.noti.domain.Recipient;
+import com.duvi.services.noti.domain.NotificationEntity;
+import com.duvi.services.noti.domain.enums.NotiType;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -11,8 +11,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface NotiRepository extends JpaRepository<NotiSettings, Long> {
+public interface NotiRepository extends JpaRepository<NotificationEntity, Long> {
+    List<NotificationEntity> findAllByAccountName(String accountName);
+    NotificationEntity deleteByAccountNameAndNotiType(String accountName, NotiType notiType);
+    @Query(value = "SELECT * FROM notifications WHERE noti_type = 'REMIND' AND active = true AND last_notified < CURRENT_DATE - frequency", nativeQuery = true)
+    List<NotificationEntity> findAllRemindReady();
 
-    public Optional<NotiSettings> findByRecipientAndType(Recipient recipient, NotiType type);
-    public List<NotiSettings> findAllByRecipient(Recipient recipient);
+    @Query(value = "SELECT * FROM notifications WHERE noti_type = 'BACKUP' AND active = true AND last_notified < CURRENT_DATE - frequency", nativeQuery = true)
+    List<NotificationEntity> findAllBackupReady();
+
 }

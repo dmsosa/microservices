@@ -27,8 +27,6 @@ import java.util.Map;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
-    @Value("${app.issuer-uri}")
-    private String hostIssuerUri;
 
     private DiscoveryClient discoveryClient;
     public SecurityConfig(DiscoveryClient discoveryClient) {
@@ -80,7 +78,7 @@ public class SecurityConfig {
     private Map<String, String> findAuthServiceUris() {
         //finding auth instances
         ServiceInstance authInstance = discoveryClient.getInstances("auth-service").getFirst();
-        String issuerUri = !hostIssuerUri.isBlank() ? hostIssuerUri : authInstance.getUri().toString();
+        String issuerUri = authInstance.getUri().toString();
         Map<String, String> map = new HashMap<>();
         map.put("issuerUri", issuerUri + "/api/uaa");
         map.put("tokenUri", issuerUri + "/api/uaa/oauth2/token");
@@ -89,7 +87,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    ClientRegistrationRepository clientRegistrationRepository() {
+    public ClientRegistrationRepository clientRegistrationRepository() {
         return new InMemoryClientRegistrationRepository(clientRegistration());
     }
 

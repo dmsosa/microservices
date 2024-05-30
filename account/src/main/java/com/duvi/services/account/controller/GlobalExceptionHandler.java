@@ -26,6 +26,9 @@ public class GlobalExceptionHandler {
         }
         else {
             HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+            System.out.println("Catched Excp: debug\n");
+
+            exception.printStackTrace();
             ApiError body = new ApiError(exception);
             return internalHandler(body, headers, status);
         }
@@ -39,6 +42,8 @@ public class GlobalExceptionHandler {
         return internalHandler(body, headers, status);
     }
     public ResponseEntity<ApiError> internalHandler(ApiError body, HttpHeaders headers, HttpStatus status) {
+
+
         return new ResponseEntity<>(body, headers, status);
     }
 }
