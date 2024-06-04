@@ -1,4 +1,4 @@
-package com.duvi.authservice.config;
+package com.duvi.authservice.config.security;
 
 
 import com.nimbusds.jose.jwk.JWKSet;
@@ -33,11 +33,10 @@ import java.util.List;
 import java.util.UUID;
 
 @Configuration
-public class AuthConfig  {
+public class AuthorizationServerConfig {
 
-    //default auth-server settings
     @Bean
-    AuthorizationServerSettings authorizationServerSettings() {
+    public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder().build();
     }
 
@@ -45,7 +44,7 @@ public class AuthConfig  {
     //In production, JdbcRegisteredClientRepository is used
     @Bean
     @Profile("prod")
-    JdbcTemplate getJdbcTemplate(DataSource dataSource) {
+    public JdbcTemplate getJdbcTemplate(DataSource dataSource) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         jdbcTemplate.execute("CREATE TABLE oauth2_registered_client (\n" +
                 "    id varchar(100) NOT NULL,\n" +
@@ -170,7 +169,7 @@ public class AuthConfig  {
     //in memory ClientRepository for dev profile
     @Bean
     @Profile("dev")
-    RegisteredClientRepository inMemoryRegisteredClientRepository() {
+    public RegisteredClientRepository inMemoryRegisteredClientRepository() {
 
         RegisteredClient accountClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("accountClient")

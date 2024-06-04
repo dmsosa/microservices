@@ -1,17 +1,19 @@
-package com.duvi.gateway.web;
+package com.duvi.gateway.controller;
 
 import com.duvi.gateway.model.*;
 import com.duvi.gateway.model.enums.*;
+import com.duvi.gateway.service.AccountService;
+import com.duvi.gateway.service.StatsService;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.oidc.session.InMemoryOidcSessionRegistry;
-import org.springframework.security.oauth2.client.oidc.session.OidcSessionRegistry;
-import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
 
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Controller;
@@ -19,13 +21,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.server.adapter.DefaultServerWebExchange;
 import org.thymeleaf.spring6.context.webflux.IReactiveDataDriverContextVariable;
 import org.thymeleaf.spring6.context.webflux.ReactiveDataDriverContextVariable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,9 +33,11 @@ import java.util.List;
 @Controller
 public class WebController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private WebClient.Builder webClientBuilder;
-    public WebController(WebClient.Builder webClientBuilder, ReactiveClientRegistrationRepository clientRegistrationRepository) {
-        this.webClientBuilder = webClientBuilder;
+    private AccountService accountService;
+    private StatsService statsService;
+    public WebController(AccountService accountService, StatsService statsService) {
+        this.accountService = accountService;
+        this.statsService = statsService;
     }
 
 
@@ -62,6 +64,7 @@ public class WebController {
     //Authentication endpoints **Login, Register and Redirect to AuthServer
 
     @RequestMapping(method = {RequestMethod.GET}, value = "/index")
+    @Retry(name = "accountClient")
     public String showIndexPage(
             @RegisteredOAuth2AuthorizedClient(registrationId = "gatewayClient")
             OAuth2AuthorizedClient gatewayClient,
@@ -79,34 +82,12 @@ public class WebController {
         //If account is null, then the gateway gets it or creates a new account
 
         if (model.getAttribute("account") == null) {
-            accountMono = webClientBuilder
-                    .build()
-                    .get()
-                    .uri("/account/" + username)
-                    .retrieve()
-                    .bodyToMono(AccountDTO.class)
-                    .switchIfEmpty( webClientBuilder.build()
-                            .post()
-                            .uri("/account/create/" + username)
-                            .retrieve().bodyToMono(AccountDTO.class));
-
+            accountMono = accountService.getAccount(username);
             model.addAttribute("account", accountMono);
-
             //Get stats of account or null if empty
-            Flux<StatsDTO> statsDTOFlux = webClientBuilder.build()
-                    .get()
-                    .uri("/stats/" + username)
-                    .retrieve()
-                    .bodyToFlux(StatsDTO.class)
-                    .switchIfEmpty(Flux.just(new StatsDTO()))
-                    .onErrorResume(e ->
-                            {
-                                System.out.println("catched error " + e.getMessage());
-                                return Flux.just(new StatsDTO());
-                            }
-                    );
-
+            Flux<StatsDTO> statsDTOFlux = statsService.getStatsOfAccount(username);
             IReactiveDataDriverContextVariable statsVariable = new ReactiveDataDriverContextVariable(statsDTOFlux);
+
             model.addAttribute("stats", statsVariable);
         }
 
@@ -119,12 +100,7 @@ public class WebController {
 
     @RequestMapping(method = {RequestMethod.POST}, value = "/edit/{accountName}")
     public String editAccount(@PathVariable String accountName, @ModelAttribute(name = "account") AccountDTO account, BindingResult bindingResult, Model model) {
-        Mono<AccountDTO> updatedAccount = webClientBuilder.build()
-                .post()
-                .uri("/account/edit/" + accountName)
-                .bodyValue(account)
-                .retrieve()
-                .bodyToMono(AccountDTO.class);
+        Mono<AccountDTO> updatedAccount = accountService.editAccount(accountName, account);
         model.addAttribute("account", updatedAccount);
         return "index";
     }
@@ -133,13 +109,9 @@ public class WebController {
                                    @ModelAttribute(name = "account") AccountDTO account,
                                    BindingResult bindingResult,
                                    Model model) {
-        Mono<AccountDTO> updatedAccount = webClientBuilder.build()
-                .post()
-                .uri("/account/items/" + accountName)
-                .bodyValue(account)
-                .retrieve()
-                .bodyToMono(AccountDTO.class);
+        Mono<AccountDTO> updatedAccount = accountService.editAccountItems(accountName, account);
         model.addAttribute("account", updatedAccount);
+
         return "index";
     }
 
@@ -162,24 +134,9 @@ public class WebController {
 
     @RequestMapping(method = {RequestMethod.POST}, value = "/saveStats")
     public String saveAccountStats(@ModelAttribute AccountDTO accountDTO, BindingResult bindingResult, Model model) {
-        Flux<StatsDTO> statsDTOFlux = webClientBuilder.build()
-                .post()
-                .uri("/stats/save")
-                .bodyValue(accountDTO)
-                .retrieve()
-                .bodyToFlux(StatsDTO.class)
-                .onErrorResume(e ->
-                        {
-                            System.out.println("catched error " + e.getMessage());
-                            return webClientBuilder.build()
-                                    .get()
-                                    .uri("/stats/" + accountDTO.getName())
-                                    .retrieve()
-                                    .bodyToFlux(StatsDTO.class);
-                        }
-                );
-
+        Flux<StatsDTO> statsDTOFlux = statsService.saveStatsOfAccount(accountDTO);
         IReactiveDataDriverContextVariable statsVariable = new ReactiveDataDriverContextVariable(statsDTOFlux);
+
         model.addAttribute("account", accountDTO);
         model.addAttribute("stats", statsVariable);
         return "index";

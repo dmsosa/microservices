@@ -1,4 +1,4 @@
-package com.duvi.gateway.web;
+package com.duvi.gateway.config.web;
 
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;

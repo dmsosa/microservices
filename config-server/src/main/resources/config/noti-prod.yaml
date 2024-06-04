@@ -6,23 +6,6 @@ server:
   port: 8084
 spring:
   profile: prod
-  security:
-    oauth2:
-      resource-server:
-        jwt:
-          issuer-uri: http://auth-service:9000/api/uaa
-      client:
-        provider:
-          auth:
-            issuer-uri: http://auth-service:9000/api/uaa
-        registration:
-          notiClient:
-            provider: auth
-            client-id: notiClient
-            client-secret: noti
-            authorization-grant-type: client_credentials
-            scope: openid,email
-            client-name: notiService
   flyway:
     locations: classpath://db/migration/${database}
   mail:
@@ -42,13 +25,18 @@ spring:
     password: ${POSTGRES_PASSWORD}
     driverClassName: org.postgresql.Driver
 backup:
-  cron: 0 0 12 * * *
+  cron: "*/10 * * * * *"
   email:
-    subject: "Backup message from Duvi Dmservices Team! - {0}"
-    text: "Regards, \nDmservices Team."
+    subject: "Backup message from Duvi Dmservices Team!"
+    text: "Hey, {0}!\n We hope you're doing well, in the next section you can find your backup data for this {1}.\nRegards,\n\nDmservices Team."
     attachment: "backup.json"
 remind:
-  cron: 0 0 0 * * *
+  cron: "*/10 * * * * *"
   email:
-    subject: "Reminder from Dmservices Team! - {0}"
-    text: "Hey, {0}!\n It's always good to see you, consider coming back soon, your finances do not sleep!\n\nRegards,\nDmservices Team - {1}"
+    subject: "Reminder from Dmservices Team!"
+    text: "Hey, {0}!\n It's always good to see you, we are committed to remind you every {1} to consider coming back, your finances do not sleep!\nThis is an automatic notification, if you do reply to this email february 30th will come before you get an answer..\n\nRegards,\n\nDmservices Team."
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, info

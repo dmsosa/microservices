@@ -1,4 +1,4 @@
-package com.duvi.authservice.config;
+package com.duvi.authservice.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

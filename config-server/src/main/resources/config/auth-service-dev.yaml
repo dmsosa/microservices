@@ -4,23 +4,13 @@ server:
   servlet:
     context-path: /api/uaa
   port: 9000
-api:
-  security:
-    token:
-      secret: ${JWT_SECRET:secret}
-  issuer: ${JWT_ISSUER:myessen}
-logging:
-  level:
-    org:
-      springframework:
-        security: TRACE
+
 spring:
   profile: dev
-# the RegisteredClientRepository is configured programmatically
   security:
     oauth2:
       resource-server:
-        issuer-uri: http://localhost:9000/api/uaa
+        issuer-uri: http://localhost:9000/api/uaa #in this case, is ok to have the issuer-uri hardcoded since the issuer will always be the local machine
   flyway:
     user: sa
     password: password
@@ -45,3 +35,14 @@ spring:
       exclude: /static/**,/templates/**
     livereload:
       port: 35730
+#logging & management
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, info

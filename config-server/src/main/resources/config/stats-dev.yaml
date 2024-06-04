@@ -28,3 +28,8 @@ logging:
     org:
       springframework:
         security: TRACE
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, info

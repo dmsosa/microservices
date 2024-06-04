@@ -4,16 +4,7 @@ server:
   servlet:
     context-path: /api/uaa
   port: 9000
-api:
-  security:
-    token:
-      secret: ${JWT_SECRET:secret}
-  issuer: ${JWT_ISSUER:myessen}
-logging:
-  level:
-    org:
-      springframework:
-        security: TRACE
+
 spring:
   profile: prod
   security:
@@ -32,3 +23,14 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+#logging & management
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, info

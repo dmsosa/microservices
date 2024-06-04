@@ -58,32 +58,9 @@ public class AuthController {
     }
 
     @PostMapping(path = {"/save"}, consumes = "application/x-www-form-urlencoded")
-    public void registerUser(@Validated @ModelAttribute User user, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws UserExistsException {
+    public void registerUser(@Validated @ModelAttribute User user) throws UserExistsException {
         //Saving user
         userService.saveUser(user);
-
-        //Setting authentication
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), user.getAuthorities());
-        Authentication authentication = authenticationManager.authenticate(authToken);
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
-        context.setAuthentication(authentication);
-
-
-        //Finding gateway instances
-        ServiceInstance gatewayInstance = discoveryClient.getInstances("gateway").getFirst();
-        String redirectURL = gatewayInstance.getUri() + "/index";
-
-        logger.info("Successfully registered and authenticated" + gatewayInstance.getUri());
-
-        session.setAttribute(SPRING_SECURITY_CONTEXT, context);
-
-        //storing SecurityContext in Repository
-        contextHolderStrategy.setContext(context);
-        securityContextRepository.saveContext(context, request, response);
-
-        //redirect
-        response.setStatus(302);
-        response.setHeader("Location", redirectURL);
     }
     @DeleteMapping("/{username}")
     public void deleteUser(@PathVariable String username) throws UserNotExistsException {

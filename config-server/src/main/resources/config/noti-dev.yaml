@@ -1,4 +1,10 @@
 database: h2
+management.endpoints.web.exposure.include: health, info, refresh
+management.endpoint.health.probes.enabled: true
+management.endpoint.health.show-details: always
+management.endpoint.health.circuitbreakers.enabled: true
+#logging & management
+logging.level.org.springframework.security: TRACE
 
 server:
   servlet:
@@ -36,7 +42,6 @@ spring:
       enabled: true
   flyway:
     locations: classpath:/db/migration/${database}
-
 backup:
   cron: "*/10 * * * * *"
   email:

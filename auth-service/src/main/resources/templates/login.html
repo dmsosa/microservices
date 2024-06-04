@@ -1,57 +1,81 @@
 <!DOCTYPE html >
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+    lang="en">
 <head>
     <title>Dmservices - Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="../static/css/styles.css" />
+    <script src="../static/js/lib/jquery-3.7.1.min.js" th:src="@{/js/lib/jquery-3.7.1.min.js}"></script>
+    <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" th:rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"/>
 </head>
 
 <body>
-    <div class="header">
-        <h1>Dmservices</h1>
-    </div>
-    <div class="main">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <form class="form-login" method="post" action="/api/uaa/login">
-                        <h2 class="form-login-caption">Login into Dmservices!</h2>
+    <section id="loginpage">
+        <div id="flipper">
+            <div id="FRONTCARD">
+                <div id="piggy"></div>
+                <h1 class="legend">Welcome to Microservices</h1>
+                <div class="flipinfo" id="info"></div>
+                <form id="loginform" action="/api/uaa/login" method="post" th:object="${user}">
+                    <div class="formside sideone">
+                        <div class="backlogin"></div>
+                        <input id="loginname" class="logininput" type="text" placeholder="account name" autocomplete="off"/>
+                        <div class="firstenter"></div>
+                    </div>
+                    <div class="formside sidetwo">
+                        <div class="backpassword"></div>
+                        <input id="loginpassword" class="logininput" type="password" placeholder="account password" autocomplete="off"/>
+                        <button id="loginsubmit" type="submit"></button>
+                    </div>
+                </form>
+                <div class="fliptext">Or <a href="#">register a new account</a></div>
+            </div>
+            <div id="BACKCARD">
+                <div id="infopage">
+                    <span class="frominfo" id="infotitle">Microservices is inspired by Piggymetrics from sqshq.com</span>
+                    <span class="frominfo" id="infosubtitle">This is how it works</span>
+                    <div class="infoflipback frominfo"></div>
+                    <div id="infoleft" class="infocolumn frominfo">
+                        <div id="leftcolumn">enter planned periodic<br>incomes and expenses<br>
+                            <div class="columnimage"></div>
+                            <span class="columnfooter">Plan or estimate your regular expenses. Divide them into categories. Сomponents of your budget<br>will always be near to hand</span>
+                        </div>
+                    </div>
+                    <div id="infocenter" class="infocolumn frominfo">
+                        <div id="centercolumn">check all your savings<br>at the moment<br>
+                            <div class="columnimage"></div>
+                            <span class="columnfooter">Regularly update the value of your savings.<br>Follow the progress.</span>
+                        </div>
+                    </div>
+                    <div id="inforight" class="infocolumn frominfo">
+                        <div id="rightcolumn">analyze financial statistics<br>and forecasts<br>
+                            <div class="columnimage"></div>
+                            <span class="columnfooter">Based on this information, you’ll get statistics for your budget and forecast of savings<br>for the year ahead</span>
+                        </div>
+                    </div>
+                    <div id="infoline"></div>
+                    <a id="infolinetext" class="frominfo" href="/demo">Try without registration</a>
+                    <a id="infofooter" href="https://github.com/sqshq/PiggyMetrics">&copy; 2016 sqshq.com</a>
+                    <a id="iconsfooter" href="attribution.html">machst was du magst</a>
+                </div>
+                <div id="regpage">
+                    <div class="avatar"></div>
+                    <h1 class="legend">Create a new account</h1>
+                    <form class="form" id="registerform" th:object="${account}" th:method="post" th:action="@{/register}">
                         <fieldset>
-                            <div>
-                                <label for="username">Username</label>
-                                <input
-                                        id="username"
-                                        type="text"
-                                        placeholder="Your account name"
-                                        name="username"
-                                        required
-                                        autofocus
-                                />
-                            </div>
-                            <div>
-                                <label for="password">Password</label>
-                                <input
-                                        id="password"
-                                        type="password"
-                                        placeholder="Your password"
-                                        name="password"
-                                        required
-                                />
-                            </div>
-                            <div>
-                                <button type="submit">Login</button>
-                            </div>
+                            <input type="text" placeholder="a cool username" autocomplete="off"/>
+                            <input type="email" placeholder="a cool email" autocomplete="off"/>
+                            <input type="password" placeholder="a secure password" autocomplete="off"/>
+                            <button type="submit">Register</button>
                         </fieldset>
                     </form>
+                    <div class="fliptext">Or <a href="#"> use an existing account</a></div>
                 </div>
-                <div class="col">
-                    <form th:replace="~{fragments/registerForm :: registerForm}"></form>
-                </div>
-            </div>
+            </div> 
         </div>
-    </div>
-    <div class="footer"></div>
+    </section>
+    <script type="module" src="../static/js/login.js" th:src="@{/js/login.js}"></script>
     <script src="http://localhost:35730/livereload.js"></script>
 </body>
 </html>

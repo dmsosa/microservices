@@ -2,23 +2,6 @@ server:
   port: 8085
 spring:
   profile: prod
-  security:
-    oauth2:
-      resource-server:
-        jwt:
-          issuer-uri: http://auth-service:9000/api/uaa
-      client:
-        provider:
-          auth:
-            issuer-uri: http://auth-service:9000/api/uaa
-        registration:
-          statsClient:
-            provider: auth
-            client-id: statsClient
-            client-secret: stats
-            authorization-grant-type: client_credentials
-            scope: openid,profile
-            client-name: statsService
   datasource:
     url: jdbc:postgresql://dmservices-database:5432/${POSTGRES_DB}
     username: ${POSTGRES_USER}
@@ -26,3 +9,14 @@ spring:
     driverClassName: org.postgresql.Driver
   jpa:
     show-sql: true
+#logging & management
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, info

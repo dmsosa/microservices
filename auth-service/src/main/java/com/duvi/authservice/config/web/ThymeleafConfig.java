@@ -1,24 +1,23 @@
-package com.duvi.authservice.web;
+package com.duvi.authservice.config.web;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 
 @Configuration
-public class SpringWebConfig implements WebMvcConfigurer, ApplicationContextAware {
+public class ThymeleafConfig implements WebMvcConfigurer, ApplicationContextAware {
     private ApplicationContext applicationContext;
 
-    public SpringWebConfig() {
+    public ThymeleafConfig() {
         super();
     }
     @Override
@@ -26,27 +25,6 @@ public class SpringWebConfig implements WebMvcConfigurer, ApplicationContextAwar
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
-
-//    Static resources, i18n texts and formatters
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry resourceHandlerRegistry) {
-        WebMvcConfigurer.super.addResourceHandlers(resourceHandlerRegistry);
-        resourceHandlerRegistry.addResourceHandler("/").addResourceLocations("/", "classpath:/META-INF/resources");
-        resourceHandlerRegistry.addResourceHandler("/images/**").addResourceLocations("/images/");
-        resourceHandlerRegistry.addResourceHandler("/css/**").addResourceLocations("/css/");
-        resourceHandlerRegistry.addResourceHandler("/js/**").addResourceLocations("/js/");
-    }
-
-    @Bean
-    public ResourceBundleMessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("messages");
-        return messageSource;
-    }
-
-
-
 //    Thymeleaf artifacts
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
@@ -61,6 +39,7 @@ public class SpringWebConfig implements WebMvcConfigurer, ApplicationContextAwar
     public SpringTemplateEngine templateEngine() {
         SpringTemplateEngine templateEngine =  new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
+        templateEngine.setMessageSource(messageSource());
         return templateEngine;
     }
 
@@ -71,5 +50,24 @@ public class SpringWebConfig implements WebMvcConfigurer, ApplicationContextAwar
         return viewResolver;
     }
 
+//    Static resources, i18n texts and formatters
 
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry resourceHandlerRegistry) {
+        WebMvcConfigurer.super.addResourceHandlers(resourceHandlerRegistry);
+        resourceHandlerRegistry.addResourceHandler("/images/**").addResourceLocations("classpath:/static/images/");
+        resourceHandlerRegistry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/");
+        resourceHandlerRegistry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/");
+    }
+
+    @Bean
+    public ResourceBundleMessageSource messageSource() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasename("messages");
+        return messageSource;
+    }
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry viewResolverRegistry) {
+        viewResolverRegistry.viewResolver(viewResolver());
+    }
 }

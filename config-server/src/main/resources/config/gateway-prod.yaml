@@ -5,24 +5,8 @@ app:
   issuer-uri: ${HOST_ISSUER_URI:}
 spring:
   profile: prod
-  security:
-    oauth2:
-      resource-server:
-        jwt:
-          issuer-uri: http://localhost:9000/api/uaa
-      client:
-        registration:
-          gatewayClient:
-            provider: auth
-            client-id: gatewayClient
-            client-secret: gateway
-            authorization-grant-types: authorization_code,refresh_token
-            client-authentication-method: client_secret_basic
-            scope: openid,profile
-            redirect-uri: "http://127.0.0.1:8061/login/oauth2/code/gatewayClient"
-        provider:
-          auth:
-            issuer-uri: http://localhost:9000/api/uaa
+  #OAuth Resource Server and OAuth2Client configured programmatically
+  #So they can find the issuerUri via Load Balancing and not hardcoded in config.
   cloud:
     gateway:
       metrics:
@@ -69,3 +53,8 @@ logging:
         web: DEBUG
         cloud:
           gateway: DEBUG
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, info

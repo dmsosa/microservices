@@ -1,4 +1,4 @@
-package com.duvi.authservice.config;
+package com.duvi.authservice.config.security;
 
 
 
@@ -56,7 +56,9 @@ public class SecurityConfig {
                 .headers( headers -> headers.frameOptions(fo -> fo.sameOrigin())) //allowing h2 to be displayed as a frame
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers( "/h2-console/**").permitAll()
-                        .requestMatchers("/actuator/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/css/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/images/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/js/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/login/**").permitAll()
                         .anyRequest().authenticated())
@@ -66,7 +68,6 @@ public class SecurityConfig {
                 .build();
 
     }
-
 
 
     @Bean

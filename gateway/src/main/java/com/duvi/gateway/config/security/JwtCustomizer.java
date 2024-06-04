@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
+@RefreshScope
 public class JwtCustomizer implements Customizer<ServerHttpSecurity.OAuth2ResourceServerSpec.JwtSpec> {
 
     private static Logger logger = LoggerFactory.getLogger(JwtCustomizer.class);

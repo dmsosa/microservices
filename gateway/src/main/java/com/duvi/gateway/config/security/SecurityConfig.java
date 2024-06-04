@@ -3,6 +3,7 @@ package com.duvi.gateway.config.security;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -69,16 +70,16 @@ public class SecurityConfig {
     }
 
     @Bean
-    ServerAuthenticationSuccessHandler redirectSuccessHandler() {
+    public ServerAuthenticationSuccessHandler redirectSuccessHandler() {
         return new AuthSuccessHandler();
     }
     @Bean
-    ServerAuthenticationFailureHandler failureHandler() {
+    public ServerAuthenticationFailureHandler failureHandler() {
         return new AuthFailureHandler();
     }
 
     @Bean
-    Customizer<ServerHttpSecurity.OAuth2ResourceServerSpec.JwtSpec> jwtConfigCustomizer() {
+    public Customizer<ServerHttpSecurity.OAuth2ResourceServerSpec.JwtSpec> jwtConfigCustomizer() {
         return new JwtCustomizer(discoveryClient);
     }
 
@@ -103,6 +104,7 @@ public class SecurityConfig {
                 .build();
     }
 
+    @RefreshScope
     private Map<String, String> findAuthServiceUris() {
         //finding auth instances
         ServiceInstance authInstance = discoveryClient.getInstances("auth-service").getFirst();
@@ -120,7 +122,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    ReactiveClientRegistrationRepository clientRegistrationRepository() {
+    public ReactiveClientRegistrationRepository clientRegistrationRepository() {
         return new InMemoryReactiveClientRegistrationRepository(clientRegistration());
     }
  }

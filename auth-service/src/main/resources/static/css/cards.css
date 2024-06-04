@@ -1,0 +1,321 @@
+@import url("./forms.css");
+
+@keyframes flip {
+    from {
+        transform: rotateY(0deg);
+    }
+    to {
+        transform: rotateY(180deg);
+    }
+}
+
+#loginpage {
+    top:0; bottom: 0; left:0; right: 0;
+    position: absolute;
+    margin: auto;
+    width: 35rem;
+    height: 55rem;
+}
+#flipper {
+    backface-visibility: visible;
+    transform-style: preserve-3d;
+    position: relative;
+    overflow: visible;
+    transition: all 1s;
+}
+
+.flippedcardinfo {
+    transform: rotateY(180deg);
+}
+
+#FRONTCARD, #BACKCARD {
+    color:rgb(58, 67, 71);
+    backface-visibility: hidden;
+    overflow: visible;
+    top:0; bottom: 0; left:0; right: 0;
+    width: 35rem;
+    text-align: center;
+    position: absolute;
+}
+
+.legend {
+    margin: 5rem auto;
+    margin-bottom: 3rem;
+}
+
+/* FIRST CARD */
+#FRONTCARD {
+    z-index: 2;
+    height: 45rem;
+    transform: rotateY(0deg);
+}
+#piggy {
+    background-size: 149px 149px;
+    width: 149px;
+    height: 149px;
+    background-image: url("../images/piggy.png");
+    margin: 0 auto;
+}
+.auto-shake {
+    animation: auto-shake 1.2s 1;
+}
+.hover-shake {
+    animation: hover-shake 1.2s 1;
+}
+#info {
+    width: 45px;
+    height: 45px;
+    background-color: red;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.fliptext {
+    font-size: 1.7rem;
+    position: absolute;
+    width: 30rem;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    text-transform: lowercase;
+}
+.fliptext a {
+    color: rgb(63, 103, 63);
+    text-decoration: underline dashed lightgreen 0.0125rem;
+}
+
+/* SECOND PAGE  */
+
+#BACKCARD {
+    z-index: 1;
+    height: 55rem;
+    transform: rotateY(180deg);
+}
+
+.avatar {
+    width: 10rem;
+    height: 10rem;
+    background-color: magenta;
+    margin: 0 auto;
+    margin-top: 2rem;
+}
+
+/* INFO PAGE */
+
+.flipinfo, .frominfo {
+    cursor: pointer;
+}
+.infoflipback {
+    position: absolute;
+    top: -12%;
+    width: 100%;
+    height: 50rem;
+    cursor: pointer;
+}
+#infopage {
+    background-color: white;
+    color:rgb(58, 67, 71);
+    position: absolute; 
+    display: none;
+    margin-left: calc((-100vw + 35rem)/2);
+    height: 70vh;
+    width: 100vw;
+    z-index: 4;
+}
+#regpage {
+    display: block;
+}
+#infosubtitle, #infotitle, #infofooter, #iconsfooter {
+    color:rgb(58, 67, 71);
+    cursor: pointer;
+    font-family: 'Roboto';
+    position: absolute;
+    left: 0; right: 0;
+    margin: auto;
+    width: 100%;
+}
+#infosubtitle {
+    font-size: 2rem;
+    top: 0;
+    height: 3rem;
+    letter-spacing: 0.25rem;
+}
+#infotitle {
+    top: 3.5rem;
+    font-size: 2.7rem;
+    height: 4rem;
+    font-weight: 600;
+}
+
+a#infofooter {
+    background-image: url("../images/banana.png");
+    background-size: 25px 25px;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-size: 1.8rem;
+    text-decoration: none;
+    display: block;
+    line-height: 12rem;
+    bottom: 3rem;
+    margin: auto;
+    width: 20%;
+    height: 2.5rem;
+}
+
+a#iconsfooter {
+    text-decoration: none;
+    font-size: 1.2rem;
+    bottom: -5rem;
+    letter-spacing: 0.25rem;
+}
+
+#infoline {
+    position: relative;
+    width: 610px;
+	display: block;
+	margin: auto;
+	top: 42.5rem;
+	border-top: 0.4rem solid lightgreen;
+}
+#infolinetext {
+    text-decoration: none;
+    color: rgb(58, 67, 71);
+    padding: 2rem 3rem;
+    text-transform: lowercase;
+	letter-spacing: 2px;
+	font-size: 2rem;
+	position: relative;
+	width: fit-content;
+	height: 3rem;
+    border: lightgreen 0.4rem solid;
+	display: block;
+	margin: auto;
+    line-height: 0rem;
+	top: calc(42.5rem - 2.5rem);
+	background-color: white;
+}
+.infocolumn {
+    position: absolute;
+    top: 120px;
+    margin: auto;
+    display: block;
+    width: 28rem;
+    height: 30rem;
+    overflow: hidden;
+}
+
+#infoleft {
+    left: 0;
+}
+#inforight {
+    right: 0;
+}
+#infocenter {
+    left: 0; right: 0;
+}
+.columnimage {
+    position: absolute;
+    width: 10rem;
+    height: 10rem;
+    margin: auto;
+    left:0; right: 0; top: 30px;
+}
+#leftcolumn > .columnimage {
+    background-color: yellow;
+}
+#rightcolumn > .columnimage {
+    background-color: blue;
+}
+#centercolumn > .columnimage {
+    background-color: darkred;
+}
+#leftcolumn, #rightcolumn, #centercolumn {
+    transition: 1s;
+    font-size: 1.2rem;
+    width: 100%;
+    height: 200%;
+    position: absolute;
+    padding-top: 15rem;
+    text-align: center;
+    top: 0;
+}
+
+#leftcolumn:hover, #rightcolumn:hover, #centercolumn:hover {
+    top: -100%;
+}
+
+.columnfooter {
+    position: relative;
+    top: 15rem;
+    font-size: 1.1rem;
+    line-height: 1.7rem;
+}
+
+
+/* KEYFRAMES */
+
+@keyframes auto-shake {
+	0% {
+		transform: rotate(0deg);
+	}
+	35% {
+		transform: rotate(55deg);
+	}
+	50% {
+		transform: rotate(-35deg);
+	}
+	70% {
+		transform: rotate(20deg);
+	}
+	90% {
+		transform: rotate(-10deg);
+	}
+	100% {
+		transform: rotate(0deg);
+	}
+}
+
+@keyframes hover-shake {
+	0% {
+		transform: rotate(0deg);
+	}
+	30% {
+		transform: rotate(-30deg);
+	}
+	50% {
+		transform: rotate(20deg);
+	}
+	70% {
+		transform: rotate(-10deg);
+	}
+	90% {
+		transform: rotate(5deg);
+	}
+	100% {
+		transform: rotate(0deg);
+	}
+}
+
+
+
+@keyframes enterarrow {
+    0% {
+		transform: translateX(0);
+	}
+	5% {
+		transform: translateX(-0.5rem);
+	}
+	15% {
+		transform: translateX(0);
+	}
+	20% {
+		transform: translateX(-0.5rem);
+	}
+	35% {
+		transform: translateX(-0.5rem);
+	}
+	100% {
+		transform: translateX(0);
+	}
+}

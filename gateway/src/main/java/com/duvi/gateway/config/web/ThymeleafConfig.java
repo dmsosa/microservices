@@ -1,4 +1,4 @@
-package com.duvi.gateway.web;
+package com.duvi.gateway.config.web;
 
 import org.springframework.beans.BeansException;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -37,12 +37,10 @@ public class ThymeleafConfig implements ApplicationContextAware, WebFluxConfigur
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setApplicationContext(applicationContext);
-        templateResolver.setTemplateMode(TemplateMode.HTML);
         templateResolver.setPrefix("classpath:/templates/");
         templateResolver.setSuffix(".html");
         return templateResolver;
-    }
-    @Bean
+    }    @Bean
     public ResourceBundleMessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         return messageSource;
