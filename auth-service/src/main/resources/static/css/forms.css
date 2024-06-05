@@ -1,5 +1,9 @@
 /* FORMS */
 
+.backlogin, .backpassword, .firstenter {
+    background: url("../images/spritesheet.png") no-repeat;
+}
+
 .form {
     margin: auto;
     width: 30rem;
@@ -67,6 +71,7 @@
     transform: rotateY(180deg);
 }
 .backlogin, .backpassword {
+    cursor: pointer;
     display: block;
     width: 4rem;
     height: 4rem;
@@ -74,18 +79,18 @@
     margin-left: 1rem;
 }
 .backlogin {
-    background-color: lightgreen;
+    background-position: -40px 0px;
 }
 .backpassword {
-    background-color: lightcoral;
+    background-position: 0px 0px;
 }
 .firstenter {
+    background-position: -80px 0px;
     width: 4rem;
     height: 4rem;
     margin-top: 0.5rem;
     margin-right: 1rem;
     cursor: pointer;
-    background-color: yellow;
     display: block;
     animation: enterarrow 2s infinite;
     display: none;

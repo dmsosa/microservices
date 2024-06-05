@@ -26,6 +26,19 @@ function toggleInfo() {
     $("#infopage").toggle();
 }
 
+function stopPropagation(e) {
+    if (e.stopPropagation !== undefined) {
+        e.stopPropagation();
+    }
+}
+// Bind Functions to Elements
+
+$("#loginform").on("keydown", function(e) {
+    if (e.key == 'Enter') {
+        e.preventDefault();
+    }
+});
+
 $(".fliptext").bind("click", function() {
     $("#flipper").toggleClass("flippedcardinfo");
 })
@@ -43,15 +56,11 @@ $(".frominfo, #infotitle, #infosubtitle").on("click", function() {
 $(".firstenter").on("click", function () {
     flipForm();
 });
-$("#loginname").keydown(function (e) {
-        if (e.which == 13) {
-            preventDefault();
-        }
-});
+
 $("#loginname").keyup(function (e) {
     if ($(this).val().length >= 3) {
         $(".firstenter").show();
-        if (e.which == 13) {
+        if (e.code == 'Enter') {
             flipForm();
         }
         return;
@@ -59,10 +68,13 @@ $("#loginname").keyup(function (e) {
         $(".firstenter").hide();
     }
 });
+$(".backpassword").on("click", function() {
+    flipForm();
+});
 $("#loginpassword").keyup(function (e) { 
     if ($(this).val().length >= 6) {
         $("#loginsubmit").show();
-        if (e.which == 13) {
+        if (e.key == 'Enter') {
             $("#loginsubmit").click();
         }
         return;
@@ -79,4 +91,6 @@ $("#piggy").on("click mouseenter", function () {
     }    
 });
 
-InitialShake();
+$(document).ready(function () {
+    InitialShake();
+});

@@ -17,15 +17,15 @@
                 <div id="piggy"></div>
                 <h1 class="legend">Welcome to Microservices</h1>
                 <div class="flipinfo" id="info"></div>
-                <form id="loginform" action="/api/uaa/login" method="post" th:object="${user}">
+                <form id="loginform" action="/api/uaa/login" method="post">
                     <div class="formside sideone">
                         <div class="backlogin"></div>
-                        <input id="loginname" class="logininput" type="text" placeholder="account name" autocomplete="off"/>
+                        <input id="loginname" class="logininput" type="text" name="username" placeholder="account name" autocomplete="off" required/>
                         <div class="firstenter"></div>
                     </div>
                     <div class="formside sidetwo">
                         <div class="backpassword"></div>
-                        <input id="loginpassword" class="logininput" type="password" placeholder="account password" autocomplete="off"/>
+                        <input id="loginpassword" class="logininput" type="password" name="password" placeholder="account password" autocomplete="off" required/>
                         <button id="loginsubmit" type="submit"></button>
                     </div>
                 </form>

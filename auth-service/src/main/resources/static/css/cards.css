@@ -1,14 +1,11 @@
 @import url("./forms.css");
 
-@keyframes flip {
-    from {
-        transform: rotateY(0deg);
-    }
-    to {
-        transform: rotateY(180deg);
-    }
+.columnimage, #info {
+    background: url("../images/spritesheet.png");
+    background-repeat: repeat;
+    background-size: 490px 100px;
+    
 }
-
 #loginpage {
     top:0; bottom: 0; left:0; right: 0;
     position: absolute;
@@ -44,16 +41,18 @@
 }
 
 /* FIRST CARD */
+
 #FRONTCARD {
     z-index: 2;
     height: 45rem;
     transform: rotateY(0deg);
 }
 #piggy {
-    background-size: 149px 149px;
-    width: 149px;
-    height: 149px;
     background-image: url("../images/piggy.png");
+    background-repeat: no-repeat;
+    background-size: 15rem 15rem;
+    width: 15rem;
+    height: 15rem;
     margin: 0 auto;
 }
 .auto-shake {
@@ -63,9 +62,9 @@
     animation: hover-shake 1.2s 1;
 }
 #info {
-    width: 45px;
-    height: 45px;
-    background-color: red;
+    background-position: -120px 0px;
+    width: 70px;
+    height: 70px;
     position: absolute;
     top: 0;
     right: 0;
@@ -94,9 +93,10 @@
 }
 
 .avatar {
+    background-image: url("../images/avatar.png");
+    background-repeat: no-repeat;
     width: 10rem;
     height: 10rem;
-    background-color: magenta;
     margin: 0 auto;
     margin-top: 2rem;
 }
@@ -119,7 +119,7 @@
     position: absolute; 
     display: none;
     margin-left: calc((-100vw + 35rem)/2);
-    height: 70vh;
+    height: 80vh;
     width: 100vw;
     z-index: 4;
 }
@@ -149,7 +149,7 @@
 }
 
 a#infofooter {
-    background-image: url("../images/banana.png");
+    background-image: url("../images/github.png");
     background-size: 25px 25px;
     background-repeat: no-repeat;
     background-position: center;
@@ -159,7 +159,7 @@ a#infofooter {
     line-height: 12rem;
     bottom: 3rem;
     margin: auto;
-    width: 20%;
+    width: 50%;
     height: 2.5rem;
 }
 
@@ -194,6 +194,10 @@ a#iconsfooter {
     line-height: 0rem;
 	top: calc(42.5rem - 2.5rem);
 	background-color: white;
+    transition: background-color 0.4s;
+}
+#infolinetext:hover {
+	background-color:rgb(190, 224, 237);
 }
 .infocolumn {
     position: absolute;
@@ -222,13 +226,13 @@ a#iconsfooter {
     left:0; right: 0; top: 30px;
 }
 #leftcolumn > .columnimage {
-    background-color: yellow;
+    background-position: -290px 0px;
 }
 #rightcolumn > .columnimage {
-    background-color: blue;
+    background-position: -190px 0px;
 }
 #centercolumn > .columnimage {
-    background-color: darkred;
+    background-position: -390px 0px;
 }
 #leftcolumn, #rightcolumn, #centercolumn {
     transition: 1s;

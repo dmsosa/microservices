@@ -21,7 +21,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
 
@@ -50,7 +52,6 @@ public class SecurityConfig {
     @Bean
     @Order(2)
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-
         return httpSecurity
                 .csrf(csrf -> csrf.disable()) //disable csrf
                 .headers( headers -> headers.frameOptions(fo -> fo.sameOrigin())) //allowing h2 to be displayed as a frame
@@ -60,10 +61,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/images/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/js/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/register").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/login/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/login").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(formLogin ->
-                        formLogin.loginPage("/login"))
+                        formLogin.loginPage("/login").successHandler(authenticationSuccessHandler()))
                 .oauth2ResourceServer(rs -> rs.jwt(Customizer.withDefaults()))
                 .build();
 
@@ -80,5 +81,8 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new RedirectToGatewayAuthSuccessHandler();
+    }
 }
