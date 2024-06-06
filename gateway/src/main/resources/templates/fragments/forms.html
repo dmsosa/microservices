@@ -92,7 +92,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="item, stat : *{incomes}">
+                    <tr th:each="item, stat : *{incomes}" >
+                        <button th:id="#{'income-' + stat.count}" class="editbutton">Edit this income</button>
                         <input type="hidden" th:field="*{incomes[__${stat.index}__].id}" th:value=${item.id}>
                         <input type="hidden" th:field="*{incomes[__${stat.index}__].accountName}" th:value=*{name}>
                         <input type="hidden" th:field="*{incomes[__${stat.index}__].type}" th:value="INCOME">

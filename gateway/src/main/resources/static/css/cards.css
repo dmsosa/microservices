@@ -1,93 +1,11 @@
-:root {
-    --bubble-border: 0 -4px white, 
-    0 -8px black, 
-    4px 0 white, 
-    4px -4px black, 
-    8px 0 black, 
-    0 4px white, 
-    0 8px black, 
-    -4px 0 white, 
-    -4px  4px black, 
-    -8px 0 black, 
-    -4px -4px black, 
-    4px 4px black;
-    --arrow-border: 0px 24px black,
-    0px 20px black,
-    0px 16px black,
-    0px 12px black,
-    0px 8px black,
-    -4px 20px black,
-    -8px 16px black,
-    -12px 12px black,
-    -16px 8px black,
-    -20px 4px black,
-    -4px 16px white,
-    -4px 12px white,
-    -4px 8px white,
-    -4px 4px white,
-    -8px 12px white,
-    -8px 8px white,
-    -8px 4px white,
-    -12px 8px white,
-    -12px 4px white,
-    -16px 4px white;
+#modal {
+    width: 10rem;
+    height: 10rem;
+    background-color: wheat;
+
 }
 
-
-.account-card {
-    position: relative;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    padding: 1.5rem;
-    background-color: aliceblue;
-}
-.account-card button {
-    border: none;
-    padding: 0;
-    margin: 0;
-    outline: none;
-    background-color: transparent;
-}
-.account-card img {
-    max-width: 30rem;
-}
-.account-card::before {
-    content: 'i';
-    font-weight: bolder;
-    font-size: 2rem;
-    text-align: center;
-    width: 50px;
-    height: 25px;
-    background-color: white;
-    position: absolute;
-    right: 1px;
-    top: 0;
-    box-shadow: var(--bubble-border);
-}
-.account-card::after {
-    content: '';
-    width: 4px;
-    height: 4px;
-    position: absolute;
-    right: 1px;
-    top: 25px;
-    box-shadow: var(--arrow-border);
-}
-.note-popup {
-    position: absolute;
-    top: 2rem;
-    bottom: 2rem;
-    right: 2rem;
-    left: 2rem;
-    display: none;
-    background-color: aquamarine;
-    box-shadow: var(--bubble-border);
-    padding: 2rem 3rem;
-    font-size: large;
-    line-height: 1rem;
-}
-.show {
+#modal input {
     display: block;
+    margin-bottom: 2rem;
 }
-

@@ -1,7 +1,11 @@
 package com.duvi.gateway.service;
 
 import com.duvi.gateway.model.AccountDTO;
+import com.duvi.gateway.model.ItemDTO;
+import com.duvi.gateway.model.enums.Category;
 import com.duvi.gateway.model.enums.Currency;
+import com.duvi.gateway.model.enums.Frequency;
+import com.duvi.gateway.model.enums.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreaker;
@@ -9,7 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -65,13 +72,17 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Mono<AccountDTO> getAccountFallback(String accountName) {
+        List<ItemDTO> fallbackIncomes = new ArrayList<>();
+        ItemDTO i1 = new ItemDTO(1L, accountName, "aluguer", "house", BigDecimal.valueOf(1200), Category.FIXED, Currency.USD, Frequency.MONTH, Type.INCOME);
+        ItemDTO i2 = new ItemDTO(2L, accountName, "gym", "gym", BigDecimal.valueOf(300), Category.FIXED, Currency.USD, Frequency.MONTH, Type.INCOME);
+        ItemDTO i3 = new ItemDTO(3L, accountName, "work", "work", BigDecimal.valueOf(50), Category.FIXED, Currency.USD, Frequency.MONTH, Type.INCOME);
         return Mono.just(new AccountDTO(
                 accountName,
                 LocalDateTime.now(),
-                null,
+                fallbackIncomes,
                 null,
                 "I'm using microservices",
-                "piggy",
+                "cow",
                 Currency.getDefault()));
     }
 }
