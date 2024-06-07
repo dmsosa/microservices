@@ -1,0 +1,127 @@
+.hiddeninputs {
+    display: none;
+}
+.cardform {
+    display: flex;
+}
+
+.incomescard, .expensescard {
+    height: 50rem;
+    width: 25rem;
+    background-color: blanchedalmond;
+    border: blue solid 0.4rem;
+    justify-content: space-between;
+}
+.incomewrap, .expensewrap {
+    position: relative;
+    height: 7rem;
+    width: 100%;
+    background-color: rgb(88, 116, 152);
+    margin: 0;
+    display: flex;
+}
+.incomewrap:hover, .expensewrap:hover {
+    background-color: rgb(106, 128, 155);
+}
+.incomewrap input, .expensewrap input {
+    border: none;
+    background-color: transparent;
+    outline: none;
+    cursor: default;
+}
+
+.incomewrap input:focus, .expensewrap input:focus {
+    outline: none;
+}
+.incomewrap input:hover, .expensewrap input:hover {
+    cursor: default;
+}
+
+.cardicon {
+    max-width: 20%;
+    flex-shrink: 1;
+    flex-basis: 20%;
+    flex-grow: 0;
+    display: flex;
+    align-items: center;
+}
+.carddetails {
+    position: relative;
+    flex-basis: 80%;
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+.cardicon img {
+    max-width: 100%;
+}
+input.cardtitle {
+    display: block;
+    margin: 0 auto;
+    margin-top: 0.5rem;
+    margin-left: 2rem;
+    text-align: left;
+    width: 100%;
+    height: 3rem;
+    text-transform: uppercase;
+    font-size: large;
+    font-weight: 500;
+    font-style: italic;
+}
+input.cardamount {
+    position: absolute;
+    left: 0;
+    top: 3.5rem;
+    width: 6rem;
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+    font-style: italic;
+}
+
+input.cardcurrency {
+    position: absolute;
+    top: 4.5rem;
+    left: 6rem;
+    width: 3rem;
+}
+input.cardfrequency {
+    position: absolute;
+    top: 4.5rem;
+    left: 9rem;
+}
+.carddivisor {
+    position: absolute; 
+    top: 3.5rem;
+    width: 90%;
+    height: 1px;
+    background-color: black;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.cardslash {
+    position: absolute;
+    top: 5.2rem;
+    left: 8.5rem;
+    border-top: solid black 0.1rem;
+    width: 1rem;
+    height: 1rem;
+    color: black;
+    transform: rotate(-45deg);
+}
+.incomewrap .deletebutton, .expensewrap .deletebutton {
+    position: absolute;
+    height: 2rem;
+    width: 2rem;
+    background-color: red;
+    border-radius: 100%;
+    top: 0;
+    right: 0;
+}
+#modal {
+    position: absolute;
+    top: 0; right: 0; left: 0; bottom: 0;
+    background-color: red;
+    margin: auto;
+    width: 30rem;
+    height: 30rem;
+}

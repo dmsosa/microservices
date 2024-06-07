@@ -1,13 +1,14 @@
 // 📁 main.js
 import { show } from './login.js';
-import { showModalToEdit, saveFromModalToItem } from './dashboard.js';
+import { showModalToEdit, saveFromModalToItem, findWrapId, findInputChildren } from './dashboard.js';
 
 $(document).ready(function() {
     show();
-    $(".expensewrap").on("click", function(e) {
-        const id = e.target.id.split(".")[0];
-        const children = e.target.children;
-        showModalToEdit(id, children);
+    $(".expensewrap, .incomewrap").on("click", function(e) {
+        const id = findWrapId(e);
+        const itemWrapWithInputs = $("#" + id)[0];
+        const inputChildren = findInputChildren(itemWrapWithInputs);
+        showModalToEdit(id, inputChildren);
         $("#modalsavebutton")[0].innerHTML = id;
     })
     $("#modalsavebutton").on("click", saveFromModalToItem)

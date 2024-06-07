@@ -16,62 +16,6 @@ body .main {
     height: 5rem;
     text-align: center;
 }
-
 .main {
     background-color: rgba(27, 27, 27, 0.91);
 }
-.container {
-    padding: 0 2rem;
-    margin: 0 auto;
-}
-form {
-    padding-top: 2rem;
-}
-form h2 {
-        text-transform: uppercase;
-        color: white;
-        margin: 0;
-        margin-bottom: 2rem;
-        text-align: center;
-    }
-form fieldset {
-        border: double 0.3rem rgba(255, 229, 0, 0.91);
-        max-width: 40%;
-        margin: 0 auto;
-        padding: 2rem 0;
-    }
-form  div {
-    margin: 0 auto;
-    max-width: 70%;
-    text-align: center;
-}
-form label {
-    color: white;
-    text-transform: uppercase;
-    font-weight: bold;
-    display: block;
-}
-form input {
-    background-color: rgba(255, 233, 24, 0.8);
-    border: solid black 0.2rem;
-    color: black;
-    margin-bottom: 2rem;
-}
-form button {
-    border: none;
-    transition: outline 0.1s;
-    outline: solid black 0.2rem;
-    background-color: rgba(255, 233, 24, 0.8);
-    color: black;
-    padding: 0.4rem 1.25rem;
-    &:hover {
-        color: rgba(255, 229, 0, 0.91);
-        outline: solid black 0.5rem;
-    }
-    &:active {
-        background-color: rgba(20, 20, 20, 0.91);
-        color: rgba(255, 229, 0, 0.91);
-        outline: solid rgba(255, 229, 0, 0.91) 0.5rem;
-    }
-}
-
