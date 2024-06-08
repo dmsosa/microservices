@@ -1,0 +1,82 @@
+button, #modal button {
+    border: none;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    border-radius: 10px;
+    outline: 0.2rem solid rgb(1, 75, 1);
+    background-color: rgb(218, 252, 226);
+    color: rgb(45, 45, 45);
+    padding: 0.5rem 1rem;
+    transition: 0.3s;
+}
+button:hover, #modal button:hover {
+    background-color: rgb(148, 243, 172);
+    color: #555;
+}
+input[type=text], input[type=number] {
+    background-color: lightblue;
+    text-transform: uppercase;
+    color: black;
+    font-weight: 400;
+    border: none;
+    outline: none;
+    border-bottom: black 0.5rem solid;
+}
+
+#modaltitle {
+    display: block;
+    width: 100%;
+    height: 3rem;
+    font-size: 1.8rem;
+    text-align: center;
+    background-color: rgb(231, 247, 238);
+    border-bottom: solid rgb(4, 62, 17) 0.2rem;
+}   
+
+.custom-select {
+    position: relative;
+}
+.custom-select select {
+    display: none;
+}
+.select-selected {
+    background-color: lightpink;
+}
+.select-selected:after {
+    position: absolute;
+    content: "";
+    top: 14px;
+    right: 15px;
+    width: 0px;
+    height: 0px;
+    border: 6px solid transparent;
+    border-color:rgb(4, 62, 17), transparent, transparent, transparent;
+}
+
+.select-selected.select-arrow-active:after {
+    border-color: transparent, transparent, red, transparent;
+    top: 7px;
+}
+.select-items div, .select-selected {
+    color: white;
+    padding: 8px 10px;
+    border: 1px solid transparent;
+    border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+    cursor: pointer;
+    user-select: none;
+}
+.select-items {
+    position: absolute;
+    background-color: lightsalmon;
+    top: 100%;
+    left: 0;
+    right: 0;
+}
+
+.select-items.select-hide {
+    display: none;
+}
+.select-items div:hover, .same-as-selected {
+    background-color: rgba(0, 0, 0, 0.1);
+}

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap" >
     <link rel="stylesheet" th:href="@{/css/styles.css}" href="../static/css/styles.css"/>
     <link rel="stylesheet" th:href="@{/css/forms.css}" href="../static/css/forms.css" />
+    <link rel="stylesheet" th:href="@{/css/inputs.css}" href="../static/css/inputs.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"  integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"/>
     <script src="../static/js/lib/jquery-3.7.1.min.js" th:src="@{/js/lib/jquery-3.7.1.min.js}"></script>
     <script src="http://localhost:35729/livereload.js"></script>
@@ -40,7 +41,7 @@
                     </div>
                     <div class="carddetails">
                         <input name="incomes[0].title" id="incomes0.title" class="cardtitle" th:type="text" th:name="title" th:field="*{incomes[__${stat.index}__].title}" th:value="${item.title}"  value="salary" readonly>
-                        <input name="incomes[0].amount" id="incomes0.amount" class="cardamount" th:type="number" th:name="amount" th:field="*{incomes[__${stat.index}__].amount}" th:value="${item.amount}" value="1200" readonly> 
+                        <input name="incomes[0].amount" id="incomes0.amount" class="cardamount" th:type="number" th:name="amount" th:field="*{incomes[__${stat.index}__].amount}" th:value="${item.amount}" value="1200"  readonly> 
                         <input name="incomes[0].currency" id="incomes0.currency" class="cardcurrency" th:type="text" th:name="currency" th:field="*{incomes[__${stat.index}__].currency}" th:value=${item.currency} value="USD" readonly >
                         <input name="incomes[0].frequency" id="incomes0.frequency" class="cardfrequency" th:type="text" th:name="frequency" th:field="*{incomes[__${stat.index}__].frequency}" th:value="${item.frequency}" value="MONTH" readonly>
                         <div class="carddivisor"></div>
@@ -110,20 +111,39 @@
             </div> -->
         </form>
         <div id="modal">
-            <h2 class="modaltitle"></h2>
-            <input type="text" name="title"/>
-            <input type="number" name="amount">
-            <select name="icon">
-                <option th:each="icon : ${allItemIcons}" th:value="${icon}" th:text="${icon}"></option>
+            <h2>Item edit or create?</h2>
+            <select id="modalicon" name="icon" th:remove="all-but-first">
+                <option th:each="icon : ${allItemIcons}" th:value="${icon}" th:text="${icon}">piggy</option>
+                <option value="cow">cow<img src="../static/images/account/boss.png"></option>
+                <option value="boss">boss</option>
+                <option value="secretary">secretary</option>
+                <option value="rabbit">rabbit</option>
+                <option value="turtle">turtle</option>
+                <option value="fox">fox</option>
+                <option value="bear">bear</option>
+                <option value="elephant">elephant</option>
             </select>
-            <select name="category">
-                <option th:each="category : ${allCategories}" th:value="${category}" th:text="${category}"></option>
+            <input id="modaltitle" placeholder="title" type="text" name="title"/>
+            <label for="modaltamount">Amount</label>
+            <input id="modaltamount" type="number" name="amount" min="0" max="1000000">
+            <label for="modalicon">Icon</label>
+            <label for="modalcategory">Category</label>
+            <select id="modalcategory" name="category" th:remove="all-but-first">
+                <option th:each="category : ${allCategories}" th:value="${category}" th:text="${category}">FIXED</option>
+                <option value="OCCASIONAL">OCCASIONAL</option>
             </select>
-            <select name="currency">
-                <option th:each="currency : ${allCurrencies}" th:value="${currency}" th:text="${currency}"></option>
+            <label for="modalcurrency">Currency</label>
+            <select id="modalcurrency" name="currency" th:remove="all-but-first">
+                <option th:each="currency : ${allCurrencies}" th:value="${currency}" th:text="${currency}">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
             </select>
-            <select name="frequency">
-                <option th:each="frequency : ${allFrequencies}" th:value="${frequency}" th:text="${frequency}"></option>
+            <label for="modalfrequency">Frequency</label>
+            <select id="modalfrequency" name="frequency" th:remove="all-but-first">
+                <option th:each="frequency : ${allFrequencies}" th:value="${frequency}" th:text="${frequency}">DAY</option>
+                <option value="WEEK">WEEK</option>
+                <option value="MONTH">MONTH</option>
+                <option value="QUARTER">QUARTER</option>
             </select>
             <button id="modalsavebutton">Save changes</button>
         </div>

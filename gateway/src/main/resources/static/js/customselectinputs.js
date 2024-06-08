@@ -1,30 +1,3 @@
-// 📁 main.js
-import { show } from './login.js';
-import { showModalToEdit, saveFromModalToItem, findWrapId, findInputChildren } from './dashboard.js';
-
-$(document).ready(function() {
-    show();
-    $(".expensewrap, .incomewrap").on("click", function(e) {
-        const id = findWrapId(e);
-        const itemWrapWithInputs = $("#" + id)[0];
-        const inputChildren = findInputChildren(itemWrapWithInputs);
-        showModalToEdit(id, inputChildren);
-        $("#modalsavebutton")[0].innerHTML = id;
-    })
-    $("#modalsavebutton").on("click", saveFromModalToItem)
-});
-
-//wrapping all selects in custom select divs
-var allSelects = $("select");
-for (let i = 0; i < allSelects.length ; i++) {
-    var parent = allSelects[i].parentNode;
-    var wrapper = document.createElement("div");
-    wrapper.setAttribute("class", "custom-select");
-    parent.replaceChild(wrapper, allSelects[i]);
-    wrapper.appendChild(allSelects[i]);
-    
-}
-
 // Custom select inputs
 var customSelects, selectElement, optionsLenght, currentSelectedOption, optionsList, optionElement;
 
@@ -44,11 +17,11 @@ for (let i = 0 ; i < customSelects.length ; i++) {
         optionElement = document.createElement("div");
         optionElement.innerHTML = selectElement.options[j].innerHTML;
         optionElement.addEventListener("click", function(e) {
-            var parentSelect, currentSelected, sameAsSelected;
+            var parentSelect, currentSelected;
             parentSelect = this.parentNode.parentNode.getElementsByTagName("select")[0];
             currentSelected = this.parentNode.previousSibling;
             for (let i = 0; i < parentSelect.length ; i++) {
-                if (parentSelect.options[i].innerHTML === this.innerHTML) {
+                if (parentSelect.options[i] === this.innerHTML) {
                     parentSelect.selectedIndex = i;
                     currentSelected.innerHTML = this.innerHTML;
                     sameAsSelected = this.parentNode.getElementsByClassName("same-as-selected");
@@ -72,7 +45,7 @@ for (let i = 0 ; i < customSelects.length ; i++) {
 }
 
 function closeAllSelect(currentSelected) {
-    var allOptionsLists, allClickedSelecteds, closeCurrentList = [];
+    var allOptionsLists, currentSelected, closeCurrentList = [];
     allOptionsLists = $(".select-items");
     allClickedSelecteds = $(".select-selected");
     for (let i = 0; i < currentSelected.length ; i ++) {
@@ -88,6 +61,4 @@ function closeAllSelect(currentSelected) {
         }
     }
 }
-
-
 document.addEventListener("click", closeAllSelect);
