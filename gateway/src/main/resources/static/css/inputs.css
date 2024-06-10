@@ -40,6 +40,7 @@ input[type=text], input[type=number] {
 .custom-select select {
     display: none;
 }
+
 .select-selected {
     background-color: lightpink;
 }
@@ -51,11 +52,11 @@ input[type=text], input[type=number] {
     width: 0px;
     height: 0px;
     border: 6px solid transparent;
-    border-color:rgb(4, 62, 17), transparent, transparent, transparent;
+    border-color:rgb(4, 62, 17) transparent transparent transparent;
 }
 
 .select-selected.select-arrow-active:after {
-    border-color: transparent, transparent, red, transparent;
+    border-color: transparent transparent rgb(4, 62, 17) transparent;
     top: 7px;
 }
 .select-items div, .select-selected {
@@ -74,9 +75,50 @@ input[type=text], input[type=number] {
     right: 0;
 }
 
-.select-items.select-hide {
+.select-items.select-hide, #modal .custom-select:nth-child(2) .select-items.select-hide {
     display: none;
 }
 .select-items div:hover, .same-as-selected {
     background-color: rgba(0, 0, 0, 0.1);
+}
+
+#modal .custom-select:nth-child(2) {
+    width: 7rem;
+    height: 7rem;
+    margin: 0 auto;
+}
+#modal .custom-select:nth-child(2) .select-items {
+    position:absolute;
+    width: 25rem;
+    height: 25rem;
+    background-color: red;
+    margin-left: 1.5rem;
+    padding: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    z-index: 99;
+}
+
+#modal .custom-select:nth-child(2) .select-selected {
+    background-color: lawngreen;
+    width: 7rem;
+    height: 7rem;
+    border-radius: 25%;
+}
+#modal .custom-select:nth-child(2) .select-selected:after,  #modal .custom-select:nth-child(2) .select-selected.select-arrow-active:after{
+    top: 5px;
+    right: 5px;
+    border-color: #555;
+    border-radius: 50%;
+}
+#modal .custom-select:nth-child(2) .select-items div {
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 0;
+    height: 5rem;
+}
+#modal .custom-select:nth-child(2) .select-items div img {
+    width: 5rem;
+    height: 5rem;
+    
 }
