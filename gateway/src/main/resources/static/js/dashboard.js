@@ -1,6 +1,20 @@
 function showModalToEdit(id, itemFieldInputs) {
-    const modal = $("#modal");
-    modal.data("wrapId", "#" + id);
+    let formObject = {
+        icon: "",
+        title: "",
+        amount: 0,
+        currency: "USD",
+        category: "FIXED",
+        frequency: "DAY"
+    };
+    const modalTitle = $("#modal-title");
+    const modalAmount = $("#modal-amount-currency input");
+    const modalCurrency = $("#modal-amount-currency .custom-select");
+    const modalCategory = $("#modal-category-frequency .custom-select[name='category']");
+    const modalFrequency = $("#modal-category-frequency .custom-select[name='frequency']");
+    modalTitle.value = formObject.title;
+    modalAmount.value = formObject.amount;
+    modalCurrency.children(":first").value = formObject.currency;
     for (const itemField of itemFieldInputs) {
         var nameAttribute = itemField.name.split(".")[1];
         var modalField = $(`#modal input[name=${nameAttribute}]`)[0]  || $(`#modal select[name=${nameAttribute}]`)[0];

@@ -112,40 +112,98 @@
         </form>
         <div id="modal">
             <h2>Item edit or create?</h2>
-            <select id="modalicon" name="icon" th:remove="all-but-first">
-                <option th:each="icon : ${allItemIcons}" th:value="${icon}" th:text="${icon}">piggy</option>
-                <option value="cow"><img src="../static/images/account/cow.png"></option>
-                <option value="boss">boss</option>
-                <option value="secretary">secretary</option>
-                <option value="rabbit">rabbit</option>
-                <option value="turtle">turtle</option>
-                <option value="fox">fox</option>
-                <option value="bear">bear</option>
-                <option value="elephant">elephant</option>
-            </select>
-            <input id="modaltitle" placeholder="title" type="text" name="title"/>
-            <label for="modaltamount">Amount</label>
-            <input id="modaltamount" type="number" name="amount" min="0" max="1000000">
-            <label for="modalicon">Icon</label>
-            <label for="modalcategory">Category</label>
-            <select id="modalcategory" name="category" th:remove="all-but-first">
-                <option th:each="category : ${allCategories}" th:value="${category}" th:text="${category}">FIXED</option>
-                <option value="OCCASIONAL">OCCASIONAL</option>
-            </select>
-            <label for="modalcurrency">Currency</label>
-            <select id="modalcurrency" name="currency" th:remove="all-but-first">
-                <option th:each="currency : ${allCurrencies}" th:value="${currency}" th:text="${currency}">USD</option>
-                <option value="EUR">EUR</option>
-                <option value="GBP">GBP</option>
-            </select>
-            <label for="modalfrequency">Frequency</label>
-            <select id="modalfrequency" name="frequency" th:remove="all-but-first">
-                <option th:each="frequency : ${allFrequencies}" th:value="${frequency}" th:text="${frequency}">DAY</option>
-                <option value="WEEK">WEEK</option>
-                <option value="MONTH">MONTH</option>
-                <option value="QUARTER">QUARTER</option>
-            </select>
-            <button id="modalsavebutton">Save changes</button>
+            <div class="custom-select-icons">
+                <ul class="selected-option">
+                    <div class="option-item house">
+                        <div class="option-icon"></div>
+                    </div>
+                </ul>
+                <ul class="select-list" th:remove="all-but-first">
+                    <li th:each="itemIcon : ${allItemIcons}">
+                        <div class="option-item house" th:class="${'option-icon ' + itemIcon.name}">
+                            <div class="option-icon"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="option-item entertainment">
+                            <div class="option-icon"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="option-item food">
+                            <div class="option-icon"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="option-item sport">
+                            <div class="option-icon"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="option-item health">
+                            <div class="option-icon"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="option-item education">
+                            <div class="option-icon"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="option-item work">
+                            <div class="option-icon"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="option-item hygiene">
+                            <div class="option-icon"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <input id="modal-title" placeholder="title" type="text" name="title"/>
+            <div id="modal-amount-currency">
+                <input type="number" name="amount" placeholder="amount">
+                <div class="custom-select">
+                    <ul class="selected-option">
+                        <li>
+                            <div class="option-item">
+                                <p class="option-text">USD</p>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="select-list" th:remove="all-but-first">
+                        <li th:each="currency : ${allCurrencies}">
+                            <div class="option-item">
+                                <p class="option-text">USD</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="option-item">
+                                <p class="option-text">EUR</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="option-item">
+                                <p class="option-text">GBP</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="modal-category-frequency">
+                <select name="category" th:remove="all-but-first">
+                    <option th:each="category : ${allCategories}" th:value="${category}" th:text="${category}">FIXED</option>
+                    <option value="OCCASIONAL">OCCASIONAL</option>
+                </select>
+                <select name="frequency" th:remove="all-but-first">
+                    <option th:each="frequency : ${allFrequencies}" th:value="${frequency}" th:text="${frequency}">DAY</option>
+                    <option value="WEEK">WEEK</option>
+                    <option value="MONTH">MONTH</option>
+                    <option value="QUARTER">QUARTER</option>
+                </select>
+            </div>
+            <button id="modal-save-button">Save changes</button>
         </div>
     </section>
     <section class="bottompage"></section>

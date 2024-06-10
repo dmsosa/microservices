@@ -15,110 +15,190 @@ button:hover, #modal button:hover {
     color: #555;
 }
 input[type=text], input[type=number] {
-    background-color: lightblue;
     text-transform: uppercase;
     color: black;
     font-weight: 400;
-    border: none;
-    outline: none;
-    border-bottom: black 0.5rem solid;
-}
-
-#modaltitle {
-    display: block;
-    width: 100%;
     height: 3rem;
     font-size: 1.8rem;
-    text-align: center;
-    background-color: rgb(231, 247, 238);
+    border: none;
+    outline: none;
     border-bottom: solid rgb(4, 62, 17) 0.2rem;
+    background-color: rgb(231, 247, 238);
+}
+
+#modal-title {
+    width: 100%;
+    text-align: center;
+    margin: 1.5rem auto;
 }   
-
-.custom-select {
-    position: relative;
+#modal-amount-currency, #modal-category-frequency {
+    display: flex;
+    margin-bottom: 1.5rem;
 }
-.custom-select select {
-    display: none;
+#modal-amount-currency input {
+    flex-basis: 0;
+    width: 50%;
+    flex-grow: 1;
+    flex-shrink: 1;
 }
-
-.select-selected {
-    background-color: lightpink;
-}
-.select-selected:after {
-    position: absolute;
-    content: "";
-    top: 14px;
-    right: 15px;
-    width: 0px;
-    height: 0px;
-    border: 6px solid transparent;
-    border-color:rgb(4, 62, 17) transparent transparent transparent;
+#modal-amount-currency .custom-select {
+    flex-basis: 0;
+    flex-grow: 1;
+    flex-shrink: 1;
 }
 
-.select-selected.select-arrow-active:after {
-    border-color: transparent transparent rgb(4, 62, 17) transparent;
-    top: 7px;
-}
-.select-items div, .select-selected {
-    color: white;
-    padding: 8px 10px;
-    border: 1px solid transparent;
-    border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
-    cursor: pointer;
-    user-select: none;
-}
-.select-items {
-    position: absolute;
-    background-color: lightsalmon;
-    top: 100%;
-    left: 0;
-    right: 0;
-}
-
-.select-items.select-hide, #modal .custom-select:nth-child(2) .select-items.select-hide {
-    display: none;
-}
-.select-items div:hover, .same-as-selected {
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
-#modal .custom-select:nth-child(2) {
-    width: 7rem;
-    height: 7rem;
+#modal-save-button {
+    display: block;
     margin: 0 auto;
 }
-#modal .custom-select:nth-child(2) .select-items {
-    position:absolute;
-    width: 25rem;
-    height: 25rem;
-    background-color: red;
-    margin-left: 1.5rem;
-    padding: 1rem;
-    display: flex;
-    flex-wrap: wrap;
-    z-index: 99;
+
+/* Custom selects */
+
+.custom-select, .custom-select-icons {
+    position: relative;
+    user-select: none;
 }
 
-#modal .custom-select:nth-child(2) .select-selected {
-    background-color: lawngreen;
-    width: 7rem;
-    height: 7rem;
-    border-radius: 25%;
+/* -------------------------- */
+
+ul.select-list, ul.selected-option {
+    list-style: none;
+    border-radius: 5px; 
+    margin: 0;
+    padding: 0;
 }
-#modal .custom-select:nth-child(2) .select-selected:after,  #modal .custom-select:nth-child(2) .select-selected.select-arrow-active:after{
-    top: 5px;
-    right: 5px;
-    border-color: #555;
-    border-radius: 50%;
+ul.selected-option li, ul.select-list li {
+    padding: 1rem;
+    margin: 0;
+    width: 100%;
+    height: 4rem;
+    background-color: rgb(228, 249, 232);
+    border-top: solid rgba(45, 45, 45, 0.2) 0.15rem;
 }
-#modal .custom-select:nth-child(2) .select-items div {
-    flex-grow: 1;
-    flex-shrink: 0;
-    flex-basis: 0;
-    height: 5rem;
+.selected-option:after {
+    content: "";
+    position: absolute;
+    top: 1.5rem;
+    right: 1rem;
+    width: 0.8rem;
+    height: 0.8rem;
+    border: 0.2rem solid transparent;
+    border-color: transparent rgb(45, 45, 45) rgb(45, 45, 45) transparent;
+    transform: rotate(45deg);
 }
-#modal .custom-select:nth-child(2) .select-items div img {
-    width: 5rem;
-    height: 5rem;
-    
+.custom-select.active .selected-option:after {
+    top: 2rem;
+    transform: rotate(225deg);
 }
+
+ul.select-list {
+    display: none;
+    position: absolute;
+    top: 4rem;
+    left: 0; right: 0;
+    z-index: 99;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.2s;
+}
+
+.custom-select.active ul.select-list {
+    display: block;
+    max-height: 50rem;
+    opacity: 1;
+}
+
+ul.selected-option li:hover, ul.select-list li:hover {
+    cursor: pointer;
+    background-color: rgb(195, 250, 208);
+}
+
+
+ul.select-list li:first-child {
+    border-top: none;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+ul.select-list li:last-child {
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+ul.select-list .option-item {
+    display: flex;
+    height: 100%;
+    align-items: center;
+}
+.option-text {
+    margin: 0 1rem;
+    font-weight: 600;
+}
+
+/* Icons select  */
+
+
+
+/* Sprites positions */
+
+.custom-select-icons .option-icon {
+    background-image: url("../images/item_sprites.png");
+}
+
+
+.custom-select-icons .option-item.education .option-icon {
+    width: 38px; height: 38px;
+    background-position: -10px -10px;
+}
+.custom-select-icons .option-item.entertainment .option-icon {
+    width: 38px; height: 38px;
+    background-position: -68px -10px;
+}
+.custom-select-icons .option-item.sport .option-icon {
+    width: 38px; height: 38px;
+    background-position: -126px -10px;
+}
+.custom-select-icons .option-item.work .option-icon {
+    width: 38px; height: 38px;
+    background-position: -184px -10px;
+}
+.custom-select-icons .option-item.food .option-icon {
+    width: 38px; height: 38px;
+    background-position: -242px -10px;
+}
+.custom-select-icons .option-item.house .option-icon {
+    width: 38px; height: 38px;
+    background-position: -300px -10px;
+}
+.custom-select-icons .option-item.hygiene .option-icon {
+    width: 38px; height: 38px;
+    background-position: -358px -10px;
+}
+.custom-select-icons .option-item.health .option-icon {
+    width: 38px; height: 38px;
+    background-position: -416px -10px;
+}
+
+
+/* ------------------------------------ */
+
+
+.custom-select-icons .selected-option:after {
+    top: 4.5rem;
+    right: 10rem;
+    border: 4px solid transparent;
+    border-color: transparent rgb(45, 45, 45) rgb(45, 45, 45) transparent;
+    transform: rotate(0deg);
+}
+.custom-select-icons.active .selected-option:after {
+    border-color: rgb(45, 45, 45) transparent transparent rgb(45, 45, 45);
+}
+
+
+
+
+
+
+
+
+
+
+
