@@ -1,22 +1,60 @@
-button, #modal button {
+/* Chrome, Safari, Edge, Opera */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.primary-button {
     border: none;
     font-size: 1rem;
     font-weight: bold;
     letter-spacing: 1px;
-    border-radius: 10px;
     outline: 0.2rem solid rgb(1, 75, 1);
     background-color: rgb(218, 252, 226);
     color: rgb(45, 45, 45);
     padding: 0.5rem 1rem;
-    transition: 0.3s;
+    transition: 0.1s;
 }
-button:hover, #modal button:hover {
+.primary-button:hover {
     background-color: rgb(148, 243, 172);
     color: #555;
 }
-input[type=text], input[type=number] {
+.primary-button:active, .primary-button:focus {
+    border: none;
+    outline: 0.4rem solid rgb(1, 75, 1);
+    background-color: rgb(97, 240, 133);
+}
+.close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 1;
+    border: none;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    outline: 0.2rem solid rgb(223, 87, 87);
+    background-color: rgb(250, 196, 196);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    transition: 0.1s;
+}
+.close-button:hover {
+    background-color: rgb(255, 108, 108);
+    color: #555;
+}
+
+.close-button:active, .close-button:focus {
+    border: none;
+    outline: 0.4rem solid rgb(223, 87, 87);
+    background-color: rgb(255, 108, 108);
+}
+
+#modal input[type=text] {
     text-transform: uppercase;
-    color: black;
+    color: rgb(4, 62, 17);
     font-weight: 400;
     height: 3rem;
     font-size: 1.8rem;
@@ -33,53 +71,42 @@ input[type=text], input[type=number] {
 }   
 #modal-amount-currency, #modal-category-frequency {
     display: flex;
+    gap: 0.4rem;
+    justify-content: space-between;
     margin-bottom: 1.5rem;
-}
-#modal-amount-currency input {
-    flex-basis: 0;
-    width: 50%;
-    flex-grow: 1;
-    flex-shrink: 1;
-}
-#modal-amount-currency .custom-select {
-    flex-basis: 0;
-    flex-grow: 1;
-    flex-shrink: 1;
 }
 
 #modal-save-button {
     display: block;
     margin: 0 auto;
+    border-radius: 0;
 }
 
 /* Custom selects */
 
-.custom-select, .custom-select-icons {
+.custom-select, .custom-select-icons, .custom-select-avatars {
     position: relative;
     user-select: none;
 }
 
 /* -------------------------- */
 
-ul.select-list, ul.selected-option {
-    list-style: none;
-    border-radius: 5px; 
-    margin: 0;
-    padding: 0;
+.selected-option {
+    min-width: 10rem;
+    max-width: 100%;
 }
-ul.selected-option li, ul.select-list li {
-    padding: 1rem;
+.option-item {
+    padding: 1rem 2rem;
     margin: 0;
-    width: 100%;
-    height: 4rem;
-    background-color: rgb(228, 249, 232);
-    border-top: solid rgba(45, 45, 45, 0.2) 0.15rem;
+    max-height: 3rem;
+    background-color: rgb(231, 247, 238);
+    border-bottom: solid rgb(4, 62, 17) 0.2rem;
 }
 .selected-option:after {
     content: "";
     position: absolute;
     top: 1.5rem;
-    right: 1rem;
+    right: 0.5rem;
     width: 0.8rem;
     height: 0.8rem;
     border: 0.2rem solid transparent;
@@ -91,10 +118,10 @@ ul.selected-option li, ul.select-list li {
     transform: rotate(225deg);
 }
 
-ul.select-list {
+.select-list {
     display: none;
     position: absolute;
-    top: 4rem;
+    top: 3rem;
     left: 0; right: 0;
     z-index: 99;
     max-height: 0;
@@ -102,45 +129,74 @@ ul.select-list {
     transition: max-height 0.2s;
 }
 
-.custom-select.active ul.select-list {
+.custom-select.active .select-list {
     display: block;
     max-height: 50rem;
     opacity: 1;
 }
 
-ul.selected-option li:hover, ul.select-list li:hover {
+.option-item:hover {
     cursor: pointer;
-    background-color: rgb(195, 250, 208);
+    background-color: rgb(200, 248, 221);
 }
 
 
-ul.select-list li:first-child {
+.option-item:first-child {
     border-top: none;
-    border-top-right-radius: 5px;
-    border-top-left-radius: 5px;
 }
-ul.select-list li:last-child {
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-}
-ul.select-list .option-item {
+
+.select-list .option-item {
     display: flex;
     height: 100%;
     align-items: center;
 }
 .option-text {
-    margin: 0 1rem;
+    margin: 0;
+    text-align: left;
+    max-width: 100%;
     font-weight: 600;
 }
 
 /* Icons select  */
 
+.custom-select-icons {
+    width: 100%;
+}
+.custom-select-icons .selected-option .option-item {
+    max-height: 6rem;
+    min-width: 6rem;
+    height: 6rem;
+    width: 6rem;
+    margin: 0 auto;
+    padding: 0;
+}
 
+.custom-select-icons.active .select-list {
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 100rem;
+    width: 20rem;
+    opacity: 1;
+    top: 100%;
+    left: 9.5rem;
+
+}
+.custom-select-icons .option-item {
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0;
+    padding: 2.5rem;
+    border: none;
+}
 
 /* Sprites positions */
 
-.custom-select-icons .option-icon {
+.custom-select-icons .option-item .option-icon {
     background-image: url("../images/item_sprites.png");
+    position: relative;
+    top: 50%;
+    margin: auto;
+    transform: translateY(-50%);
 }
 
 
@@ -191,6 +247,54 @@ ul.select-list .option-item {
 .custom-select-icons.active .selected-option:after {
     border-color: rgb(45, 45, 45) transparent transparent rgb(45, 45, 45);
 }
+
+/* ------------------------------------ */
+
+/* Custom number input  */
+
+.custom-input {
+    display: flex;
+    height: 3rem;
+    max-width: 13rem;
+    background-color: rgb(231, 247, 238);
+    border-bottom: solid rgb(4, 62, 17) 0.2rem;
+}
+.custom-input input {
+    text-transform: uppercase;
+    width: 10rem;
+    color: rgb(4, 62, 17);
+    font-weight: 400;
+    font-size: 1.8rem;
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+.custom-input-actions {
+    display: flex;
+    width: 3rem;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+}
+.custom-input-actions button.addButton, .custom-input-actions button.substractButton  {
+    padding: 0;
+    margin: 0;
+    width: 0.5rem;
+    height: 0.5rem;
+    border: 0.3rem solid transparent;
+    background-color: transparent;
+    border-color: transparent rgb(1, 75, 1) rgb(1, 75, 1) transparent;
+    transform: rotate(225deg);
+}
+.custom-input-actions button.substractButton  {
+    transform: rotate(45deg);
+}
+.custom-input-actions button.addButton:hover, .custom-input-actions button.substractButton:hover {
+    background-color: transparent !important;
+    box-shadow: 1px 1px 0px 1px rgb(190, 244, 190);
+}
+
 
 
 

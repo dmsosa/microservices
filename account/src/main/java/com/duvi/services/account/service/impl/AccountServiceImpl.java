@@ -53,7 +53,7 @@ public class AccountServiceImpl implements AccountService {
                 continue;
             }
         }
-        return new AccountDTO(account.getName(), account.getLastSeen(), account.getNote(), account.getIcon(), incomes, expenses, account.getCurrency());
+        return new AccountDTO(account.getName(), account.getLastSeen(), account.getNote(), account.getAvatar(), incomes, expenses, account.getCurrency());
     }
     @Override
     public AccountDTO createAccount(String accountName) throws EntityExistsException {
@@ -75,7 +75,7 @@ public class AccountServiceImpl implements AccountService {
         Account accountToUpdate = accountRepository.findByName(name).get();
 
         accountToUpdate.setNote(accountDTO.note());
-        accountToUpdate.setIcon(accountDTO.icon());
+        accountToUpdate.setAvatar(accountDTO.avatar());
 
         return this.createDTO(accountRepository.save(accountToUpdate));
     }

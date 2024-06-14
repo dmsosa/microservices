@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS accounts (
     name VARCHAR(40) NOT NULL UNIQUE,
     last_seen TIMESTAMP,
     note VARCHAR(20000),
-    icon TEXT,
+    avatar TEXT,
     currency currencies DEFAULT 'USD'
 );
 

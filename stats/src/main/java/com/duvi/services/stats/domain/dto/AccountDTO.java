@@ -1,7 +1,6 @@
 package com.duvi.services.stats.domain.dto;
 
 
-import com.duvi.services.stats.domain.Item;
 import lombok.Getter;
 import lombok.Setter;
 

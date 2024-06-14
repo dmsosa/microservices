@@ -20,6 +20,6 @@ public class AccountDTO {
     private List<ItemDTO> incomes = new ArrayList<>();
     private List<ItemDTO> expenses = new ArrayList<>();
     private String note;
-    private String icon;
+    private String avatar;
     private Currency currency;
 }

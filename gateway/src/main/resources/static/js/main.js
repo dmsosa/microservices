@@ -1,29 +1,39 @@
 // 📁 main.js
-import { showModalToEdit, saveFromModalToItem, findWrapId, findInputChildren } from './dashboard.js';
+import { showModalToEdit, saveFromModalToItem, findWrapId, createFormObject, createItemCard, deleteItemCard, updateAccountDetails } from './dashboard.js';
 
 
 //wrapping all selects in custom select divs
 
-function wrapAllSelects() {
-    const allSelects = $("select");
-    for (let i = 0; i < allSelects.length ; i++ ) {
-        var parent = allSelects[i].parentElement;
-        var customSelectWrapper = document.createElement("div");
-        customSelectWrapper.setAttribute("class", "custom-select");
-        parent.replaceChild(customSelectWrapper, allSelects[i]);
-        customSelectWrapper.appendChild(allSelects[i]);
-    }
+function inputNumberAdd(event) {
+    const input = event.target.parentNode.previousElementSibling;
+    input.value = Number(input.value) + 1;
+}
+
+
+function inputNumberSubstract(event) {
+    const input = event.target.parentNode.previousElementSibling;
+    input.value = Number(input.value) - 1;
 }
 
 function closeAllSelects() {
-    const allSelects = $(".select-wrap");
+    const allSelects = $(".custom-select");
     for (let i = 0 ; i < allSelects.length ; i++ ) {
         allSelects[i].classList.remove("active");
     }
 }
 
 $(document).ready(function() {
-    wrapAllSelects();
+
+    $(".header-toggler").on("click", function() {
+        $("#modal-note").parent().show();
+    })
+    $(".close-button").on("click", function (e) { 
+        e.preventDefault();
+        const parentId = e.target.parentElement.parentElement.id;
+        $("#" + parentId).hide();
+    });
+    $(".addButton").on("click", inputNumberAdd);
+    $(".substractButton").on("click", inputNumberSubstract);
 
     $(".selected-option").on("click", function() {
         const currentSelect = $(this).parent()[0];
@@ -33,19 +43,23 @@ $(document).ready(function() {
             closeAllSelects();
             currentSelect.classList.add("active");
         }
-    })
-    $(".select-list li").on("click", function() {
-        const optionInnerHtml = $(this).html();
-        $(this).parent().prev().html(optionInnerHtml);
+    });
+    $(".select-list .option-item").on("click", function() {
+        const thisOptionClone = $(this).clone();
+        $(this).parent().prev().html(thisOptionClone);
         $(this).parent().parent().removeClass("active");
-    })
+    });
 
-    $(".expensewrap, .incomewrap").on("click", function(e) {
+    $(".item-wrap").on("click", function(e) {
         const id = findWrapId(e);
-        const itemWrapWithInputs = $("#" + id)[0];
-        const inputChildren = findInputChildren(itemWrapWithInputs);
-        showModalToEdit(id, inputChildren);
-        $("#modalsavebutton")[0].innerHTML = id;
-    })
-    $("#modalsavebutton").on("click", saveFromModalToItem)
+        const formObject = createFormObject(id);
+        showModalToEdit(formObject);
+    });
+    $(".addIncome, .addExpense").on("click", createItemCard);
+    $("#modal-save-button").on("click", saveFromModalToItem);
+    $("#modal-note .primary-button").on("click", function () {
+
+    });
+    $("#modal-outer").on("click", updateAccountDetails);
+    $(".delete-button").on("click", deleteItemCard)
 });

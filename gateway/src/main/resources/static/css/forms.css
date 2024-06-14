@@ -1,132 +1,250 @@
-.hiddeninputs {
-    display: none;
-}
-.cardform {
+#form-wrapper {
+    position: relative;
     display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    height: calc(100vh - 10rem);
+    max-height: calc(100vh - 10rem);
+    width: 90%;
+    max-width: 84rem;
+    margin: 0 auto;
 }
 
-.incomescard, .expensescard {
-    height: 50rem;
-    width: 25rem;
-    background-color: blanchedalmond;
-    border: blue solid 0.4rem;
+.hidden-inputs {
+    display: none;
+}
+fieldset.hidden {
+    display: none;
+}
+.submit-button {
+    flex-grow: 0;
+    flex-basis: 30%;
+    width: 3rem;
+    margin: 0 auto;
+}
+
+#incomes-card, #expenses-card {
+    position: relative;
+    flex-basis: 45%;
+    max-width: 45%;
+    max-height: 40rem;
+    flex-grow: 1;
+}
+.item-card-header {
+    padding: 0.75rem 2rem;
+    background-color: rgb(127, 202, 114);
+    display: flex;
     justify-content: space-between;
 }
-.incomewrap, .expensewrap {
+.item-card-header h1 {
+    font-size: 2rem;
+}
+.item-card-header .primary-button {
+    font-size: 1rem;
+    background-color: transparent;
+    margin: auto 0;
+}
+
+.item-card-content {
+    position: relative;
+    height: 100%;
+    max-height: 100%;
+}
+.card-empty {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgb(249, 255, 248);
+    border: solid rgb(127, 202, 114) 0.5rem;
+    padding: 0.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+}
+.card-empty h1 {
+    margin-top: -10rem;
+}
+.card-empty .primary-button {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.item-list {
+    width: 100%;
+    border: rgb(127, 202, 114) 0.5rem solid;
+    cursor: pointer;
+}
+.item-wrap {
     position: relative;
     height: 7rem;
-    width: 100%;
-    background-color: rgb(88, 116, 152);
+    background-color: rgb(250, 255, 249);
     margin: 0;
     display: flex;
+    transition: all 0.2s;
 }
-.incomewrap:hover, .expensewrap:hover {
-    background-color: rgb(106, 128, 155);
+.item-wrap:hover {
+    background-color: rgb(215, 241, 211);
 }
-.incomewrap input, .expensewrap input {
+.item-wrap input {
     border: none;
     background-color: transparent;
     outline: none;
-    cursor: default;
+    cursor: pointer;
 }
 
-.incomewrap input:focus, .expensewrap input:focus {
+.item-wrap input:focus {
     outline: none;
 }
-.incomewrap input:hover, .expensewrap input:hover {
-    cursor: default;
+.item-wrap input:hover {
+    cursor: pointer;
 }
 
-.cardicon {
-    max-width: 20%;
-    flex-shrink: 1;
-    flex-basis: 20%;
-    flex-grow: 0;
-    display: flex;
-    align-items: center;
+/* Card icon and sprites */
+.card-icon {
+    height: 100%;
+    width: 6rem;
 }
-.carddetails {
+.card-img.house, .card-img.entertainment, .card-img.food, .card-img.education, .card-img.work, .card-img.sport, .card-img.health, .card-img.hygiene {
     position: relative;
-    flex-basis: 80%;
-    flex-grow: 1;
-    flex-shrink: 0;
+    top: 50%;
+    margin-left: 1rem;
+    transform: translateY(-50%);
+    width: 4rem;
+    height: 4rem;
+    background: url("../images/item_sprites.png") no-repeat;
 }
-.cardicon img {
-    max-width: 100%;
+.card-img.house {
+    background-position: -300px -10px;
 }
-input.cardtitle {
-    display: block;
-    margin: 0 auto;
-    margin-top: 0.5rem;
-    margin-left: 2rem;
-    text-align: left;
-    width: 100%;
-    height: 3rem;
-    text-transform: uppercase;
-    font-size: large;
-    font-weight: 500;
-    font-style: italic;
+.card-img.entertainment {
+    background-position: -120px -10px;
 }
-.carddivisor {
+.card-img.food {
+    background-position: -240px -10px;
+}
+.card-img.education {
+    background-position: -12px -10px;
+}
+.card-img.work {
+    background-position: -180px -10px;
+}
+.card-img.sport {
+    background-position: -60px -10px;
+}
+.card-img.health {
+    background-position: -420px -10px;
+}
+.card-img.hygiene {
+    background-position: -360px -10px;
+}
+/* ------------------------------------------ */
+.card-divisor {
     position: absolute; 
     top: 3.5rem;
-    width: 90%;
+    width: 80%;
     height: 1px;
     background-color: black;
     left: 50%;
     transform: translateX(-50%);
 }
-input.cardamount {
-    text-align: right;
-    position: absolute;
-    right: 7.5rem;
-    top: 3.5rem;
-    width: 9rem;
-    font-size: large;
-    font-weight: bold;
-    font-style: italic;
-}
-
-input.cardcurrency {
-    position: absolute;
-    top: 4.5rem;
-    right: 4.5rem;
-    width: 3rem;
-}
-input.cardfrequency {
-    text-align: right;
-    position: absolute;
-    top: 4.5rem;
-    right: 0.5rem;
-    width: 4rem;
-}
-.cardslash {
-    position: absolute;
-    top: 5.4rem;
-    right: 4rem;
-    border-top: solid black 0.1rem;
-    width: 1rem;
+.card-slash {
+    display: block;
+    margin-top: 1.6rem;
+    margin-left: 0rem;
+    border-left: solid black 0.12rem;
+    width: 0rem;
     height: 1rem;
     color: black;
-    transform: rotate(-45deg);
+    transform: rotate(30deg);
 }
-.incomewrap .deletebutton, .expensewrap .deletebutton {
+.card-details {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+    flex-basis: 80%;
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+
+.card-details input {
+    height: 3.5rem;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+input.card-title {
+    flex-shrink: 0;
+    flex-basis: 100%;   
+    padding-left: 2rem;
+    text-transform: uppercase;
+    font-size: 1.4rem;
+    max-height: 60%;
+    font-weight: bolder;
+}
+
+input.card-amount {
+    flex-grow: 1;
+    font-size: large;
+    width: 55%;
+    text-align: right;
+    font-weight: 600;
+}
+
+input.card-currency {
+    width: 10%;
+    padding-top: 0.75rem;
+    font-style: italic;
+    font-weight: 500;
+}
+
+input.card-frequency {
+    flex-grow: 1;
+    width: 30%;
+    padding-top: 0.75rem;
+    font-style: italic;
+    font-weight: 400;
+}
+
+.item-wrap .delete-button {
     position: absolute;
+    padding: 0;
+    text-align: center;
     height: 2rem;
     width: 2rem;
-    background-color: red;
-    border-radius: 100%;
-    top: 0;
-    right: 0;
+    background-color: transparent;
+    border: none;
+    top: 0.5rem;
+    right: 0.5rem;
+    transition: all 0.4s;
+}
+
+.item-wrap .delete-button .delete-icon {
+    font-size: 2rem;
+    margin: 0;
+}
+.item-wrap .delete-button:hover {
+    box-shadow: 0px 0px 0px 2px rgb(57, 102, 49);
+    background-color: rgb(127, 202, 114);
+}
+
+
+.modal-outer {
+    display: none;
+    position: absolute;
+    top: 0; right: 0; left: 0; bottom: 0;
+    background-color: rgba(106, 101, 101, 0.162);
 }
 #modal {
     position: absolute;
-    top: 0; right: 0; left: 0; bottom: 0;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
     background-color: rgb(249, 255, 248);
-    margin: auto;
-    width: 30rem;
-    height: 30rem;
     border: double lightgreen 0.5rem;
     padding: 0.5rem 2rem;
+    z-index: 1000;
 }
 

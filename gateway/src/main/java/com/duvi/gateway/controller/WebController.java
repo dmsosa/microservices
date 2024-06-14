@@ -9,8 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreaker;
-import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
@@ -20,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.thymeleaf.spring6.context.webflux.IReactiveDataDriverContextVariable;
 import org.thymeleaf.spring6.context.webflux.ReactiveDataDriverContextVariable;
 import reactor.core.publisher.Flux;
@@ -41,9 +38,9 @@ public class WebController {
     }
 
 
-    @ModelAttribute(name = "allAccountIcons")
-    public List<AccountIcon> allAccountIcons() {
-        return Arrays.asList(AccountIcon.ALL);
+    @ModelAttribute(name = "allAccountAvatar")
+    public List<AccountAvatar> allAccountIcons() {
+        return Arrays.asList(AccountAvatar.ALL);
     }
     @ModelAttribute(name = "allItemIcons")
     public List<ItemIcon> allItemIcons() {
@@ -114,24 +111,6 @@ public class WebController {
 
         return "index";
     }
-
-    @RequestMapping(value = "/editItems/{accountName}", params = {"addIncome"})
-    public String addIncomeRow(@ModelAttribute AccountDTO account, BindingResult bindingResult, Model model) {
-        ItemDTO itemToAdd = new ItemDTO();
-        itemToAdd.setAccountName(account.getName());
-        itemToAdd.setType(Type.INCOME);
-        account.getIncomes().add(itemToAdd);
-        model.addAttribute("account", account);
-        return "index";
-    }
-    @RequestMapping(value = "/editItems/{accountName}", params = {"removeIncome"})
-    public String removeIncomeRow(@RequestParam Integer removeIncome, @ModelAttribute AccountDTO account, BindingResult bindingResult, Model model) {
-        ItemDTO toRemove = account.getIncomes().get(removeIncome);
-        account.getIncomes().remove(toRemove);
-        model.addAttribute("account", account);
-        return "index";
-    }
-
     @RequestMapping(method = {RequestMethod.POST}, value = "/saveStats")
     public String saveAccountStats(@ModelAttribute AccountDTO accountDTO, BindingResult bindingResult, Model model) {
         Flux<StatsDTO> statsDTOFlux = statsService.saveStatsOfAccount(accountDTO);

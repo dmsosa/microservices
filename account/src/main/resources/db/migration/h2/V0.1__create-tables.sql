@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS accounts (
     name VARCHAR(40) UNIQUE NOT NULL,
     last_seen TIMESTAMP,
     note VARCHAR(3000),
-    icon TEXT,
+    avatar TEXT,
     currency ENUM('USD', 'EUR', 'GBP') DEFAULT 'USD',
     PRIMARY KEY (id)
 );

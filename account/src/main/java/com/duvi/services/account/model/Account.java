@@ -31,7 +31,7 @@ public class Account {
     @Length(min = 3, max = 20_000)
     private String note;
 
-    private String icon;
+    private String avatar;
 
     @Valid
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "account", cascade = CascadeType.ALL)

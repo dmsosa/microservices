@@ -1,7 +1,6 @@
 package com.duvi.services.stats.service;
 
 import com.duvi.services.stats.domain.dto.AccountDTO;
-import com.duvi.services.stats.domain.Item;
 import com.duvi.services.stats.domain.Stats;
 import com.duvi.services.stats.domain.dto.ItemDTO;
 import com.duvi.services.stats.domain.dto.StatsDTO;
