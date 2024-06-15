@@ -96,7 +96,7 @@ export function createItemCard(event) {
             </div>
             <div class="card-icon">
                 <div class="card-img house"></div>
-                <input name="${itemType}[${index}].icon" id="${itemType + index}.icon" type="hidden" value="piggy" readonly>
+                <input name="${itemType}[${index}].icon" id="${itemType + index}.icon" type="hidden" value="house" readonly>
             </div>
             <div class="card-details">
                 <input name="${itemType}[${index}].title" id="${itemType + index}.title" class="card-title" value="" readonly>
@@ -131,10 +131,31 @@ export function deleteItemCard(event) {
     event.target.parentElement.parentElement.remove();
 }
 
+
 export function updateAccountDetails(event) {
     event.stopPropagation();
     let avatar;
     avatar = $(".custom-select-avatars .selected-option .option-item").data("avatar");
     $("#modal-avatar").attr("value")
     $("#note-form").submit();
+}
+
+export function discardDetailsChanges(event) {
+    event.preventDefault();
+    let initNote = $("#noteInitValue").data("note");
+    let initAvatar = $("#avatarInitValue").data("avatar");
+    $("#textarea-note").val(initNote);
+
+    const template = `
+        <div class="option-item bg-${initAvatar}">
+            <div class="option-icon"></div>
+        </div>
+    `
+    var defaultAvatarIcon = $.parseHTML(template);
+
+    $("#modal-avatar .selected-option").html(defaultAvatarIcon);
+
+    $("#modal-note .modal-buttons").children().attr("disabled", "true");
+    $(".modal-outer").hide();
+
 }

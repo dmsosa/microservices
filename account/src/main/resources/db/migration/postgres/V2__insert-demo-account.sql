@@ -1,4 +1,4 @@
-INSERT INTO accounts (name, last_seen, avatar, icon) VALUES (
+INSERT INTO accounts (name, last_seen, note, avatar) VALUES (
     'demo',
     '2024-03-04',
     'demo notes!',

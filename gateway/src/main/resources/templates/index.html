@@ -46,8 +46,8 @@
                                 <input id="incomes0.category" type="hidden" th:field="*{incomes[__${stat.index}__].category}" th:value="${item.category}" th:id="${'incomes' + stat.index + '.category'}" value="FIXED" >
                             </div>
                             <div class="card-icon">
-                                <div class="card-img work" th:class="${'card-img ' + item.icon}"></div>
-                                <input id="incomes0.icon" type="hidden" th:field="*{incomes[__${stat.index}__].icon}" th:value="${item.icon}" th:id="${'incomes' + stat.index + '.icon'}"  value="work" readonly>
+                                <div class="card-img house" th:class="${'card-img ' + item.icon}"></div>
+                                <input id="incomes0.icon" type="hidden" th:field="*{incomes[__${stat.index}__].icon}" th:value="${item.icon}" th:id="${'incomes' + stat.index + '.icon'}"  value="house" readonly>
                             </div>
                             <div class="card-details">
                                 <input id="incomes0.title" class="card-title" th:type="text" th:field="*{incomes[__${stat.index}__].title}" th:value="${item.title}" th:id="${'incomes' + stat.index + '.title'}"  value="salary" readonly>
@@ -69,8 +69,8 @@
                                 <input name="incomes[1].category" id="incomes1.category" type="hidden" value="FIXED">
                             </div>
                             <div class="card-icon">
-                                <div class="card-img house"></div>
-                                <input name="incomes[1].icon" id="incomes1.icon" type="hidden" value="piggy" readonly>
+                                <div class="card-img food"></div>
+                                <input name="incomes[1].icon" id="incomes1.icon" type="hidden" value="food" readonly>
                             </div>
                             <div class="card-details">
                                 <input name="incomes[1].title" id="incomes1.title" class="card-title" value="investment" readonly>
@@ -92,8 +92,8 @@
                                 <input name="incomes[2].category" id="incomes2.category" type="hidden" value="OCCASIONAL">
                             </div>
                             <div class="card-icon">
-                                <div class="card-img house"></div>
-                                <input name="incomes[2].icon" id="incomes2.icon" type="hidden" value="piggy" readonly>
+                                <div class="card-img work"></div>
+                                <input name="incomes[2].icon" id="incomes2.icon" type="hidden" value="work" readonly>
                             </div>
                             <div class="card-details">
                                 <input name="incomes[2].title" id="incomes2.title" class="card-title" value="freelance" readonly>
@@ -151,8 +151,8 @@
                                 <input name="expenses[1].category" id="expenses1.category" type="hidden" value="FIXED">
                             </div>
                             <div class="card-icon">
-                                <div class="card-img house"></div>
-                                <input name="expenses[1].icon" id="expenses1.icon" type="hidden" value="piggy" readonly>
+                                <div class="card-img sport"></div>
+                                <input name="expenses[1].icon" id="expenses1.icon" type="hidden" value="sport" readonly>
                             </div>
                             <div class="card-details">
                                 <input name="expenses[1].title" id="expenses1.title" class="card-title" value="gym" readonly>
@@ -174,8 +174,8 @@
                                 <input name="expenses[2].category" id="expenses2.category" type="hidden" value="FIXED">
                             </div>
                             <div class="card-icon">
-                                <div class="card-img house"></div>
-                                <input name="expenses[2].icon" id="expenses2.icon" type="hidden"  value="piggy" readonly>
+                                <div class="card-img work"></div>
+                                <input name="expenses[2].icon" id="expenses2.icon" type="hidden"  value="work" readonly>
                             </div>
                             <div class="card-details">
                                 <input name="expenses[2].title" id="expenses2.title" class="card-title" value="books" readonly>
@@ -203,7 +203,7 @@
                 <h2>Item edit or create?</h2>
                 <input id="modal-accountName" type="hidden">
                 <input id="modal-type" type="hidden" th:type="hidden">
-                <div id="modal-icon" class="custom-select-icons">
+                <div id="modal-icon" class="custom-select custom-select-icons">
                     <div class="selected-option">
                         <div class="option-item house" data-icon="house">
                             <div class="option-icon"></div>
@@ -303,12 +303,17 @@
                     </div>
                 </div>
                 <input id="modal-target" type="hidden">
-                <button id="modal-save-button" class="primary-button">Save changes</button>
+                <div class="modal-buttons">
+                    <button class="primary-button" type="submit" disabled>Save</button>
+                    <button class="danger-button" type="submit" disabled>Discard</button>
+                </div>
             </div>
         </div>
         <div class="modal-outer" id="modal-note-outer">
             <div id="modal-note">
                 <button class="custom-button close-button">X</button>
+                <div id="noteInitValue" data-note="I'm using microservices!" th:data-note="${account.note}" style="display: none;"></div>
+                <div id="avatarInitValue" data-avatar="piggy" th:data-avatar="${account.avatar}" style="display: none;"></div>
                 <form id="note-form" th:action="@{/edit/{accountName}(accountName=${account.name})}" th:method="post" th:object="${account}">
                     <fieldset class="hidden">
                         <input type="hidden" th:type="hidden" th:field="*{name}" th:value="*{name}">
@@ -333,7 +338,7 @@
                             <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].type}" th:value="${item.type}">
                         </div>
                     </fieldset>
-                    <div class="custom-select custom-select-avatars">
+                    <div id="modal-avatar" class="custom-select custom-select-avatars">
                         <div class="selected-option">
                             <div class="option-item bg-piggy" th:class="${'option-item bg-' + account.avatar}" th:data-avatar="*{avatar}" data-avatar="piggy">
                                 <div class="option-icon"></div>
@@ -343,35 +348,38 @@
                             <div class="option-item bg-piggy" th:each="avatar : ${allAccountAvatar}" th:class="${'option-item ' + avatar.name}" data-avatar="piggy" th:data-avatar="${avatar.name}">
                                 <div class="option-icon"></div>
                             </div>
-                            <div class="option-item bg-cow" data-avatar="entertainment">
+                            <div class="option-item bg-cow" data-avatar="cow">
                                 <div class="option-icon"></div>
                             </div>
-                            <div class="option-item bg-fox" data-avatar="food">
+                            <div class="option-item bg-fox" data-avatar="fox">
                                 <div class="option-icon"></div>
                             </div>
-                            <div class="option-item bg-boss" data-avatar="sport">
+                            <div class="option-item bg-boss" data-avatar="boss">
                                 <div class="option-icon"></div>
                             </div>
-                            <div class="option-item bg-turtle" data-avatar="health">
+                            <div class="option-item bg-turtle" data-avatar="turtle">
                                 <div class="option-icon"></div>
                             </div>
-                            <div class="option-item bg-rabbit" data-avatar="education">
+                            <div class="option-item bg-rabbit" data-avatar="rabbit">
                                 <div class="option-icon"></div>
                             </div>
-                            <div class="option-item bg-secretary" data-avatar="work">
+                            <div class="option-item bg-secretary" data-avatar="secretary">
                                 <div class="option-icon"></div>
                             </div>
-                            <div class="option-item bg-elephant" data-avatar="hygiene">
+                            <div class="option-item bg-elephant" data-avatar="elephant">
                                 <div class="option-icon"></div>
                             </div>
-                            <div class="option-item bg-bear" data-avatar="hygiene">
+                            <div class="option-item bg-bear" data-avatar="bear">
                                 <div class="option-icon"></div>
                             </div>
                         </div>
                     </div>
                     <input id="modal-avatar" type="hidden" th:type="hidden" th:value="*{avatar}">
-                    <textarea th:field="*{note}" th:value="*{note}" value="I'm using microservices!"></textarea>
-                    <button class="primary-button" type="submit">Save changes</button>
+                    <textarea id="textarea-note" th:field="*{note}" th:value="*{note}" value="I'm using microservices!">I'm using microservices!</textarea>
+                    <div class="modal-buttons">
+                        <button class="primary-button" type="submit" disabled>Save</button>
+                        <button class="danger-button" type="submit" disabled>Discard</button>
+                    </div>
                 </form>
             </div>
         </div>        

@@ -10,6 +10,7 @@ import org.springframework.security.config.Customizer;
 
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.InMemoryReactiveClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
@@ -23,7 +24,12 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.RedirectServerAuthenticationEntryPoint;
 import org.springframework.security.web.server.authentication.ServerAuthenticationFailureHandler;
 import org.springframework.security.web.server.authentication.ServerAuthenticationSuccessHandler;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsConfigurationSource;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +51,7 @@ public class SecurityConfig {
     public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity serverHttpSecurity) throws Exception {
         serverHttpSecurity
                 .csrf(csrf -> csrf.disable())
+                .cors(corsSpec -> corsSpec.configurationSource(corsConfigurationSource()))
                 .oauth2Login(spec -> spec
                         .authenticationSuccessHandler(redirectSuccessHandler())
                         .authenticationFailureHandler(failureHandler())
@@ -62,6 +69,18 @@ public class SecurityConfig {
                 .oauth2ResourceServer(rs -> rs.jwt(jwt -> jwtConfigCustomizer()));
         return serverHttpSecurity.build();
     }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:8061", "http://127.0.0.1:5500"));
+        configuration.setAllowedMethods(Arrays.asList("GET"));
+        configuration.setMaxAge(3600L);
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
     @Bean
     public ServerOAuth2AuthorizationRequestResolver customAuthorizationRequestResolver() {
         DefaultServerOAuth2AuthorizationRequestResolver resolver = new DefaultServerOAuth2AuthorizationRequestResolver(clientRegistrationRepository());

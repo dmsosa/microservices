@@ -9,8 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.*;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
@@ -23,8 +25,10 @@ import org.thymeleaf.spring6.context.webflux.ReactiveDataDriverContextVariable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 
 @Controller
@@ -32,9 +36,12 @@ public class WebController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private AccountService accountService;
     private StatsService statsService;
-    public WebController(AccountService accountService, StatsService statsService) {
+    private ReactiveOAuth2AuthorizedClientService authorizedClientService;
+
+    public WebController(AccountService accountService, StatsService statsService, ReactiveOAuth2AuthorizedClientService authorizedClientService) {
         this.accountService = accountService;
         this.statsService = statsService;
+        this.authorizedClientService = authorizedClientService;
     }
 
 
@@ -101,7 +108,7 @@ public class WebController {
         model.addAttribute("account", updatedAccount);
         return "index";
     }
-    @RequestMapping(value = "/editItems/{accountName}")
+    @RequestMapping(method = {RequestMethod.POST}, value = "/editItems/{accountName}")
     public String editAccountItems(@PathVariable String accountName,
                                    @ModelAttribute(name = "account") AccountDTO account,
                                    BindingResult bindingResult,

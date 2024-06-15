@@ -1,30 +1,25 @@
 package com.duvi.gateway.config.web;
 
 import org.springframework.beans.BeansException;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.web.reactive.config.CorsRegistry;
 import org.springframework.web.reactive.config.ResourceHandlerRegistry;
 import org.springframework.web.reactive.config.ViewResolverRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.spring6.SpringWebFluxTemplateEngine;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
-import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 import org.thymeleaf.spring6.view.reactive.ThymeleafReactiveViewResolver;
-import org.thymeleaf.templatemode.TemplateMode;
 
 @Configuration
-public class ThymeleafConfig implements ApplicationContextAware, WebFluxConfigurer {
+public class WebGlobalConfiguration implements ApplicationContextAware, WebFluxConfigurer {
     private ApplicationContext applicationContext;
 
 
-    public ThymeleafConfig() {
+    public WebGlobalConfiguration() {
 
     }
     @Override
@@ -72,5 +67,6 @@ public class ThymeleafConfig implements ApplicationContextAware, WebFluxConfigur
     public void configureViewResolvers(ViewResolverRegistry registry) {
         registry.viewResolver(viewResolver());
     }
+
 
 }
