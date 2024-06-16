@@ -1,12 +1,18 @@
 // Modal
+
 export function showModalToEdit(formObject, editMode = true) {
     $("#modal-outer").show();
-    $("#modal-title").attr("value", formObject.get("title"));
-    $("#modal-amount").attr("value", formObject.get("amount"));
-    const modalIcon = $("#modal-icon .selected-option .option-item");
-    modalIcon.attr("class", "option-item " + formObject.get("icon"));
-    modalIcon.data("icon", formObject.get("icon"));
-    createOptionItemForCustomSelect(formObject);
+    $("#modal-title").val(formObject.get("title"));
+    $("#modal-amount").val(formObject.get("amount"));
+    const modalIcon = createOptionItem("icon", formObject.get("icon"));
+    const modalCurrency = createOptionItem("currency", formObject.get("currency"));
+    const modalCategory = createOptionItem("category", formObject.get("category"));
+    const modalFrequency = createOptionItem("frequency", formObject.get("frequency"));  
+    $("#modal-icon .selected-option").children().replaceWith(modalIcon);
+    $("#modal-currency .selected-option").children().replaceWith(modalCurrency);
+    $("#modal-category .selected-option").children().replaceWith(modalCategory);
+    $("#modal-frequency .selected-option").children().replaceWith(modalFrequency);
+
     if (editMode) {
         $("#modal-target").attr("value", formObject.get("id"));
     }
@@ -15,21 +21,21 @@ export function showModalToEdit(formObject, editMode = true) {
 
 export function saveFromModalToItem() {
     let modalTitle, modalAmount, modalIcon, modalCurrency, modalCategory, modalFrequency;
-    modalTitle = $("#modal-title")[0].value;
-    modalAmount = $("#modal-amount")[0].value;
+    modalTitle = $("#modal-title").val();
+    modalAmount = $("#modal-amount").val();
     modalIcon = $("#modal-icon .selected-option .option-item").data("icon");
     modalCurrency = $("#modal-currency .selected-option .option-item").data("currency");
     modalCategory = $("#modal-category .selected-option .option-item").data("category");
     modalFrequency = $("#modal-frequency .selected-option .option-item").data("frequency");
 
-    const target = $("#modal-target")[0].value;
+    const target = $("#modal-target").val();
 
-    $("#" + target + "\\.title")[0].value = modalTitle;
-    $("#" + target + "\\.amount")[0].value = modalAmount;
-    $("#" + target + "\\.icon")[0].value = modalIcon;
-    $("#" + target + "\\.currency")[0].value = modalCurrency;
-    $("#" + target + "\\.category")[0].value = modalCategory;
-    $("#" + target + "\\.frequency")[0].value = modalFrequency;
+    $("#" + target + "\\.title").val(modalTitle);
+    $("#" + target + "\\.amount").val(modalAmount);
+    $("#" + target + "\\.icon").val(modalIcon);
+    $("#" + target + "\\.currency").val(modalCurrency);
+    $("#" + target + "\\.category").val(modalCategory);
+    $("#" + target + "\\.frequency").val(modalFrequency);
 
     $("#" + target + " .card-icon .card-img").attr("class", "card-img " + modalIcon.toLowerCase());
 
@@ -68,16 +74,19 @@ export function createFormObject(id) {
     return formObject;
 }
 
-export function createOptionItemForCustomSelect(formObject) {
-    const properties = ["currency", "category", "frequency"];
-    for (const property of properties ) {
-        var optionItem = $.parseHTML(`
-            <div class=\"option-item\" data-currency=\"${formObject.get(property)}\">
-                <p class=\"option-text\">${formObject.get(property)}</p>
-            </div>`
-        );
-        $("#" + property + "-select .selected-option").html(optionItem);
-    }
+export function createOptionItem(fieldName, fieldValue) {
+    const optionTemplate = `
+        <div class="option-item ${fieldValue}" data-${fieldName}="${fieldValue}">
+            <div class="option-text">${fieldValue}</div>
+        </div>
+    `
+    const iconTemplate = `
+        <div class="option-item ${fieldValue}" data-${fieldName}="${fieldValue}">
+            <div class="option-icon"></div>
+        </div>
+    `
+    const result = fieldName === "icon" ? $.parseHTML(iconTemplate) : $.parseHTML(optionTemplate);
+    return result;
 }
 
 // Create card item
@@ -95,8 +104,8 @@ export function createItemCard(event) {
                 <input name="${itemType}[${index}].category" id="${itemType + index}.category" type="hidden" value="FIXED">
             </div>
             <div class="card-icon">
-                <div class="card-img house"></div>
-                <input name="${itemType}[${index}].icon" id="${itemType + index}.icon" type="hidden" value="house" readonly>
+                <div class="card-img sport"></div>
+                <input name="${itemType}[${index}].icon" id="${itemType + index}.icon" type="hidden" value="sport" readonly>
             </div>
             <div class="card-details">
                 <input name="${itemType}[${index}].title" id="${itemType + index}.title" class="card-title" value="" readonly>
@@ -159,3 +168,5 @@ export function discardDetailsChanges(event) {
     $(".modal-outer").hide();
 
 }
+
+

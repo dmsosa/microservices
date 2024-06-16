@@ -233,39 +233,47 @@ input::-webkit-inner-spin-button {
 
 /* Sprites positions */
 
-.custom-select-icons .option-icon, .custom-select-avatars .option-icon {
-    background: url("../images/small_account.png") no-repeat;
+.custom-select-icons .option-icon {
+    background: url("../images/item_sprites.png") no-repeat;
     height: 8rem;
     width: 8rem;
-}
+} 
 
 .custom-select-icons .option-item.education .option-icon {
     background-position: -10px -10px;
 }
 .custom-select-icons .option-item.entertainment .option-icon {
-    background-position: -68px -10px;
+    background-position: -110px -10px;
 }
 .custom-select-icons .option-item.sport .option-icon {
-    background-position: -126px -10px;
+    background-position: -110px -210px;
 }
 .custom-select-icons .option-item.work .option-icon {
-    background-position: -184px -10px;
+    background-position: -210px -210px;
 }
 .custom-select-icons .option-item.food .option-icon {
-    background-position: -242px -10px;
+    background-position: -10px -110px;
 }
 .custom-select-icons .option-item.house .option-icon {
-    background-position: -300px -10px;
+    background-position: -110px -110px;
 }
 .custom-select-icons .option-item.hygiene .option-icon {
-    background-position: -358px -10px;
+    background-position: -210px -10px;
 }
 .custom-select-icons .option-item.health .option-icon {
-    background-position: -416px -10px;
+    background-position: -210px -110px;
+}
+.custom-select-icons .option-item.investment .option-icon {
+    background-position: -10px -210px;
 }
 
 /* ------------------------------------ */
 
+.custom-select-avatars .option-icon {
+    background: url("../images/small_account.png") no-repeat;
+    height: 8rem;
+    width: 8rem;
+}
 
 .custom-select-avatars .option-item.bg-piggy .option-icon {
     background-position: -310px -10px;

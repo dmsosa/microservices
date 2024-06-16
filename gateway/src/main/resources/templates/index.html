@@ -69,7 +69,7 @@
                                 <input name="incomes[1].category" id="incomes1.category" type="hidden" value="FIXED">
                             </div>
                             <div class="card-icon">
-                                <div class="card-img food"></div>
+                                <div class="card-img investment"></div>
                                 <input name="incomes[1].icon" id="incomes1.icon" type="hidden" value="food" readonly>
                             </div>
                             <div class="card-details">
@@ -196,11 +196,22 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" class="submit-button">Save changes</button>
+            <button id="submit-button" type="submit" class="submit-button" disabled>Save changes</button>
         </form>
         <div class="modal-outer" id="modal-outer">
             <div id="modal">
+                <button class="custom-button close-button">X</button>
+                <div id="iconInitValue" data-icon="sport" th:data-icon="${account.icon}" style="display: none;"></div>
+                <div id="titleInitValue" data-title="" th:data-title="${account.title}" style="display: none;"></div>
+                <div id="amountInitValue" data-amount="" th:data-amount="${account.amount}" style="display: none;"></div>
+                <div id="currencyInitValue" data-currency="USD" th:data-currency="${account.currency}" style="display: none;"></div>
+                <div id="categoryInitValue" data-category="FIXED" th:data-category="${account.category}" style="display: none;"></div>
+                <div id="frequencyInitValue" data-frequency="MONTH" th:data-frequency="${account.frequency}" style="display: none;"></div>
+
                 <h2>Item edit or create?</h2>
+                <ul id="modal-errors" class="error-list">
+
+                </ul>
                 <input id="modal-accountName" type="hidden">
                 <input id="modal-type" type="hidden" th:type="hidden">
                 <div id="modal-icon" class="custom-select custom-select-icons">
@@ -213,7 +224,7 @@
                         <div class="option-item house" th:each="itemIcon : ${allItemIcons}" th:class="${'option-item ' + itemIcon.name}" data-icon="house" th:data-icon="${itemIcon.name}">
                             <div class="option-icon"></div>
                         </div>
-                        <div class="option-item entertainment" data-icon="ENTERTAINMENT">
+                        <div class="option-item entertainment" data-icon="entertainment">
                             <div class="option-icon"></div>
                         </div>
                         <div class="option-item food" data-icon="food">
@@ -232,6 +243,9 @@
                             <div class="option-icon"></div>
                         </div>
                         <div class="option-item hygiene" data-icon="hygiene">
+                            <div class="option-icon"></div>
+                        </div>
+                        <div class="option-item investment" data-icon="investment">
                             <div class="option-icon"></div>
                         </div>
                     </div>

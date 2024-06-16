@@ -106,38 +106,41 @@ fieldset.hidden {
     height: 100%;
     width: 6rem;
 }
-.card-img.house, .card-img.entertainment, .card-img.food, .card-img.education, .card-img.work, .card-img.sport, .card-img.health, .card-img.hygiene {
+.card-img {
     position: relative;
     top: 50%;
     margin-left: 1rem;
     transform: translateY(-50%);
     width: 4rem;
     height: 4rem;
-    background: url("../images/item_sprites.png") no-repeat;
+    background: url("../images/small_item.png") no-repeat;
 }
 .card-img.house {
-    background-position: -300px -10px;
+    background-position: -130px -70px;
 }
 .card-img.entertainment {
-    background-position: -120px -10px;
+    background-position: -70px -70px;
 }
 .card-img.food {
-    background-position: -240px -10px;
+    background-position: -70px -10px;
 }
 .card-img.education {
-    background-position: -12px -10px;
+    background-position: -10px -70px;
 }
 .card-img.work {
-    background-position: -180px -10px;
+    background-position: -10px -10px;
 }
 .card-img.sport {
-    background-position: -60px -10px;
+    background-position: -130px -130px;
 }
 .card-img.health {
-    background-position: -420px -10px;
+    background-position: -130px -10px;
 }
 .card-img.hygiene {
-    background-position: -360px -10px;
+    background-position: -10px -130px;
+}
+.card-img.investment {
+    background-position: -70px -130px;
 }
 /* ------------------------------------------ */
 .card-divisor {
