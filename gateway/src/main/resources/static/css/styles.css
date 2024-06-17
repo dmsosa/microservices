@@ -5,11 +5,171 @@ html {
 body {
     margin: 0;
     padding: 0;
-}
-body .main {
+    height: 100%;
+    width: 100%;
     font-family: "VT323", monospace;
+    overflow: hidden;
 }
-.main {
-    background-color: rgba(27, 27, 27, 0.91);
+.top-page {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: block;
 }
 
+.main-page {
+    display: none;
+    animation: shake 1s infinite;
+}
+
+.avatar-button {
+    display: none;
+    position: absolute;
+    width: 15rem;
+    height: 15rem;
+    border-radius: 50%;
+    outline: rgb(173, 245, 173) 0.3rem solid;
+    background-color: rgb(248, 255, 248);
+    top: 0; left: 0; right: 0; bottom: 0;
+    margin: auto;
+    padding: 1.5rem;
+    transition: all 0.3s;
+    z-index: 9999;
+    cursor: pointer;
+}
+
+.avatar-button-img {
+    background: url("../images/account/piggy.png") no-repeat;
+    background-size: contain;
+    height: 100%;
+    width: 100%;
+    margin: auto;
+}
+.pinned {
+    width: 7rem;
+    height: 7rem;
+    top: 15%;
+    right: 15%;
+    left: auto;
+    bottom: auto;
+}
+
+.up-title {
+    display: none;
+    position: absolute;
+    top: 0; bottom: 60%; left: 0; right: 0;
+    margin: auto;
+    height: 2rem;
+    width: 100%;
+    font-weight: bold;
+    font-size: xx-large;
+    text-align: center;
+}
+.left-title, .right-title {
+    display: none;
+    position: absolute;
+    top: 0; bottom: 0;
+    text-align: center;
+    height: 5rem;
+    width: 25rem;
+    margin: auto;
+}
+.left-title span, .right-title span {
+    font-size: x-large;
+    max-height: 50%;
+    display: block;
+}
+.green-text {
+    font-size: xx-large;
+    color: rgb(57, 112, 57);
+    margin-bottom: 0.5rem;
+}
+
+.bottom-buttons {
+    display: none;
+    position: absolute;
+    top: 60%; bottom: 0; right: 0; left: 0;
+    margin: auto;
+    height: 18rem;
+    width: 10rem;
+}
+#plus {
+    height: 7rem;
+    width: 100%;
+    cursor: pointer;
+    margin-bottom: 2rem;
+}
+.plus-border {
+    position: relative;
+    margin:  0 auto;
+    height: 5rem;
+    width: 5rem;
+    border-radius: 50%;
+    outline: rgb(173, 245, 173) 0.3rem solid;
+
+}
+.plus-one {
+    position: absolute;
+    width: 2.5rem;
+    height: 0.2rem;
+    background-color: rgb(173, 245, 173);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.plus-two {
+    position: absolute;
+    width: 0.2rem;
+    height: 2.5rem;
+    background-color: rgb(173, 245, 173);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.plus-text {
+    color: rgb(173, 245, 173);
+    font-size: large;
+    font-weight: bold;
+    height: 2rem;
+    width: fit-content;
+    margin: 0 auto;
+}
+.minus {
+    height: 5rem;
+    width: 100%;
+    cursor: pointer;
+}
+.minus-border {
+    position: relative;
+    margin: 0 auto;
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 50%;
+    outline: darkgray 0.3rem solid;
+}
+.minus-line {
+    position: absolute;
+    width: 1.25rem;
+    height: 0.2rem;
+    background-color: gray;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.minus-text {
+    color: gray;
+    font-size: medium;
+    font-weight: bold;
+    height: 2rem;
+    width: fit-content;
+    margin: 0 auto;
+}
+
+@keyframes shake {
+    from {
+        transform: rotate(30deg);
+    }
+    to {
+        transform: rotate(90deg);
+    }
+}

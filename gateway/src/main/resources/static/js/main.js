@@ -12,10 +12,43 @@ var frequencyInitValue = "MONTH";
 const noteInitValue = $("#noteInitValue").data("note");
 const avatarInitValue = $("#avatarInitValue").data("avatar");
 
+function showWelcomeUnits() {
+    $(".up-title").fadeIn(600);
+    $(".left-title").fadeIn(600);
+    $(".right-title").fadeIn(600);
+    $(".bottom-buttons").fadeIn(600);
+}
+function hideWelcomeUnits() {
+    pinButton();
+    $(".up-title").addClass("reversed").fadeOut(600);
+    $(".left-title").addClass("reversed").fadeOut(600);
+    $(".right-title").addClass("reversed").fadeOut(600);
+    $(".bottom-buttons").addClass("reversed").fadeOut(600);
+}
+function pinButton() {
+    $("#avatar-button").addClass("reversed").fadeOut(800);
+}
+function initWelcomePage() {
+    $(".avatar-button").show(0, function() {
+        setTimeout( function() { showWelcomeUnits() },300)
+    });
+}
+
+function showMainPage() {
+    hideWelcomeUnits();
+    $(".main-page").fadeIn(20000);
+}
+
+function handleOptionClick(jqOption) {
+    const thisOptionClone = jqOption.clone();
+    jqOption.parent().prev().html(thisOptionClone);
+    jqOption.parent().parent().removeClass("active");
+}
 function inputNumberAdd(event) {
     const input = event.target.parentNode.previousElementSibling;
     input.value = Number(input.value) + 1;
 }
+
 
 
 function inputNumberSubstract(event) {
@@ -55,6 +88,7 @@ function modalReactToChanges() {
         }
     });
     $("#modal-icon .select-list .option-item").on("click", function() {
+        handleOptionClick($(this));
         if ($(this).data("icon") !== iconInitValue) {
             $(".modal-buttons").children().removeAttr("disabled");
         } else if ($(this).data("icon") === iconInitValue) {
@@ -62,6 +96,7 @@ function modalReactToChanges() {
         }
     }) 
     $("#modal-currency .select-list .option-item").on("click", function() {
+        handleOptionClick($(this));
         if ($(this).data("currency") !== currencyInitValue) {
             $(".modal-buttons").children().removeAttr("disabled");
         } else if ($(this).data("currency") === currencyInitValue) {
@@ -69,6 +104,7 @@ function modalReactToChanges() {
         }
     }) 
     $("#modal-category .select-list .option-item").on("click", function() {
+        handleOptionClick($(this));
         if ($(this).data("category") !== categoryInitValue) {
             $(".modal-buttons").children().removeAttr("disabled");
         } else if ($(this).data("category") === categoryInitValue) {
@@ -76,6 +112,7 @@ function modalReactToChanges() {
         }
     }) 
     $("#modal-frequency .select-list .option-item").on("click", function() {
+        handleOptionClick($(this));
         if ($(this).data("frequency") !== frequencyInitValue) {
             $(".modal-buttons").children().removeAttr("disabled");
         } else if ($(this).data("frequency") === frequencyInitValue) {
@@ -88,7 +125,7 @@ function modalReactToChanges() {
 function modalNoteReactToChanges() {
 
 
-    $("#textarea-note").on("keyup", function () { 
+    $(".textarea-note").on("keyup", function () { 
         if ($(this).val() !== noteInitValue) {
             $("#modal-note .modal-buttons").children().removeAttr("disabled");
         } else if ($(this).val() === noteInitValue) {
@@ -97,6 +134,7 @@ function modalNoteReactToChanges() {
     });
 
     $("#modal-avatar .select-list .option-item").on("click", function() {
+        handleOptionClick($(this));
         if ($(this).data("avatar") !== avatarInitValue) {
             $(".modal-buttons").children().removeAttr("disabled");
         } else if ($(this).data("avatar") === avatarInitValue) {
@@ -135,11 +173,17 @@ function checkErrors() {
     modalCategory = $("#modal-category .selected-option .option-item").data("category");
     modalFrequency = $("#modal-frequency .selected-option .option-item").data("frequency");
 
+    if (modalTitle.length === 0) {
+        errors.push("Please indicate a title");
+    }
     if (modalTitle.length < 3) {
         errors.push("Title must be at least 3 characters long");
     }
     if (modalTitle.length > 20) {
         errors.push("Title must be at most 20 characters long");
+    }
+    if (modalAmount === null) {
+        errors.push("Amount can not be null");
     }
     if (modalAmount < 0) {
         errors.push("Amount must be positive");
@@ -175,11 +219,14 @@ function appendError(errorMessage) {
 $(document).ready(function() {
 
 
+    initWelcomePage();
+    $("#avatar-button").on("click", showMainPage);
+
     modalNoteReactToChanges();
     modalReactToChanges();
 
     $(".header-toggler").on("click", function() {
-        $("#modal-note").parent().show();
+        $("#modal-note").parent().addClass("modal-show");
     });
 
     $(".item-wrap").on("click", function(e) {
@@ -192,12 +239,12 @@ $(document).ready(function() {
 
     $(".close-button").on("click", function (e) { 
         e.preventDefault();
-        $(".modal-outer").hide();
+        $(".modal-outer").removeClass("modal-show");
     });
 
     $(".modal-outer").on("click", function(e) {
         if (!e.target.closest("#modal") && !e.target.closest("#modal-note")) {
-            $(this).hide();
+            $(this).removeClass("modal-show");
         }
     });
 
@@ -214,16 +261,9 @@ $(document).ready(function() {
         }
     });
 
-    $(".select-list .option-item").on("click", function() {
-        const thisOptionClone = $(this).clone();
-        $(this).parent().prev().html(thisOptionClone);
-        $(this).parent().parent().removeClass("active");
-    });
-
 
     $(".addIncome, .addExpense").on("click", dashboard.createItemCard);
     $(".delete-button").on("click", function (e) {
-
         $("#submit-button").removeAttr("disabled");
         dashboard.deleteItemCard(e)
     })

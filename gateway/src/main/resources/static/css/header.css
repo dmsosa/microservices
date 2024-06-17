@@ -36,12 +36,11 @@
     padding: 2rem;
     height: 40rem;
     width: 40rem;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    margin: auto;
     background-color: rgb(249, 255, 248);
     border: double 0.4rem lightgreen;
-
+    transform: rotateY(-60deg);
+    transition: all 3s;
 }
 
 #modal-note textarea {

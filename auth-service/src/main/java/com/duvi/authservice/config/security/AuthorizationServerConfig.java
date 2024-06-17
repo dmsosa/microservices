@@ -145,13 +145,13 @@ public class AuthorizationServerConfig {
                 .scope(OidcScopes.EMAIL)
                 .clientName("noti")
                 .build();
-        RegisteredClient browserClient = RegisteredClient.withId(UUID.randomUUID().toString())
+        RegisteredClient gatewayClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("gatewayClient")
                 .clientSecret("$2a$10$PnrjC9wfF5WHipaczbRif..XO0Ydc5cjECFRrBJWWU5byrYPUNptK")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://127.0.0.1:8061/login/oauth2/code/browserClient")
+                .redirectUri("http://127.0.0.1:8061/login/oauth2/code/gatewayClient")
                 .clientName("gatewayClient")
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
@@ -160,7 +160,7 @@ public class AuthorizationServerConfig {
         registeredClientRepository.save(accountClient);
         registeredClientRepository.save(statsClient);
         registeredClientRepository.save(notiClient);
-        registeredClientRepository.save(browserClient);
+        registeredClientRepository.save(gatewayClient);
 
         return registeredClientRepository;
     }

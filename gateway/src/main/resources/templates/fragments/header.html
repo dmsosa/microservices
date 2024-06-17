@@ -8,7 +8,10 @@
 </head>
 <body>
     <div class="header" th:fragment="header">
-        <h1>Dmservices</h1>
+        <div th:text="${account.name}">demo</div>
+        <div class="header-icon bg-piggy" th:class="${'header-icon bg-' + account.avatar}"></div>
+        <div class="last-seen" th:text="${account.lastSeen}">24/03/2024</div>
+        <div class="header-toggler">i</div>
     </div>
 </body>
 </html>

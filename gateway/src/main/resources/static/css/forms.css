@@ -241,6 +241,12 @@ input.card-frequency {
     top: 0; right: 0; left: 0; bottom: 0;
     background-color: rgba(106, 101, 101, 0.162);
 }
+.modal-show {
+    display: block;
+}
+.modal-show #modal-note{
+    transform: rotateY(0deg);
+}
 #modal {
     position: absolute;
     top: 50%; left: 50%;

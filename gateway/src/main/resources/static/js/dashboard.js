@@ -94,6 +94,7 @@ export function createOptionItem(fieldName, fieldValue) {
 export function createItemCard(event) {
     event.preventDefault();
     var itemType = event.target.classList.contains("addIncome") ? "incomes":"expenses";
+    console.log();
     var index = $("#" + itemType + "-card .item-card-content .item-list")[0].children.length;
     const template = `
     <div id="${itemType + index}" class="item-wrap">
@@ -145,7 +146,8 @@ export function updateAccountDetails(event) {
     event.stopPropagation();
     let avatar;
     avatar = $(".custom-select-avatars .selected-option .option-item").data("avatar");
-    $("#modal-avatar").attr("value")
+    $(".account-avatar").val(avatar);
+    console.log($(".account-avatar").val())
     $("#note-form").submit();
 }
 
@@ -153,7 +155,7 @@ export function discardDetailsChanges(event) {
     event.preventDefault();
     let initNote = $("#noteInitValue").data("note");
     let initAvatar = $("#avatarInitValue").data("avatar");
-    $("#textarea-note").val(initNote);
+    $(".textarea-note").val(initNote);
 
     const template = `
         <div class="option-item bg-${initAvatar}">
