@@ -10,7 +10,7 @@
     animation: goleft 0.6s ease-out forwards;
 }
 .left-title.reversed {
-    animation: goright 0.6s ease-out;
+    animation: goleft-reverse 0.6s ease-out;
     animation-fill-mode: forwards;
 }
 
@@ -18,7 +18,7 @@
     animation: goright 0.6s ease-out forwards;
 }
 .right-title.reversed {
-    animation: goleft 0.6s ease-out;
+    animation: goright-reverse 0.6s ease-out;
     animation-fill-mode: forwards;
 }
 
@@ -31,7 +31,7 @@
     animation: goup 0.6s ease-out;
 }
 .up-title.reversed {
-    animation: goup 0.6s ease-out reverse;
+    animation: goup-reverse 0.6s ease-out;
     animation-fill-mode: forwards;
 }
 
@@ -39,14 +39,14 @@
     animation: godown 0.6s ease-out;
 }
 .bottom-buttons.reversed {
-    animation: godown 0.6s ease-out reverse;
+    animation: godown-reverse 0.6s ease-out;
     animation-fill-mode: forwards;
 }
 
 @keyframes goleft {
     0% {
-        right: 0;
-        left: 50%;
+        right: 50%;
+        left: 30rem;
     }
     60% {
         left: -10%;
@@ -57,10 +57,38 @@
         right: 50%;
     }
 }
+@keyframes goright-reverse {
+    0% {
+        left: 0;
+        right: 50%;
+    }
+    60% {
+        left: -10%;
+        right: 50%;
+    }
+    100% {
+        left: 30rem;
+        right: 50%;
+    }
+}
+@keyframes goright-reverse {
+    0% {
+        right: 0;
+        left: 50%;
+    }
+    60% {
+        right: -10%;
+        left: 50%;
+    }
+    100% {
+        right: 30rem;
+        left: 50%;
+    }
+}
 @keyframes goright {
     0% {
-        right: 50%;
-        left: 0;
+        right: 30rem;
+        left: 50%;
     }
     60% {
         right: -10%;
@@ -82,6 +110,17 @@
         bottom: 60%;
     }
 }
+@keyframes goup-reverse {
+    0% {
+        bottom: 60%;
+    }
+    60% {
+        bottom: 75%;
+    }
+    100% {
+        bottom: 0%;
+    }
+}
 @keyframes godown {
     0% {
         top: 0%;
@@ -91,6 +130,17 @@
     }
     100% {
         top: 60%;
+    }
+}
+@keyframes godown-reverse {
+    0% {
+        top: 60%;
+    }
+    60% {
+        top: 75%;
+    }
+    100% {
+        top: 0%;
     }
 }
 

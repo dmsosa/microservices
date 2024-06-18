@@ -10,48 +10,124 @@ body {
     font-family: "VT323", monospace;
     overflow: hidden;
 }
-.top-page {
+.top-page, .bottom-page {
     position: absolute;
     height: 100%;
     width: 100%;
     display: block;
+    transition: all 0.5s;
+}
+.top-page {
+    transform: translateY(0);
+}
+.top-page.slide {
+    transform: translateY(-100%);
 }
 
+.bottom-page {
+    transform: translateY(-100%);
+}
+.bottom-page.slide {
+    transform: translateY(0);
+}
 .main-page {
     display: none;
-    animation: shake 1s infinite;
+    height: 100%;
 }
 
-.avatar-button {
+
+.avatar-wrapper {
     display: none;
     position: absolute;
     width: 15rem;
     height: 15rem;
-    border-radius: 50%;
-    outline: rgb(173, 245, 173) 0.3rem solid;
-    background-color: rgb(248, 255, 248);
     top: 0; left: 0; right: 0; bottom: 0;
     margin: auto;
-    padding: 1.5rem;
     transition: all 0.3s;
     z-index: 9999;
     cursor: pointer;
 }
-
-.avatar-button-img {
-    background: url("../images/account/piggy.png") no-repeat;
-    background-size: contain;
-    height: 100%;
-    width: 100%;
-    margin: auto;
-}
 .pinned {
     width: 7rem;
     height: 7rem;
-    top: 15%;
-    right: 15%;
+    top: 2.5rem;
+    right: 2.5rem;
     left: auto;
     bottom: auto;
+}
+.avatar-modal {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.avatar-button {
+    position: absolute;
+    background: url("../images/account/piggy.png") no-repeat;
+    background-position: center;
+    background-size: 12rem;
+    width: 100%;
+    height: 100%;
+    border-radius: 70%;
+    border: rgb(173, 245, 173) 0.4rem solid;
+    background-color: rgb(249, 255, 248);
+    margin: auto;
+    transform-origin: center;
+    transition: all 0.5s;
+    z-index: 9998;
+}
+.avatar-wrapper.pinned .avatar-button {
+    background-size: 5rem;
+
+}
+.avatar-wrapper.expanded .avatar-button {
+    border-radius: 0%;
+    border-bottom: none;
+    border-left: none;
+}
+.avatar-options {
+    visibility: hidden;
+    position: absolute;
+    top: 0%;
+    right: 0%;
+    width: 5rem;
+    height: 5rem;
+    padding: 2rem;
+    transform-origin: top right;
+    background-color: rgb(249, 255, 248);
+    border: solid 0.4rem lightgreen;
+    transition: width 0.5s, height 0.5s;
+    font-size: small;
+}
+.avatar-options textarea {
+    margin-top: 1rem;
+    width: 100%;
+    padding: 1.25rem;
+    outline: none;
+    border: solid rgb(1, 75, 1) 0.4rem;
+    background-color: rgb(231, 247, 238);
+    color: #333;
+    font-size: medium;
+    font-weight: bold;
+}
+.avatar-wrapper.expanded .avatar-options {
+    visibility: visible;
+    width: 30rem;
+    height: 35rem;
+}
+
+.back-button {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    text-align: right;
+    padding: 0.45rem 1.2rem;
+    font-size: small;
+    font-weight: bold;
+    max-height: 4rem;
+    width: fit-content;
+    border: 0.2rem solid rgba(57, 112, 57, 0.333);
+    color: #333;
+    background-color: rgb(231, 247, 238);
 }
 
 .up-title {
@@ -163,13 +239,4 @@ body {
     height: 2rem;
     width: fit-content;
     margin: 0 auto;
-}
-
-@keyframes shake {
-    from {
-        transform: rotate(30deg);
-    }
-    to {
-        transform: rotate(90deg);
-    }
 }

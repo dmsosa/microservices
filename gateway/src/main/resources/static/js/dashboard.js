@@ -1,7 +1,9 @@
 // Modal
 
 export function showModalToEdit(formObject, editMode = true) {
-    $("#modal-outer").show();
+    $("#modal-outer").show(0, function () {
+        $(this).addClass("modal-show")
+    });
     $("#modal-title").val(formObject.get("title"));
     $("#modal-amount").val(formObject.get("amount"));
     const modalIcon = createOptionItem("icon", formObject.get("icon"));
@@ -39,7 +41,7 @@ export function saveFromModalToItem() {
 
     $("#" + target + " .card-icon .card-img").attr("class", "card-img " + modalIcon.toLowerCase());
 
-    $("#modal-outer").hide();
+    $("#modal-outer").hide(0, function () { $(this).removeClass("modal-show") });
 }
 export function findWrapId(event) {
     let id = event.target.id.split(".")[0];
@@ -147,28 +149,8 @@ export function updateAccountDetails(event) {
     let avatar;
     avatar = $(".custom-select-avatars .selected-option .option-item").data("avatar");
     $(".account-avatar").val(avatar);
-    console.log($(".account-avatar").val())
     $("#note-form").submit();
 }
 
-export function discardDetailsChanges(event) {
-    event.preventDefault();
-    let initNote = $("#noteInitValue").data("note");
-    let initAvatar = $("#avatarInitValue").data("avatar");
-    $(".textarea-note").val(initNote);
-
-    const template = `
-        <div class="option-item bg-${initAvatar}">
-            <div class="option-icon"></div>
-        </div>
-    `
-    var defaultAvatarIcon = $.parseHTML(template);
-
-    $("#modal-avatar .selected-option").html(defaultAvatarIcon);
-
-    $("#modal-note .modal-buttons").children().attr("disabled", "true");
-    $(".modal-outer").hide();
-
-}
 
 

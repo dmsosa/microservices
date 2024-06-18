@@ -66,6 +66,41 @@ input::-webkit-inner-spin-button {
     background-color: rgb(255, 108, 108);
 }
 
+#submit-button {
+    position: absolute;
+    bottom: 0;
+    display: block;
+    padding: 1rem 2rem;
+    height: fit-content;
+    width: 100%;
+    font-size: x-large;
+    font-weight: bolder;
+    margin: 0 auto;
+}
+
+#submit-button:not(:disabled) {
+    background-color: rgb(200, 248, 221);
+    color: #333;
+    border: none;
+    border-top: 0.5rem solid rgb(148, 243, 172);
+    cursor: pointer;   
+}
+#submit-button:not(:disabled):hover, #submit-button:not(:disabled):focus {
+    background-color: rgb(165, 248, 201);
+    color: rgb(1, 75, 1);
+    border: none;
+    border-top: 0.5rem solid rgb(128, 241, 156);
+    cursor: pointer;   
+}
+#submit-button:not(:disabled):active {
+    background-color: rgb(70, 245, 146);
+    color: rgb(34, 206, 34);
+    border: none;
+    border-top: 0.5rem solid rgb(128, 241, 156);
+    cursor: pointer; 
+}
+
+
 #modal input[type=text] {
     text-transform: uppercase;
     color: rgb(4, 62, 17);
