@@ -46,6 +46,10 @@ $(".flipinfo").on("click", function() {
 	$("#flipper").toggleClass("flippedcardinfo");
 	toggleInfo();
 });
+$(".flipinfotext").on("click", function() {
+	$("#flipper").toggleClass("flippedcardinfo");
+	toggleInfo();
+});
 
 $(".frominfo, #infotitle, #infosubtitle").on("click", function() {
 	$("#flipper").toggleClass("flippedcardinfo");
@@ -73,13 +77,13 @@ $(".backpassword").on("click", function() {
 });
 $("#loginpassword").keyup(function (e) { 
     if ($(this).val().length >= 6) {
-        $("#loginsubmit").show();
+        $(".loginsubmit").show();
         if (e.key == 'Enter') {
-            $("#loginsubmit").click();
+            $(".loginsubmit").click();
         }
         return;
     } else {
-        $("#loginsubmit").hide();
+        $(".loginsubmit").hide();
     }
 });
 

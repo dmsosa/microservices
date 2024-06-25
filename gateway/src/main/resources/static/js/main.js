@@ -1,6 +1,6 @@
 // 📁 main.js
 import * as dashboard from './dashboard.js';
-
+import * as stats from './stats.js';
 
 var iconInitValue = "piggy";
 var titleInitValue = "";
@@ -11,6 +11,8 @@ var frequencyInitValue = "MONTH";
 
 const noteInitValue = $("#noteInitValue").data("note");
 const avatarInitValue = $("#avatarInitValue").data("avatar");
+
+
 
 function showWelcomeUnits() {
     $(".up-title").fadeIn(600);
@@ -54,6 +56,9 @@ function initWelcomePage() {
 }
 
 function showMainPage() {
+    if ($(".stats-page").children().length > 0 ) {
+        $("#continue-button").removeAttr("disabled");
+    }
     pinButton();
     hideWelcomeUnits();
     setTimeout(function() {$(".main-page").fadeIn(200)}, 500);
@@ -70,14 +75,30 @@ function backToHome() {
 
 }
 function showBottomPage() {
-    $(".top-page").addClass("slide");
-    $(".bottom-page").addClass("slide");
+    stats.calculateSavings();
+    $(".bottom-page").show(0, function() {
+        $(".top-page").addClass("slide");
+        $(".bottom-page").addClass("slide");
+    })
+    
     setTimeout(function() {
         $(".top-page").hide();
     }, 500)
 
 }
+function hideBottomPage() {
+    $(".top-page").show();
+    $(".top-page").removeClass("slide");
+    $(".bottom-page").removeClass("slide");
 
+    setTimeout(function() {
+        $(".bottom-page").hide();
+    }, 500)
+}
+function toggleMainPageButtons() {
+    $("#continue-button").toggleClass("show");
+    $("#submit-button").toggleClass("show");
+}
 function handleOptionClick(jqOption) {
     const thisOptionClone = jqOption.clone();
     jqOption.parent().prev().html(thisOptionClone);
@@ -180,6 +201,8 @@ function modalNoteReactToChanges() {
     })
 }
 
+
+
 function discardModalChanges(event) {
     event.preventDefault();
 
@@ -197,7 +220,6 @@ function discardModalChanges(event) {
     $(".modal-errors").empty();
 
     $("#modal .modal-buttons").children().attr("disabled", "true");
-    $(".modal-outer").hide();
 }
 
 function discardModalNoteChanges(event) {
@@ -214,63 +236,26 @@ function discardModalNoteChanges(event) {
 
 }
 
-function checkErrors() {
-    let errors = [];
-    let modalTitle, modalAmount, modalIcon, modalCurrency, modalCategory, modalFrequency;
-    modalTitle = $("#modal-title").val();
-    modalAmount = Number($("#modal-amount").val());
-    modalIcon = $("#modal-icon .selected-option .option-item").data("icon");
-    modalCurrency = $("#modal-currency .selected-option .option-item").data("currency");
-    modalCategory = $("#modal-category .selected-option .option-item").data("category");
-    modalFrequency = $("#modal-frequency .selected-option .option-item").data("frequency");
 
-    if (modalTitle.length === 0) {
-        errors.push("Please indicate a title");
-    }
-    if (modalTitle.length < 3) {
-        errors.push("Title must be at least 3 characters long");
-    }
-    if (modalTitle.length > 20) {
-        errors.push("Title must be at most 20 characters long");
-    }
-    if (modalAmount === null) {
-        errors.push("Amount can not be null");
-    }
-    if (modalAmount < 0) {
-        errors.push("Amount must be positive");
-    }
-    if (modalAmount > 1000000) {
-        errors.push("Amount can be at most 1 million gross, for now");
-    }
-    if ( modalIcon === null ) {
-        errors.push("Icon can not be null");
-    }
-    if ( modalCurrency === null ) {
-        errors.push("Currency can not be null");
-    }
-    if ( modalCategory === null ) {
-        errors.push("Category can not be null");
-    }
-    if ( modalFrequency === null ) {
-        errors.push("Frequency can not be null");
-    }
-    
-    return errors;
-}
 
-function appendError(errorMessage) {
-    const errorTemplate = `
-        <li class="error-message">${errorMessage}</li>
-    `
-    const errorLi = $.parseHTML(errorTemplate);
-    $("#modal-errors").append(errorLi);
 
-}
 
 $(document).ready(function() {
 
+    var incomesScrollLimit = 0;
+    var incomesScrollCount = 0;
+    var expensesScrollLimit = 0;
+    var expensesScrollCount = 0;
 
-    initWelcomePage();
+    var loggedIn = $("#loggedIn").data("logged");
+    if (loggedIn) {
+        $("#welcome-page").hide();
+        $("#avatar-wrapper").show().addClass("pinned");
+        showMainPage();
+    } else {
+        initWelcomePage();
+    };
+
     $(".avatar-button").on("click", function(e) {
         if ($("#avatar-wrapper").hasClass("pinned")) {
             showAvatarOptions();
@@ -283,9 +268,31 @@ $(document).ready(function() {
 
     modalNoteReactToChanges();
     modalReactToChanges();
+    incomesScrollLimit = dashboard.calculateScrolls("incomes");
+    expensesScrollLimit = dashboard.calculateScrolls("expenses");
 
-    $(".header-toggler").on("click", function() {
-        $("#modal-note").parent().addClass("modal-show");
+    $(".close-button").on("click", dashboard.closeModal);
+
+    $("#modal-outer").on("click", function(e) {
+        if (!e.target.closest("#modal")) {
+            dashboard.closeModal(e);
+        }
+    });
+    $("#incomes-card .item-card-footer .scroll-down").on("click", function(e) {
+        e.preventDefault();
+        incomesScrollCount = dashboard.scrollDown("incomes", incomesScrollCount, incomesScrollLimit);
+    });
+    $("#incomes-card .item-card-footer .scroll-up").on("click", function(e) {
+        e.preventDefault();
+        incomesScrollCount = dashboard.scrollUp("incomes", incomesScrollCount);
+    });
+    $("#expenses-card .item-card-footer .scroll-down").on("click", function(e) {
+        e.preventDefault();
+        expensesScrollCount = dashboard.scrollDown("expenses", expensesScrollCount, expensesScrollLimit);
+    });
+    $("#expenses-card .item-card-footer .scroll-up").on("click", function(e) {
+        e.preventDefault();
+        expensesScrollCount = dashboard.scrollUp("expenses", expensesScrollCount);
     });
 
     $(".item-wrap").on("click", function(e) {
@@ -295,16 +302,7 @@ $(document).ready(function() {
         dashboard.showModalToEdit(formObject);
     });
 
-    $(".close-button").on("click", function (e) { 
-        e.preventDefault();
-        $("#modal-outer").hide(0, function () { $(this).removeClass("modal-show") });
-    });
 
-    $("#modal-outer").on("click", function(e) {
-        if (!e.target.closest("#modal")) {
-            $(this).hide(0, function () { $(this).removeClass("modal-show") });
-        }
-    });
 
     $(".addButton").on("click", inputNumberAdd);
     $(".substractButton").on("click", inputNumberSubstract);
@@ -320,30 +318,75 @@ $(document).ready(function() {
     });
 
 
-    $(".addIncome, .addExpense").on("click", dashboard.createItemCard);
+    $(".addIncome, .addExpense").on("click", function(e) {
+        const itemCard = dashboard.createItemCard(e);
+        const itemType = itemCard.parent().parent().parent().attr("id").split("-")[0];
+        if (itemType === "incomes") {
+            incomesScrollLimit = dashboard.calculateScrolls("incomes");
+        } else {
+            expensesScrollLimit = dashboard.calculateScrolls("expenses");
+        }
+        itemCard.on("click", function(e) {
+            const id = dashboard.findWrapId(e);
+            const formObject = dashboard.createFormObject(id);
+            setInitValues(formObject);
+            dashboard.showModalToEdit(formObject);
+        });
+
+        itemCard.children(".delete-button").on("click", function(e) {
+            e.preventDefault();
+            dashboard.deleteItemCard(e);
+            if (itemType === "incomes") {
+                incomesScrollLimit = dashboard.calculateScrolls("incomes");
+            } else {
+                expensesScrollLimit = dashboard.calculateScrolls("expenses");
+            }
+        });
+
+        itemCard.parent().siblings(".card-empty").hide();
+        itemCard.click();
+    });
+
     $(".delete-button").on("click", function (e) {
         $("#submit-button").removeAttr("disabled");
         dashboard.deleteItemCard(e)
+        const itemType = e.currentTarget.closest(".item-card-content").parentElement.getAttribute("id").split("-")[0];
+        if (itemType === "incomes") {
+            incomesScrollLimit = dashboard.calculateScrolls("incomes");
+        } else {
+            expensesScrollLimit = dashboard.calculateScrolls("expenses");
+        }
     })
 
     $("#modal .primary-button").on("click", function(e) {
         $("#modal-errors").empty();
-        const errors = checkErrors();
+        const errors = dashboard.checkErrors();
         if (errors.length > 0) {
             for (const errorMessage of errors ) {
-                appendError(errorMessage);
+                dashboard.appendError(errorMessage);
             }
         } else {
             dashboard.saveFromModalToItem();
-            $("#submit-button").removeAttr("disabled");
+            dashboard.closeModal(e);
+            toggleMainPageButtons();
         }
 
     });
-    $("#modal .danger-button").on("click", discardModalChanges);
+    $("#modal .danger-button").on("click", function(e) {
+        discardModalChanges(e);
+        dashboard.closeModal(e);
+    });
 
     $(".avatar-options .primary-button").on("click", dashboard.updateAccountDetails);
     $(".avatar-options .danger-button").on("click", discardModalNoteChanges);
 
-    $("#submit-button").on("click", showBottomPage);
+    $("#submit-button").on("click", function() {
+        $("#form-wrapper").submit();
+        showBottomPage();
+    });
+
+    $("#continue-button").on("click", showBottomPage);
+
+    $(".back-to-main").on("click", hideBottomPage);
 
 });

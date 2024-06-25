@@ -1,11 +1,11 @@
 @import url("./forms.css");
 
-.columnimage, #info {
+.columnimage  {
     background: url("../images/spritesheet.png");
-    background-repeat: repeat;
-    background-size: 490px 100px;
-    
+    background-repeat: no-repeat;    
 }
+
+
 #loginpage {
     top:0; bottom: 0; left:0; right: 0;
     position: absolute;
@@ -36,8 +36,7 @@
 }
 
 .legend {
-    margin: 5rem auto;
-    margin-bottom: 3rem;
+    margin: 2rem auto;
 }
 
 /* FIRST CARD */
@@ -48,12 +47,13 @@
     transform: rotateY(0deg);
 }
 #piggy {
-    background-image: url("../images/piggy.png");
+    background-image: url("../images/spritesheet.png");
     background-repeat: no-repeat;
-    background-size: 15rem 15rem;
+    background-position: -180px -10px;
     width: 15rem;
     height: 15rem;
     margin: 0 auto;
+    margin-top: 5rem;
 }
 .auto-shake {
     animation: auto-shake 1.2s 1;
@@ -62,15 +62,46 @@
     animation: hover-shake 1.2s 1;
 }
 #info {
-    background-position: -120px 0px;
-    width: 70px;
-    height: 70px;
+    width: 5rem;
+    height: 5rem;
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 15px;
+    right: 15px;
+    border: 0.3rem solid black;
+    border-radius: 50%;
+    padding: 1rem;
+    transition: all 0.2s;
+}
+#info::before {
+    content: "i";
+    font-size: xx-large;
+    font-weight: bold;
+    position: absolute;
+    top: -0.5rem;
+    right: 50%;
+    transform: translateX(50%);
+    transition: all 0.2s;
+}
+#info:hover {
+    border-color: lightgreen;
+}
+#info:hover::before {
+    color: lightgreen;
 }
 
+
 .fliptext {
+    font-size: 1.7rem;
+    position: absolute;
+    width: 30rem;
+    bottom: 4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    text-transform: lowercase;
+    font-size: medium;
+}
+
+.flipinfotext {
     font-size: 1.7rem;
     position: absolute;
     width: 30rem;
@@ -78,10 +109,17 @@
     left: 50%;
     transform: translateX(-50%);
     text-transform: lowercase;
+    font-size: medium;
 }
-.fliptext a {
-    color: rgb(63, 103, 63);
-    text-decoration: underline dashed lightgreen 0.0125rem;
+
+.fliptext a, .flipinfotext a {
+    color: rgb(24, 68, 24);
+    font-weight: bold;
+    text-decoration: underline double lightgreen 0.02rem;
+}
+
+.fliptext a:hover, .flipinfotext a:hover {
+    color: rgba(14, 40, 14, 0.418);
 }
 
 /* SECOND PAGE  */
@@ -93,10 +131,11 @@
 }
 
 .avatar {
-    background-image: url("../images/avatar.png");
+    background-image: url("../images/spritesheet.png");
     background-repeat: no-repeat;
-    width: 10rem;
-    height: 10rem;
+    background-position: -10px -10px;
+    width: 15rem;
+    height: 15rem;
     margin: 0 auto;
     margin-top: 2rem;
 }
@@ -119,7 +158,7 @@
     position: absolute; 
     display: none;
     margin-left: calc((-100vw + 35rem)/2);
-    height: 80vh;
+    height: 94vh;
     width: 100vw;
     z-index: 4;
 }
@@ -148,34 +187,36 @@
     font-weight: 600;
 }
 
-a#infofooter {
-    background-image: url("../images/github.png");
-    background-size: 25px 25px;
+a#iconfooter {
+    position: absolute;
+    bottom: 9rem;
+    left: 50%;
+    transform: translate(-50%);
+    background-image: url("../images/spritesheet.png");
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: -350px -180px;
+    width: 5rem;
+    height: 5rem;
     font-size: 1.8rem;
     text-decoration: none;
     display: block;
-    line-height: 12rem;
-    bottom: 3rem;
     margin: auto;
-    width: 50%;
-    height: 2.5rem;
 }
 
-a#iconsfooter {
-    text-decoration: none;
-    font-size: 1.2rem;
-    bottom: -5rem;
-    letter-spacing: 0.25rem;
+span.textfooter {
+    position: absolute;
+    bottom: 5.5rem;
+    left: 50%;
+    transform: translate(-50%);
+    font-size: 1.3rem;
 }
 
 #infoline {
     position: relative;
-    width: 610px;
+    width: 61rem;
 	display: block;
 	margin: auto;
-	top: 42.5rem;
+	top: 39.5rem;
 	border-top: 0.4rem solid lightgreen;
 }
 #infolinetext {
@@ -192,7 +233,7 @@ a#iconsfooter {
 	display: block;
 	margin: auto;
     line-height: 0rem;
-	top: calc(42.5rem - 2.5rem);
+	top: calc(42.5rem - 6.5rem);
 	background-color: white;
     transition: background-color 0.4s;
 }
@@ -201,7 +242,7 @@ a#iconsfooter {
 }
 .infocolumn {
     position: absolute;
-    top: 120px;
+    top: 10rem;
     margin: auto;
     display: block;
     width: 28rem;
@@ -220,19 +261,19 @@ a#iconsfooter {
 }
 .columnimage {
     position: absolute;
-    width: 10rem;
-    height: 10rem;
+    width: 15rem;
+    height: 15rem;
     margin: auto;
     left:0; right: 0; top: 30px;
 }
 #leftcolumn > .columnimage {
-    background-position: -290px 0px;
+    background-position: -350px -10px;
 }
 #rightcolumn > .columnimage {
-    background-position: -190px 0px;
+    background-position: -180px -180px;
 }
 #centercolumn > .columnimage {
-    background-position: -390px 0px;
+    background-position: -10px -180px;
 }
 #leftcolumn, #rightcolumn, #centercolumn {
     transition: 1s;
@@ -240,7 +281,7 @@ a#iconsfooter {
     width: 100%;
     height: 200%;
     position: absolute;
-    padding-top: 15rem;
+    padding-top: 20rem;
     text-align: center;
     top: 0;
 }
@@ -322,4 +363,14 @@ a#iconsfooter {
 	100% {
 		transform: translateX(0);
 	}
+}
+
+
+@media only screen and (min-width: 985px) {
+    #infoleft {
+        left: 15rem;
+    }
+    #inforight {
+        right: 15rem;
+    }
 }

@@ -25,8 +25,7 @@ public class StatsServiceImpl implements StatsService {
                         .get()
                         .uri("/stats/" + accountName)
                         .retrieve()
-                        .bodyToFlux(StatsDTO.class)
-                        .switchIfEmpty(Flux.just(new StatsDTO())), throwable -> getStatsFallback());
+                        .bodyToFlux(StatsDTO.class), throwable -> getStatsFallback());
     }
 
     @Override
@@ -40,7 +39,7 @@ public class StatsServiceImpl implements StatsService {
     }
     @Override
     public Flux<StatsDTO> getStatsFallback() {
-        return Flux.just(new StatsDTO());
+        return Flux.empty();
     }
 
 }

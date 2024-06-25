@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.*;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
@@ -21,11 +22,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ServerWebExchange;
 import org.thymeleaf.spring6.context.webflux.IReactiveDataDriverContextVariable;
 import org.thymeleaf.spring6.context.webflux.ReactiveDataDriverContextVariable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.netty.http.server.HttpServerResponse;
 
+import java.net.URI;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
@@ -94,6 +98,7 @@ public class WebController {
             IReactiveDataDriverContextVariable statsVariable = new ReactiveDataDriverContextVariable(statsDTOFlux);
 
             model.addAttribute("stats", statsVariable);
+            model.addAttribute("logged", false);
         }
 
         return "index";
@@ -107,25 +112,28 @@ public class WebController {
     public String editAccount(@PathVariable String accountName, @ModelAttribute(name = "account") AccountDTO account, BindingResult bindingResult, Model model) {
         Mono<AccountDTO> updatedAccount = accountService.editAccount(accountName, account);
         model.addAttribute("account", updatedAccount);
+        model.addAttribute("logged", true);
         return "index";
     }
-    @RequestMapping(method = {RequestMethod.POST}, value = "/editItems/{accountName}")
-    public String editAccountItems(@PathVariable String accountName,
+    @RequestMapping(method = {RequestMethod.POST}, value = "/save/{accountName}")
+    public String saveAccountChanges(@PathVariable String accountName,
                                    @ModelAttribute(name = "account") AccountDTO account,
                                    BindingResult bindingResult,
                                    Model model) {
-        Mono<AccountDTO> updatedAccount = accountService.editAccountItems(accountName, account);
+
+
+
+
+        Mono<AccountDTO> updatedAccount = accountService.editAccountItems(accountName, account).flatMap(
+                accountDTO -> {
+                    statsService.saveStatsOfAccount(accountDTO);
+                    return Mono.just(accountDTO);
+                }
+        );
+
         model.addAttribute("account", updatedAccount);
+        model.addAttribute("logged", true);
 
-        return "index";
-    }
-    @RequestMapping(method = {RequestMethod.POST}, value = "/saveStats")
-    public String saveAccountStats(@ModelAttribute AccountDTO accountDTO, BindingResult bindingResult, Model model) {
-        Flux<StatsDTO> statsDTOFlux = statsService.saveStatsOfAccount(accountDTO);
-        IReactiveDataDriverContextVariable statsVariable = new ReactiveDataDriverContextVariable(statsDTOFlux);
-
-        model.addAttribute("account", accountDTO);
-        model.addAttribute("stats", statsVariable);
         return "index";
     }
 }

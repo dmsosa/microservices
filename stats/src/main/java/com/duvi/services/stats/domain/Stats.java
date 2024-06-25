@@ -1,5 +1,6 @@
 package com.duvi.services.stats.domain;
 
+import com.duvi.services.stats.domain.enums.Currency;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -32,6 +33,8 @@ public class Stats {
     private BigDecimal totalIncomes;
 
     private BigDecimal totalExpenses;
+    private Currency currency;
+
 
     //todo rates
 }

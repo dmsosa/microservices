@@ -41,7 +41,6 @@ export function saveFromModalToItem() {
 
     $("#" + target + " .card-icon .card-img").attr("class", "card-img " + modalIcon.toLowerCase());
 
-    $("#modal-outer").hide(0, function () { $(this).removeClass("modal-show") });
 }
 export function findWrapId(event) {
     let id = event.target.id.split(".")[0];
@@ -96,7 +95,6 @@ export function createOptionItem(fieldName, fieldValue) {
 export function createItemCard(event) {
     event.preventDefault();
     var itemType = event.target.classList.contains("addIncome") ? "incomes":"expenses";
-    console.log();
     var index = $("#" + itemType + "-card .item-card-content .item-list")[0].children.length;
     const template = `
     <div id="${itemType + index}" class="item-wrap">
@@ -126,16 +124,7 @@ export function createItemCard(event) {
     var itemCard = $.parseHTML(template);
     $("#" + itemType + "-card .item-card-content .item-list").append(itemCard);
 
-    $(`#${itemType + index}`).on("click", function(e) {
-        const id = findWrapId(e);
-        const formObject = createFormObject(id);
-        showModalToEdit(formObject);
-    });
-    $(".delete-button").on("click", deleteItemCard);
-
-    $(`#${itemType + index}`).click();
-    $(`#${itemType}-card .item-card-content .card-empty`).hide();
-
+    return $(`#${itemType + index}`);
 }
 
 export function deleteItemCard(event) {
@@ -153,4 +142,103 @@ export function updateAccountDetails(event) {
 }
 
 
+export function checkErrors() {
+    let errors = [];
+    let modalTitle, modalAmount, modalIcon, modalCurrency, modalCategory, modalFrequency;
+    modalTitle = $("#modal-title").val();
+    modalAmount = Number($("#modal-amount").val());
+    modalIcon = $("#modal-icon .selected-option .option-item").data("icon");
+    modalCurrency = $("#modal-currency .selected-option .option-item").data("currency");
+    modalCategory = $("#modal-category .selected-option .option-item").data("category");
+    modalFrequency = $("#modal-frequency .selected-option .option-item").data("frequency");
 
+    if (modalTitle.length === 0) {
+        errors.push("Please indicate a title");
+    }
+    if (modalTitle.length < 3) {
+        errors.push("Title must be at least 3 characters long");
+    }
+    if (modalTitle.length > 20) {
+        errors.push("Title must be at most 20 characters long");
+    }
+    if (modalAmount === null) {
+        errors.push("Amount can not be null");
+    }
+    if (modalAmount < 0) {
+        errors.push("Amount must be positive");
+    }
+    if (modalAmount > 1000000) {
+        errors.push("Amount can be at most 1 million gross, for now");
+    }
+    if ( modalIcon === null ) {
+        errors.push("Icon can not be null");
+    }
+    if ( modalCurrency === null ) {
+        errors.push("Currency can not be null");
+    }
+    if ( modalCategory === null ) {
+        errors.push("Category can not be null");
+    }
+    if ( modalFrequency === null ) {
+        errors.push("Frequency can not be null");
+    }
+    
+    return errors;
+}
+
+export function appendError(errorMessage) {
+    const errorTemplate = `
+        <li class="error-message">${errorMessage}</li>
+    `
+    const errorLi = $.parseHTML(errorTemplate);
+    $("#modal-errors").append(errorLi);
+
+}
+
+export function closeModal(event) {
+    event.preventDefault();
+    $("#modal-outer").removeClass("modal-show");
+    setTimeout(function() {
+        $("#modal-outer").hide();
+    }, 200)
+}
+
+export function scrollDown(itemType, scrollCount, scrollLimit) {
+    if (scrollCount >= scrollLimit) return scrollCount;
+    let pos;
+
+    if (itemType === "incomes") {
+        pos = Number($("#incomes-card .item-list").css("top").replace("px", ""));
+        $("#incomes-card .item-list").css("top", Number(pos - 80).toString() + "px");
+    } else {
+        pos = Number($("#expenses-card .item-list").css("top").replace("px", ""));
+        $("#expenses-card .item-list").css("top", Number(pos - 80).toString() + "px");
+    }
+
+    return scrollCount+1;
+}
+export function scrollUp(itemType, scrollCount) {
+    if (!scrollCount > 0) return scrollCount;
+    let pos;
+    if (itemType === "incomes") {
+        pos = Number($("#incomes-card .item-list").css("top").replace("px", ""));
+        $("#incomes-card  .item-list").css("top", Number(pos + 80).toString() + "px");
+    } else {
+        pos = Number($("#expenses-card .item-list").css("top").replace("px", ""));
+        $("#expenses-card  .item-list").css("top", Number(pos + 80).toString() + "px");
+    }
+    return scrollCount-1;
+}
+
+export function calculateScrolls(itemType) {
+    let itemNumber;
+    if (itemType === "incomes") {
+        itemNumber = $("#incomes-card .item-list").children().length;
+    } else {
+        itemNumber = $("#expenses-card .item-list").children().length;
+    }
+    if (itemNumber > 4) {
+        return (Math.floor(itemNumber / 4) - 1) + (itemNumber % 4);
+    }
+    else return 0; 
+}

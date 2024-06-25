@@ -28,6 +28,7 @@ import java.util.Map;
 @Configuration
 public class SecurityConfig {
 
+    private final String[] WHITELIST = {"/v3/api-docs/**", "/swagger-ui/**", "/h2-console/**","/demo"};
     private DiscoveryClient discoveryClient;
     public SecurityConfig(DiscoveryClient discoveryClient) {
         this.discoveryClient = discoveryClient;
@@ -40,11 +41,8 @@ public class SecurityConfig {
                 //allowing h2 to display in a frame of the same origin as our app
                 .headers(headers -> headers.frameOptions(options -> options.sameOrigin()))
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/v3/api-docs/**").permitAll()
-                        .requestMatchers("/swagger-ui/**").permitAll()
-                        .requestMatchers( "/h2-console/**").permitAll()
+                        .requestMatchers(WHITELIST).permitAll()
                         .requestMatchers(HttpMethod.POST, "/create").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/demo").permitAll()
                         .requestMatchers(HttpMethod.POST, "/demo").permitAll()
                         .requestMatchers(HttpMethod.GET, "/**").hasAuthority("SCOPE_profile")
                         .anyRequest().authenticated())

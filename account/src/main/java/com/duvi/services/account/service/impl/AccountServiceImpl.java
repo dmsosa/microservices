@@ -116,8 +116,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void saveChanges(AccountDTO account) {
-
-        //todo accountDTO + itemDTO
         statsClient.saveAccountStats(account);
     }
 }

@@ -1,5 +1,6 @@
 package com.duvi.gateway.model;
 
+import com.duvi.gateway.model.enums.Currency;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,4 +18,6 @@ public class StatsDTO {
     private LocalDateTime statsDate;
     private BigDecimal totalIncomes;
     private BigDecimal totalExpenses;
+    private Currency currency;
+
 }

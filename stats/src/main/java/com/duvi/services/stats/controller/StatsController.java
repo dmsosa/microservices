@@ -22,7 +22,7 @@ public class StatsController {
         return statsService.getStatsOfAccountByName(accountName);
     }
     @PostMapping("/save")
-    public Mono<StatsDTO> saveStatsOfAccount(@RequestBody AccountDTO accountDTO) throws EntityExistsException {
+    public Mono<Void> saveStatsOfAccount(@RequestBody AccountDTO accountDTO) throws EntityExistsException {
         return statsService.createStats(accountDTO);
     }
 }

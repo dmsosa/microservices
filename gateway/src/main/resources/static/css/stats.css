@@ -1,0 +1,65 @@
+.stats-empty {
+    margin: 2rem auto;
+    width: 100%;
+    font-style: italic;
+    font-size: x-large;
+    text-align: center;
+}
+.stats-title {
+    width: 100%;
+    font-size: x-large;
+    margin: 0 auto;
+    text-align: center;
+}
+.stats-date {
+    width: 100%;
+    font-size: large;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.stats-metrics {
+    width: 60%;
+    margin: 1rem auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4rem;
+    justify-content: center;
+}
+.metric {
+    border: lightgreen 0.3rem solid;
+    padding: 0.5rem;
+    text-align: center;
+    flex-grow: 1;
+}
+.metric.metric-expenses {
+    border-color: lightcoral;
+}
+.metric.metric-savings {
+    border-color: violet;
+    flex-grow: 1;
+    flex-basis: 100%;
+}
+.metric .metric-text {
+    font-size: large;
+    font-weight: bold;
+    letter-spacing: 0.25rem;
+
+}
+.metric .metric-value {
+    font-size: medium;
+    font-weight: bolder;
+    letter-spacing: 0.6rem;
+}
+.metric.metric-incomes .metric-value {
+    color: green;
+}
+
+.button.primary-button.back-to-main {
+    width: 100%;
+    display: block;
+    position: absolute;
+    bottom: 0;
+    font-size: x-large;
+    font-weight: bold;
+}

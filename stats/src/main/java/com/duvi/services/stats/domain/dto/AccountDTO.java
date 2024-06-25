@@ -1,6 +1,7 @@
 package com.duvi.services.stats.domain.dto;
 
 
+import com.duvi.services.stats.domain.enums.Currency;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,4 +16,5 @@ public class AccountDTO {
     private List<ItemDTO> incomes;
     private List<ItemDTO> expenses;
     private String note;
+    private Currency currency;
 }

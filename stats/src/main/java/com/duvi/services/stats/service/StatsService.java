@@ -16,6 +16,6 @@ import java.util.List;
 public interface StatsService {
     StatsDTO createDTO(Stats stats);
     Flux<StatsDTO> getStatsOfAccountByName(String accountName);
-    Mono<StatsDTO> createStats(AccountDTO account) throws EntityExistsException;
+    Mono<Void> createStats(AccountDTO account) throws EntityExistsException;
     BigDecimal calculateTotal(List<ItemDTO> items);
 }
