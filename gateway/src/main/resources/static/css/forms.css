@@ -46,25 +46,46 @@ fieldset.hidden {
     margin: auto 0;
 }
 .item-card-footer {
+    display: flex;
     height: 5rem;
     text-align: right;
     align-items: center;
+    justify-content: right;
 }
-.item-card-footer button {
-    display: inline-block;
+.item-card-footer button.scroll-up, .item-card-footer button.scroll-down {
+    display: block;
+    position: relative;
+    background-color: transparent;
     margin: 1rem;
+    padding: 0.5rem 2rem;
+    padding-right: 3rem;
     outline: none;
     border: none;
-    padding: 0;
     font-size: large;
+    transition: all 0.5s;
 }
-.item-card-footer button span {
-    vertical-align: middle;
+.item-card-footer button.scroll-up:hover, .item-card-footer button.scroll-down:hover {
+    background-color: rgb(244, 252, 242);
+    color: rgb(2, 74, 2);
+}
+.item-card-footer button.scroll-up:active, .item-card-footer button.scroll-down:active {
+    background-color: lightgreen;
+}
+.item-card-footer button.scroll-up span,  .item-card-footer button.scroll-down span{
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 7rem;
     width: 0;
     height: 0;
-    border: 0.75rem solid green;
-    border-color: green transparent transparent transparent;
+    border: 0.75rem solid rgb(2, 74, 2);
+    border-color: rgb(2, 74, 2) transparent transparent transparent;
     font-size: large;
+}
+.item-card-footer button.scroll-up span {
+    border-color: transparent transparent rgb(2, 74, 2) transparent;
+    top: 25%;
+    left: 9.5rem;
 }
 
 .item-card-content {
@@ -96,6 +117,7 @@ fieldset.hidden {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     cursor: pointer;
+    transition: all ease-in 0.5s;
 }
 .item-wrap {
     position: relative;

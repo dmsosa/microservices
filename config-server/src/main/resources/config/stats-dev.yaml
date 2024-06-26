@@ -17,13 +17,7 @@ spring:
     url: jdbc:h2:mem:demo
     locations: classpath:/db/migration/${database}
   jpa:
-    hibernate:
-      ddl-auto: none
     show-sql: true
-    defer-datasource-initialization: true
-  sql:
-    init:
-      mode: always
   h2:
     console:
       enabled: true

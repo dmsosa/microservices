@@ -55,11 +55,12 @@
     color: green;
 }
 
-.button.primary-button.back-to-main {
-    width: 100%;
+.bottom-page .primary-button.back-to-main {
     display: block;
     position: absolute;
-    bottom: 0;
-    font-size: x-large;
-    font-weight: bold;
+    left: 0; right: 0; bottom: 0;
+    height: 4.5rem;
+    padding-bottom: 1rem;
+    font-size: 2rem;
+    font-weight: bolder;
 }

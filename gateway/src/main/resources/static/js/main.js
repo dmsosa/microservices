@@ -36,18 +36,15 @@ function pinButton() {
     $(".avatar-button").addClass("reversed").fadeOut(600);
     setTimeout(function() {
         $("#avatar-wrapper").addClass("pinned");
-        $(".avatar-button").attr("class", "avatar-button forward plus").fadeIn(600);
+        $(".avatar-button").removeClass("reversed").fadeIn(600);
     }, 1200)
 
 }
 function unpinButton() {
-    $(".avatar-button").removeClass("reversed").fadeOut(600);
-    showWelcomeUnits();
-    setTimeout(function() {
-        $("#avatar-wrapper").removeClass("pinned").removeClass("expanded");
-        $(".avatar-button").attr("class", "avatar-button forward").fadeIn(600);
-    }, 600)
-
+    $(".avatar-button").removeClass("reversed forward").fadeOut(0, function() {
+        $("#avatar-wrapper").removeClass("pinned expanded");
+        $(".avatar-button").addClass("forward").fadeIn();
+    });
 }
 function initWelcomePage() {
     $("#avatar-wrapper").show(0, function() {
@@ -70,7 +67,9 @@ function showAvatarOptions() {
 function backToHome() {
     $(".main-page").hide(0, function() {
         unpinButton();
-        showWelcomeUnits();
+        setTimeout(function() {
+            showWelcomeUnits();
+        }, 600)
     })
 
 }
@@ -256,7 +255,7 @@ $(document).ready(function() {
         initWelcomePage();
     };
 
-    $(".avatar-button").on("click", function(e) {
+    $(".plus").on("click", function(e) {
         if ($("#avatar-wrapper").hasClass("pinned")) {
             showAvatarOptions();
         } else {

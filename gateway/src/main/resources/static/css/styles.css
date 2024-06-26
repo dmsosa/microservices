@@ -64,9 +64,7 @@ body {
 }
 .avatar-button {
     position: absolute;
-    background: url("../images/account/piggy.png") no-repeat;
-    background-position: center;
-    background-size: 12rem;
+    background: url("../images/avatar_sprites.png") no-repeat;
     width: 100%;
     height: 100%;
     border-radius: 70%;
@@ -74,13 +72,14 @@ body {
     background-color: rgb(249, 255, 248);
     margin: auto;
     transform-origin: center;
-    transition: all 0.5s;
     z-index: 9998;
 }
-.avatar-wrapper.pinned .avatar-button {
-    background-size: 5rem;
 
+
+.avatar-wrapper.pinned .avatar-button {
+    background-image: url("../images/pinned_avatars.png");
 }
+
 .avatar-wrapper.expanded .avatar-button {
     border-radius: 0%;
     border-bottom: none;
@@ -251,4 +250,64 @@ body {
     height: 2rem;
     width: fit-content;
     margin: 0 auto;
+}
+
+/* Sprites and positions */
+
+.avatar-button.avatar-piggy {
+    background-position: -279px -138px;
+   
+}
+.avatar-button.avatar-turtle {
+    background-position: -270px -280px;
+}
+.avatar-button.avatar-fox {
+    background-position: -279px 13px;
+}
+.avatar-button.avatar-cow {
+    background-position: 1px -145px;
+}
+.avatar-button.avatar-secretary {
+    background-position: -140px -282px;
+}
+.avatar-button.avatar-boss {
+    background-position: -140px 0px;
+}
+.avatar-button.avatar-rabbit {
+    background-position: 0px -271px;
+}
+.avatar-button.avatar-bear {
+    background-position: 0px 5px;
+}
+.avatar-button.avatar-elephant {
+    background-position: -138px -138px;
+}
+
+
+.avatar-wrapper.pinned .avatar-button.avatar-piggy {
+    background-position: -144px -72px;
+}
+.avatar-wrapper.pinned .avatar-button.avatar-turtle {
+    background-position: -141px -143px;
+}
+.avatar-wrapper.pinned .avatar-button.avatar-cow {
+    background-position: -4px -75px;
+}
+.avatar-wrapper.pinned .avatar-button.avatar-bear {
+    background-position: -5px 0px;
+}
+.avatar-wrapper.pinned .avatar-button.avatar-fox {
+    background-position: -144px 1px;
+}
+.avatar-wrapper.pinned .avatar-button.avatar-boss {
+    background-position: -73px -4px;
+}
+.avatar-wrapper.pinned .avatar-button.avatar-secretary {
+    background-position: -4px -145px;
+}
+.avatar-wrapper.pinned .avatar-button.avatar-rabbit {
+    background-position: -73px -142px;
+}
+.avatar-wrapper.pinned .avatar-button.avatar-elephant {
+    background-position: -73px -73px;
 }

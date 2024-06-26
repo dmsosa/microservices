@@ -26,7 +26,7 @@
 
             <div class="up-title">Welcome to Microservices</div>
             <div class="left-title"><span class="green-text">Account:</span><span th:text="${account.name}">demo</span></div>
-            <div class="right-title"><span class="green-text">Last seen:</span><span th:text="${account.name}">24/04/2024</span></div>
+            <div class="right-title"><span class="green-text">Last seen:</span><span th:text="${account.lastSeen}">24/04/2024</span></div>
             <div class="bottom-buttons">
                 <div class="plus" id="plus">
                     <div class="plus-border beat">
@@ -47,7 +47,7 @@
         </div>
         <div id="avatar-wrapper" class="avatar-wrapper">
             <div class="avatar-modal">
-                <div class="avatar-button forward plus"></div>
+                <div class="avatar-button forward plus avatar-piggy" th:class="${'avatar-button forward plus avatar-' + account.avatar}"></div>
                 <div class="avatar-options">
                     <div id="noteInitValue" data-note="I'm using microservices!" th:data-note="${account.note}" style="display: none;"></div>
                     <div id="avatarInitValue" data-avatar="piggy" th:data-avatar="${account.avatar}" style="display: none;"></div>
@@ -449,7 +449,7 @@
                     </div>
                 </div>
             </div>
-            <button class="primary-button back-to-main"></button>
+            <button class="primary-button back-to-main">Back to account</button>
         </div>
     </section>
     <script type="module" th:src="@{/js/main.js}" src="../static/js/main.js"></script>

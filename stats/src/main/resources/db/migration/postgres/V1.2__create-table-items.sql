@@ -1,4 +1,6 @@
-CREATE TYPE currencies AS ENUM ('USD', 'EUR', 'GBP')
+CREATE TYPE categories AS ENUM ('FIXED', 'OCCASIONAL')
+CREATE TYPE frequencies AS ENUM ('DAY', 'WEEK', 'MONTH')
+CREATE TYPE types AS ENUM ('INCOME', 'EXPENSE', 'SAVING')
 
 CREATE TABLE IF NOT EXISTS items (
     id SERIAL PRIMARY KEY,
@@ -6,10 +8,10 @@ CREATE TABLE IF NOT EXISTS items (
     stats_date TIMESTAMP,
     title VARCHAR(40),
     amount INTEGER,
-    category ENUM ('FIXED', 'OCCASIONAL'),
-    currency ENUM ('USD', 'EUR', 'GBP'),
-    frequency ENUM ('DAY', 'WEEK', 'MONTH'),
-    type ENUM ('INCOME', 'EXPENSE', 'SAVING'),
+    category categories,
+    currency currencies,
+    frequency frequencies,
+    type types,
     PRIMARY KEY (id),
     FOREIGN KEY (stats_id) REFERENCES stats (id)
 );

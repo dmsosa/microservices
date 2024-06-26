@@ -259,13 +259,18 @@ input::-webkit-inner-spin-button {
     border-color: rgb(45, 45, 45) transparent transparent rgb(45, 45, 45);
 }
 
-.custom-select-icons .select-list, .custom-select-avatars .select-list {
+.custom-select-icons .select-list {
     top: 12.5rem;
     left: 0;
     width: 36rem; 
     outline: rgb(1, 75, 1) 0.5rem solid;
 }
-
+.custom-select-avatars .select-list {
+    top: 12.5rem;
+    left: -23.95rem;
+    width: 36rem; 
+    outline: rgb(1, 75, 1) 0.5rem solid;
+}
 .custom-select-icons.active .select-list, .custom-select-avatars.active .select-list {
     display: flex;
     flex-wrap: wrap;

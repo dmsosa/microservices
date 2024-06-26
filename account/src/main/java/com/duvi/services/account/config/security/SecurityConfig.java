@@ -28,7 +28,7 @@ import java.util.Map;
 @Configuration
 public class SecurityConfig {
 
-    private final String[] WHITELIST = {"/v3/api-docs/**", "/swagger-ui/**", "/h2-console/**","/demo"};
+    private final String[] WHITELIST = {"/v3/api-docs/**", "/swagger-ui/**", "/h2-console/**"};
     private DiscoveryClient discoveryClient;
     public SecurityConfig(DiscoveryClient discoveryClient) {
         this.discoveryClient = discoveryClient;
@@ -45,6 +45,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/create").permitAll()
                         .requestMatchers(HttpMethod.POST, "/demo").permitAll()
                         .requestMatchers(HttpMethod.GET, "/**").hasAuthority("SCOPE_profile")
+                        .requestMatchers(HttpMethod.GET, "/demo").permitAll()
                         .anyRequest().authenticated())
                 //Very simple Security Config, just indicating the type of tokens supported by our server here.
                 .oauth2ResourceServer(rs -> rs.jwt(jwtConfigCustomizer()))

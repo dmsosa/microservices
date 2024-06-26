@@ -72,8 +72,17 @@ public class WebController {
     }
     //Authentication endpoints **Login, Register and Redirect to AuthServer
 
+    @RequestMapping(method = {RequestMethod.GET}, value = "/demo")
+    public String showDemoPage(
+            Model model
+    ) {
+
+        Mono<AccountDTO> accountDTO = accountService.getAccount("demo");
+        model.addAttribute("account", accountDTO);
+        model.addAttribute("logged", false);
+        return "index";
+    }
     @RequestMapping(method = {RequestMethod.GET}, value = "/index")
-    @Retry(name = "accountClient")
     public String showIndexPage(
             @RegisteredOAuth2AuthorizedClient(registrationId = "gatewayClient")
             OAuth2AuthorizedClient gatewayClient,

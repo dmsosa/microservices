@@ -35,11 +35,13 @@ public class StatsServiceImpl implements StatsService {
                         .uri("/stats/save")
                         .bodyValue(account)
                         .retrieve()
-                        .bodyToFlux(StatsDTO.class), throwable -> getStatsFallback());
+                        .bodyToFlux(StatsDTO.class)
+                        .switchIfEmpty(Flux.just(new StatsDTO()))
+                , throwable -> getStatsFallback());
     }
     @Override
     public Flux<StatsDTO> getStatsFallback() {
-        return Flux.empty();
+        return Flux.just(new StatsDTO());
     }
 
 }

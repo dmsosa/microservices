@@ -38,4 +38,9 @@ public class ModelViewController {
         return "login";
     }
 
+    @RequestMapping("/demo")
+    public void redirectToDemoEndpoint() {
+
+    }
+
 }
