@@ -117,7 +117,7 @@ fieldset.hidden {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     cursor: pointer;
-    transition: all ease-in 0.5s;
+    transition: all ease-in 0.4s;
 }
 .item-wrap {
     position: relative;

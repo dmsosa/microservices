@@ -53,9 +53,6 @@ function initWelcomePage() {
 }
 
 function showMainPage() {
-    if ($(".stats-page").children().length > 0 ) {
-        $("#continue-button").removeAttr("disabled");
-    }
     pinButton();
     hideWelcomeUnits();
     setTimeout(function() {$(".main-page").fadeIn(200)}, 500);
@@ -74,6 +71,10 @@ function backToHome() {
 
 }
 function showBottomPage() {
+    console.log($(".stats-page").children()[0]);
+    if ($(".stats-page").children()[0].hasClass("stats-empty")) {
+        $("#form-wrapper").submit();
+    }
     stats.calculateSavings();
     $(".bottom-page").show(0, function() {
         $(".top-page").addClass("slide");
