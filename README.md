@@ -24,7 +24,9 @@ TechStack: PostgreSQL, Spring, Docker
 
 The obstacles that I found during the development of the project can be found in other "somewhat . md" files, because I did not want to make this text either very large or mixed in topics.
 
+### The project:
 
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/sCSWpRG"  ><a href="//imgur.com/a/sCSWpRG">Microdienste Projekt</a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
 
 ### Documentation:
 
