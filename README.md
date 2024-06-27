@@ -26,7 +26,7 @@ The obstacles that I found during the development of the project can be found in
 
 ### The project:
 
-<blockquote class="imgur-embed-pub" lang="en" data-id="a/sCSWpRG"  ><a href="//imgur.com/a/sCSWpRG">Microdienste Projekt</a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+<img src="https://ibb.co/J2nCdz8" style="width: 50px; height: 50px"/>
 
 ### Documentation:
 
