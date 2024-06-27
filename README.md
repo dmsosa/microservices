@@ -14,7 +14,7 @@
 
 
 
-Microservices project is inspired by [ piggymetrics ](https://github.com/sqshq/piggymetrics/tree/master) by @sqshq "Alexander Lukyanchikov", but this implementation uses PostgreSQL and a simple business logic, the main goals of this project is an example of microservices.
+Microservices project is inspired by [ piggymetrics ](https://github.com/sqshq/piggymetrics/tree/master) by @sqshq "Alexander Lukyanchikov", but this implementation uses PostgreSQL and a simpler business logic, the main goal of this project is to provide an example of microservices structure.
 
 
 
@@ -22,12 +22,11 @@ TechStack: PostgreSQL, Spring, Docker
 
 
 
-The obstacles that I found during the development of the project can be found in other "somewhat . md" files, because I did not want to make this text either very large or mixed in topics.
+The obstacles that I found during the development of the project can be found in other "readme . md" files, because I did not want to make this README either very large or mixed in topics.
 
 
 
 ### Documentation:
-
 
 
 The documentation of our APIs developed with Swagger was to explain its features.

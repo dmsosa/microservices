@@ -90,7 +90,7 @@ input::-webkit-inner-spin-button {
 #submit-button {
     z-index: 1;
 }
-.show {
+#continue-button.show, #submit-button.show {
     display: block;
 }
 #continue-button:not(:disabled), #submit-button:not(:disabled) {

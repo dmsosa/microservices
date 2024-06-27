@@ -10,7 +10,7 @@ spring:
     password: ${POSTGRES_PASSWORD}
     driverClassName: org.postgresql.Driver
   flyway:
-    locations: classpath:/db/migration/${database}
+    locations: classpath:db/migration/${database}
   jpa:
     show-sql: true
 #logging & management

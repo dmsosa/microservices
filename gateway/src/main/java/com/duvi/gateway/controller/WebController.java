@@ -31,6 +31,7 @@ import reactor.netty.http.server.HttpServerResponse;
 
 import java.net.URI;
 import java.security.Principal;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -140,7 +141,12 @@ public class WebController {
                 }
         );
 
+        Flux<StatsDTO> statsDTOFlux = statsService.getStatsOfAccount(accountName).delayElements(Duration.ofMillis(5000));
+
+        IReactiveDataDriverContextVariable statsVariable = new ReactiveDataDriverContextVariable(statsDTOFlux);
+
         model.addAttribute("account", updatedAccount);
+        model.addAttribute("stats", statsVariable);
         model.addAttribute("logged", true);
 
         return "index";

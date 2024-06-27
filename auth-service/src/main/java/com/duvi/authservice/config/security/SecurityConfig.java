@@ -34,6 +34,7 @@ import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final String[] WHITELIST = {"/h2-console/**", "/css/**", "/images/**", "/js/**", "/actuator/health"};
 
     @Bean
     @Order(1)
@@ -57,10 +58,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) //disable csrf
                 .headers( headers -> headers.frameOptions(fo -> fo.sameOrigin())) //allowing h2 to be displayed as a frame
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers( "/h2-console/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/css/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/images/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/js/**").permitAll()
+                        .requestMatchers( WHITELIST).permitAll()
                         .requestMatchers(HttpMethod.POST, "/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/login").permitAll()
                         .anyRequest().authenticated())

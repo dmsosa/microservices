@@ -121,7 +121,7 @@ public class SecurityConfig {
     public ClientRegistration clientRegistration() {
 
         Map<String, String> authUris = findAuthServiceUris();
-        String redirectUri = findCurrentInstanceUri() + "/login/oauth2/code/gatewayClient";
+        String redirectUri = "http://127.0.0.1:8061/login/oauth2/code/gatewayClient";
 
         return ClientRegistration.withRegistrationId("gatewayClient")
                 .clientId("gatewayClient")
@@ -151,9 +151,7 @@ public class SecurityConfig {
         map.put("userInfoUri", issuerUri + "/api/uaa/userinfo");
         return map;
     }
-    private String findCurrentInstanceUri() {
-        return "http://127.0.0.1:8061";
-    }
+
 
     @Bean
     public ReactiveClientRegistrationRepository clientRegistrationRepository() {

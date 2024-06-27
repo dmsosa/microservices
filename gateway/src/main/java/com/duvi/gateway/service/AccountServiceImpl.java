@@ -67,21 +67,37 @@ public class AccountServiceImpl implements AccountService {
                 .bodyValue(account)
                 .retrieve()
                 .bodyToMono(AccountDTO.class),
-                throwable -> Mono.just(account));
+                throwable -> {
+                    logger.trace("Failure while reaching account API for editing the account, providing fallback value for: ACCOUNT");
+                    return Mono.just(account);
+                });
     }
 
     @Override
     public Mono<AccountDTO> getAccountFallback(String accountName) {
+        logger.trace("Failure while reaching account API, providing fallback value for: ACCOUNT");
         List<ItemDTO> fallbackIncomes = new ArrayList<>();
-        ItemDTO i1 = new ItemDTO(1L, accountName, "aluguer", "house", BigDecimal.valueOf(1200), Category.FIXED, Currency.USD, Frequency.MONTH, Type.INCOME);
-        ItemDTO i2 = new ItemDTO(2L, accountName, "gym", "gym", BigDecimal.valueOf(300), Category.FIXED, Currency.USD, Frequency.MONTH, Type.INCOME);
-        ItemDTO i3 = new ItemDTO(3L, accountName, "work", "work", BigDecimal.valueOf(50), Category.FIXED, Currency.USD, Frequency.MONTH, Type.INCOME);
+        List<ItemDTO> fallbackExpenses = new ArrayList<>();
+        ItemDTO i1 = new ItemDTO(1L, accountName, "salary", "work", BigDecimal.valueOf(1200), Category.FIXED, Currency.USD, Frequency.MONTH, Type.INCOME);
+        ItemDTO i2 = new ItemDTO(2L, accountName, "freelance", "work", BigDecimal.valueOf(300), Category.FIXED, Currency.USD, Frequency.WEEK, Type.INCOME);
+        ItemDTO i3 = new ItemDTO(3L, accountName, "work", "work", BigDecimal.valueOf(50), Category.OCCASIONAL, Currency.USD, Frequency.DAY, Type.INCOME);
+        ItemDTO e1 = new ItemDTO(4L, accountName, "aluguer", "house", BigDecimal.valueOf(1200), Category.FIXED, Currency.USD, Frequency.MONTH, Type.INCOME);
+        ItemDTO e2 = new ItemDTO(5L, accountName, "gym", "sport", BigDecimal.valueOf(55), Category.FIXED, Currency.USD, Frequency.MONTH, Type.INCOME);
+        ItemDTO e3 = new ItemDTO(6L, accountName, "food", "food", BigDecimal.valueOf(250), Category.FIXED, Currency.USD, Frequency.MONTH, Type.INCOME);
+
+        fallbackIncomes.add(i1);
+        fallbackIncomes.add(i2);
+        fallbackIncomes.add(i3);
+        fallbackExpenses.add(e1);
+        fallbackExpenses.add(e2);
+        fallbackExpenses.add(e3);
+
         return Mono.just(new AccountDTO(
                 accountName,
                 LocalDateTime.now(),
                 fallbackIncomes,
-                null,
-                "I'm using microservices",
+                fallbackExpenses,
+                "I'm using microservices by fallback",
                 "cow",
                 Currency.getDefault()));
     }

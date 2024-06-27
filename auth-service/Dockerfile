@@ -11,7 +11,7 @@ COPY --from=builder app/spring-boot-loader/ ./
 COPY --from=builder app/snapshot-dependencies/ ./
 COPY --from=builder app/application/ ./
 
-HEALTHCHECK --start-period=10s CMD curl --fail http://localhost:9000/api/uaa/actuator/health || exit 1
+HEALTHCHECK --start-period=10s CMD curl -f http://localhost:9000/api/uaa/actuator/health || exit 1
 ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
 
 EXPOSE 9000

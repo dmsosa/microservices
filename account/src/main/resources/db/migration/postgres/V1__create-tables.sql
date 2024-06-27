@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS accounts (
 CREATE TABLE IF NOT EXISTS items (
     id SERIAL PRIMARY KEY,
     account_id INTEGER NOT NULL,
-    title VARCHAR(40) NOT NULL UNIQUE,
+    title VARCHAR(40) NOT NULL,
     icon TEXT,
     amount INTEGER,
     category categories,

@@ -20,9 +20,10 @@ public class SecurityConfig {
                 //disable CSRF to allow POST request that are directed to the /refresh endpoint
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
-                        .anyRequest().authenticated())
+                        .requestMatchers("/actuator/health").permitAll()
+                        .anyRequest().authenticated()
+                )
                 .httpBasic(Customizer.withDefaults())
-                //Very simple Security Config, just indicating the type of tokens supported by our server here.
                 .build();
     }
 

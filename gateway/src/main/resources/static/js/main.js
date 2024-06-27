@@ -64,6 +64,7 @@ function showAvatarOptions() {
 function backToHome() {
     $(".main-page").hide(0, function() {
         unpinButton();
+        $("#welcome-page").show();
         setTimeout(function() {
             showWelcomeUnits();
         }, 600)
@@ -71,8 +72,7 @@ function backToHome() {
 
 }
 function showBottomPage() {
-    console.log($(".stats-page").children()[0]);
-    if ($(".stats-page").children()[0].hasClass("stats-empty")) {
+    if ($(".stats-page").children()[0].classList.contains("stats-empty")) {
         $("#form-wrapper").submit();
     }
     stats.calculateSavings();
