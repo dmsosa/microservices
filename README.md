@@ -26,7 +26,7 @@ The obstacles that I found during the development of the project can be found in
 
 ### The project:
 
-<a href='https://postimg.cc/BtY9xKZg' target='_blank'><img src='https://i.postimg.cc/BtY9xKZg/Animation.gif' styles="width: 1700px; height:1700px"  alt='Animation'/></a>
+<a href='https://postimg.cc/BtY9xKZg' target='_blank'><img src='https://i.postimg.cc/BtY9xKZg/Animation.gif' style="width: 1700px; height:1700px"  alt='Animation'/></a>
 ### Documentation:
 
 
