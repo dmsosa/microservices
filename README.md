@@ -26,7 +26,10 @@ The obstacles that I found during the development of the project can be found in
 
 ### The project:
 
-<a href='https://postimg.cc/BtY9xKZg' target='_blank'><img src='https://i.postimg.cc/BtY9xKZg/Animation.gif' style="width: 500px; height:500px"  alt='Animation'/></a>
+![Animation](https://github.com/dmsosa/microservices/assets/112881114/19d3821a-a846-4d13-8be6-e32e9061f6ad)
+
+
+
 ### Documentation:
 
 
