@@ -45,21 +45,13 @@ The documentation of our APIs developed with Swagger was to explain its features
 
 ##### GATEWAY SERVICE:
 
-
-
-Through the gateway it is possible to communicate with any service.
-
-
-
-It was also used to display templates with Thymeleaf for a simple UI.
-
-
+In this project, we have four (4) services fronted by a Gateway using Spring Cloud Gateway, and the UI was made with the help of Thymeleaf. 
 
 #### AUTH SERVICE:
 
+OAuth Flow is used to secure our microservices with a single Authorization Server, it allows customers to login in and register. OAuth also secures service-to-service communication.
 
 
-Security server that allows customers to login and register in our app. OAuth2 security can also be set up for service-to-service communication.
 
 
 
