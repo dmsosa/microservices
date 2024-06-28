@@ -25,4 +25,4 @@ Sobald wir authorisiert wird, unseres WebClient durch ein ExchangeFilterFunction
 
 Fur die geoffneten Endepunkte unseres API (mit Demokonto) kein Authentication notig ist.
 
-# Terms und Conditions hinzufugen
+# Zu machen: Terms und Conditions hinzufugen
