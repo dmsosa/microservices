@@ -26,19 +26,14 @@ The obstacles that I found during the development of the project can be found in
 
 ### The project:
 
-<img src="https://github.com/dmsosa/microservices/assets/112881114/19d3821a-a846-4d13-8be6-e32e9061f6ad" style="width:700px; height: 450px"/>
-
+<img src="https://github.com/dmsosa/microservices/assets/112881114/19d3821a-a846-4d13-8be6-e32e9061f6ad" style="width:720px; height: 345px"/>
 
 ![Animation](https://github.com/dmsosa/microservices/assets/112881114/19d3821a-a846-4d13-8be6-e32e9061f6ad)
-
-
 
 ### Documentation:
 
 
 The documentation of our APIs developed with Swagger was to explain its features.
-
-
 
 ### SERVICES:
 
