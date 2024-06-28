@@ -63,7 +63,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/login").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(formLogin ->
-                        formLogin.loginPage("/login").successHandler(authenticationSuccessHandler()))
+                        formLogin.loginPage("/login"))
                 .logout( logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")))
                 .oauth2ResourceServer(rs -> rs.jwt(Customizer.withDefaults()))
                 .build();
@@ -80,10 +80,5 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return new RedirectToGatewayAuthSuccessHandler();
     }
 }
