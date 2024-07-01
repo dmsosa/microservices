@@ -366,6 +366,7 @@ input::-webkit-inner-spin-button {
 /* Custom number input  */
 
 .custom-input {
+    position: relative;
     display: flex;
     height: 3rem;
     max-width: 13rem;

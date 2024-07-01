@@ -43,6 +43,10 @@
     animation-fill-mode: forwards;
 }
 
+.error-message {
+    animation: showup 0.6s ease-in;
+}
+
 @keyframes goleft {
     0% {
         right: 50%;

@@ -1,6 +1,11 @@
 // Modal
 
 export function showModalToEdit(formObject, editMode = true) {
+    
+    if (editMode) {
+        $("#modal-target").attr("value", formObject.get("id"));
+    }
+
     $("#modal-outer").show(0, function () {
         $(this).addClass("modal-show")
     });
@@ -15,9 +20,7 @@ export function showModalToEdit(formObject, editMode = true) {
     $("#modal-category .selected-option").children().replaceWith(modalCategory);
     $("#modal-frequency .selected-option").children().replaceWith(modalFrequency);
 
-    if (editMode) {
-        $("#modal-target").attr("value", formObject.get("id"));
-    }
+
 }
 
 
@@ -144,54 +147,59 @@ export function updateAccountDetails(event) {
 
 export function checkErrors() {
     let errors = [];
-    let modalTitle, modalAmount, modalIcon, modalCurrency, modalCategory, modalFrequency;
+    var errorObject = {title: "", message: ""};
+    let modalTitle, modalAmount, modalNote;
     modalTitle = $("#modal-title").val();
     modalAmount = Number($("#modal-amount").val());
-    modalIcon = $("#modal-icon .selected-option .option-item").data("icon");
-    modalCurrency = $("#modal-currency .selected-option .option-item").data("currency");
-    modalCategory = $("#modal-category .selected-option .option-item").data("category");
-    modalFrequency = $("#modal-frequency .selected-option .option-item").data("frequency");
+    modalNote = $(".avatar-options .textarea-note").val();
+
 
     if (modalTitle.length === 0) {
-        errors.push("Please indicate a title");
+        errorObject = {title: "titleNotNull", message: "Title must not be null"};
+        errors.push(errorObject);
     }
     if (modalTitle.length < 3) {
-        errors.push("Title must be at least 3 characters long");
+        errorObject = {title: "titleMinLength", message: "Title must have at least 3 characters"}
+        errors.push(errorObject);
     }
     if (modalTitle.length > 20) {
-        errors.push("Title must be at most 20 characters long");
+        errorObject = {title: "titleMaxLength", message: "Title must have at most 20 characters"}
+        errors.push(errorObject);
     }
     if (modalAmount === null) {
-        errors.push("Amount can not be null");
+        errorObject = {title: "amountNotNull", message: "Amount must not be null"}
+        errors.push(errorObject);    
     }
     if (modalAmount < 0) {
-        errors.push("Amount must be positive");
+        errorObject = {title: "amountMinValue", message: "Amount must be positive"}
+        errors.push(errorObject); 
     }
     if (modalAmount > 1000000) {
-        errors.push("Amount can be at most 1 million gross, for now");
+        errorObject = {title: "amountMaxValue", message: "Amount must not be more than 1 Million"}
+        errors.push(errorObject); 
     }
-    if ( modalIcon === null ) {
-        errors.push("Icon can not be null");
+    if (modalNote.length === 0) {
+        errorObject = {title: "noteNotNull", message: "Note must not be null"};
+        errors.push(errorObject);
     }
-    if ( modalCurrency === null ) {
-        errors.push("Currency can not be null");
+    if (modalNote.length < 3) {
+        errorObject = {title: "noteMinLength", message: "Note must have at least 3 characters"}
+        errors.push(errorObject);
     }
-    if ( modalCategory === null ) {
-        errors.push("Category can not be null");
-    }
-    if ( modalFrequency === null ) {
-        errors.push("Frequency can not be null");
+    if (modalNote.length > 1000) {
+        errorObject = {title: "noteMaxLength", message: "Note must have at most 1000 characters"}
+        errors.push(errorObject);
     }
     
     return errors;
 }
 
-export function appendError(errorMessage) {
+export function appendError(modal, errorObject) {
     const errorTemplate = `
-        <li class="error-message">${errorMessage}</li>
+        <li class="error-message" th:text="#{errorMessage.${errorObject.title}}">${errorObject.message}</li>
     `
     const errorLi = $.parseHTML(errorTemplate);
-    $("#modal-errors").append(errorLi);
+    modal.children(".modal-errors").append(errorLi);
 
 }
 

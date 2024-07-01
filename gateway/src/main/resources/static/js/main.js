@@ -222,14 +222,16 @@ function discardModalChanges(event) {
     $("#modal .modal-buttons").children().attr("disabled", "true");
 }
 
-function discardModalNoteChanges(event) {
+function  discardModalNoteChanges(event) {
     event.preventDefault();
 
     const initAvatar = dashboard.createOptionItem("avatar", avatarInitValue);
 
     $("#modal-avatar .selected-option").children().replaceWith(initAvatar);
     $(".avatar-options textarea").val(noteInitValue);
-    $(".modal-errors").empty();
+    if ($(".modal-errors") !== undefined) {
+        $(".modal-errors").empty();
+    }
 
     $(".avatar-options .modal-buttons").children().attr("disabled", "true");
     $(".avatar-button").click();
@@ -359,14 +361,39 @@ $(document).ready(function() {
     })
 
     $("#modal .primary-button").on("click", function(e) {
-        $("#modal-errors").empty();
+        if ($(".modal-errors") !== undefined) {
+            $(".modal-errors").empty();
+        };
         const errors = dashboard.checkErrors();
         if (errors.length > 0) {
-            for (const errorMessage of errors ) {
-                dashboard.appendError(errorMessage);
+            const modalErrors = $("<div class='modal-errors'></div>");
+            const modal = $("#modal");
+            modal.append(modalErrors);
+            for (const errorObject of errors ) {
+                dashboard.appendError(modal, errorObject);
             }
         } else {
             dashboard.saveFromModalToItem();
+            dashboard.closeModal(e);
+            toggleMainPageButtons();
+        }
+
+    });
+    $(".avatar-options .primary-button").on("click", function(e) {
+        e.preventDefault();
+        if ($(".modal-errors") !== undefined) {
+            $(".modal-errors").empty();
+        };
+        const errors = dashboard.checkErrors();
+        if (errors.length > 0) {
+            const modalErrors = $("<div class='modal-errors'></div>");
+            const modal = $(".avatar-options");
+            modal.append(modalErrors);
+            for (const errorObject of errors ) {
+                dashboard.appendError(modal, errorObject);
+            }
+        } else {
+            dashboard.updateAccountDetails(e);
             dashboard.closeModal(e);
             toggleMainPageButtons();
         }
@@ -376,8 +403,6 @@ $(document).ready(function() {
         discardModalChanges(e);
         dashboard.closeModal(e);
     });
-
-    $(".avatar-options .primary-button").on("click", dashboard.updateAccountDetails);
     $(".avatar-options .danger-button").on("click", discardModalNoteChanges);
 
     $("#submit-button").on("click", function() {

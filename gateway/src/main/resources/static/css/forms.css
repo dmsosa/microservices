@@ -299,11 +299,13 @@ input.card-frequency {
     background-color: rgb(249, 255, 248);
     border: double lightgreen 0.5rem;
     padding: 0.5rem 2rem;
+    padding-top: 5rem;
     z-index: 1000;
     transform-style: preserve-3d;
     transform: rotateY(-60deg);
     transition: all 0.4s;
 }
+
 
 #modal-note {
     position: absolute;
@@ -317,4 +319,53 @@ input.card-frequency {
     transition: all 3s;
 }
 
+.modal-errors {
+    position: absolute;
+    top: 1.5rem;
+    right: -12.5rem;
+    width: 12rem;
+    max-width: 12rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 
+}
+.error-message {
+    display: block;
+    position: relative;
+    width: 3rem;
+    height: 3rem;
+    min-width: 3rem;
+    min-height: 3rem;
+    font-size: 0;
+    color: transparent;
+    font-family: monospace;
+    letter-spacing: 0.25rem;
+    padding: 0.25rem;
+    background-color: rgb(253, 79, 79);
+    border: solid 0.3rem darkred;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.error-message::after {
+    content: "!";
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+    font-family: monospace;
+    position: absolute;
+    top:0; bottom:0; left: 50%; right: 0;
+    transform: translate(-50%);
+
+}
+
+.error-message:hover {
+    width: fit-content;
+    height: fit-content;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: white;
+}
+.error-message:hover::after {
+    display: none;
+}

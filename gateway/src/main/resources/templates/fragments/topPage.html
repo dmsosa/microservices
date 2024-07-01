@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Microservices</title>
+</head>
+<body>
+
+<section class="top-page">
+    <div id="loggedIn" th:data-logged="${logged}" data-logged="false"></div>
+    <div id="welcome-page">
+        <div class="up-title">Welcome to Microservices</div>
+        <div class="left-title"><span class="green-text">Account:</span><span th:text="${account.name}">demo</span></div>
+        <div class="right-title"><span class="green-text">Last seen:</span><span th:text="${account.lastSeen}">24/04/2024</span></div>
+        <div class="bottom-buttons">
+            <div class="plus" id="plus">
+                <div class="plus-border beat">
+                    <div class="plus-one"></div>
+                    <div class="plus-two"></div>
+                </div>
+                <div class="plus-text">jump in</div>
+            </div>
+            <form class="minus" method="post" action="/logout">
+                <button>
+                    <div class="minus-border">
+                        <div class="minus-line"></div>
+                    </div>
+                    <div class="minus-text">go out</div>
+                </button>
+            </form>
+        </div>
+    </div>
+    <div id="avatar-wrapper" class="avatar-wrapper">
+        <div class="avatar-modal">
+            <div class="avatar-button forward plus avatar-piggy" th:class="${'avatar-button forward plus avatar-' + account.avatar}"></div>
+            <div class="avatar-options">
+                <div id="noteInitValue" data-note="I'm using microservices!" th:data-note="${account.note}" style="display: none;"></div>
+                <div id="avatarInitValue" data-avatar="piggy" th:data-avatar="${account.avatar}" style="display: none;"></div>
+                <form id="note-form" th:action="@{/edit/{accountName}(accountName=${account.name})}" th:method="post" th:object="${account}">
+                    <fieldset class="hidden">
+                        <input type="hidden" th:type="hidden" th:field="*{name}" th:value="*{name}">
+                        <input type="hidden" th:type="hidden" th:field="*{currency}" th:value="*{currency}">
+                        <div th:each="item, stat : *{incomes}">
+                            <input type="hidden" th:type="hidden" th:field="*{incomes[__${stat.index}__].title}" th:value="${item.title}">
+                            <input type="hidden" th:type="hidden" th:field="*{incomes[__${stat.index}__].icon}" th:value="${item.icon}">
+                            <input type="hidden" th:type="hidden" th:field="*{incomes[__${stat.index}__].amount}" th:value="${item.amount}">
+                            <input type="hidden" th:type="hidden" th:field="*{incomes[__${stat.index}__].category}" th:value="${item.category}">
+                            <input type="hidden" th:type="hidden" th:field="*{incomes[__${stat.index}__].currency}" th:value="${item.currency}">
+                            <input type="hidden" th:type="hidden" th:field="*{incomes[__${stat.index}__].frequency}" th:value="${item.frequency}">
+                            <input type="hidden" th:type="hidden" th:field="*{incomes[__${stat.index}__].type}" th:value="${item.type}">
+                        </div>
+                        <div th:each="item, stat : *{expenses}">
+                            <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].title}" th:value="${item.title}">
+                            <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].icon}" th:value="${item.icon}">
+                            <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].amount}" th:value="${item.amount}">
+                            <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].category}" th:value="${item.category}">
+                            <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].currency}" th:value="${item.currency}">
+                            <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].frequency}" th:value="${item.frequency}">
+                            <input type="hidden" th:type="hidden" th:field="*{expenses[__${stat.index}__].type}" th:value="${item.type}">
+                        </div>
+                    </fieldset>
+                    <div id="modal-avatar" class="custom-select custom-select-avatars">
+                        <div class="selected-option">
+                            <div class="option-item bg-piggy" th:class="${'option-item bg-' + account.avatar}" th:data-avatar="*{avatar}" data-avatar="piggy">
+                                <div class="option-icon"></div>
+                            </div>
+                        </div>
+                        <div class="select-list" th:remove="all-but-first">
+                            <div class="option-item bg-piggy" th:each="avatar : ${allAccountAvatar}" th:class="${'option-item bg-' + avatar.name}" data-avatar="piggy" th:data-avatar="${avatar.name}">
+                                <div class="option-icon"></div>
+                            </div>
+                            <div class="option-item bg-cow" data-avatar="cow">
+                                <div class="option-icon"></div>
+                            </div>
+                            <div class="option-item bg-fox" data-avatar="fox">
+                                <div class="option-icon"></div>
+                            </div>
+                            <div class="option-item bg-boss" data-avatar="boss">
+                                <div class="option-icon"></div>
+                            </div>
+                            <div class="option-item bg-turtle" data-avatar="turtle">
+                                <div class="option-icon"></div>
+                            </div>
+                            <div class="option-item bg-rabbit" data-avatar="rabbit">
+                                <div class="option-icon"></div>
+                            </div>
+                            <div class="option-item bg-secretary" data-avatar="secretary">
+                                <div class="option-icon"></div>
+                            </div>
+                            <div class="option-item bg-elephant" data-avatar="elephant">
+                                <div class="option-icon"></div>
+                            </div>
+                            <div class="option-item bg-bear" data-avatar="bear">
+                                <div class="option-icon"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="account-avatar" type="hidden" th:type="hidden" th:field="*{avatar}">
+                    <textarea class="textarea-note" th:field="*{note}" value="I'm using microservices!">I'm using microservices!</textarea>
+                    <div class="modal-buttons">
+                        <button class="primary-button" type="submit" disabled>Save</button>
+                        <button class="danger-button" type="submit" disabled>Discard</button>
+                    </div>
+                </form>
+                <button class="back-button">Back to home</button>
+            </div>
+        </div>
+    </div>
+    <div class="main-page">
+        <form  id="form-wrapper" th:action="@{/save/{accountName}(accountName=${account.name})}" th:method="post" th:object="${account}" action="#">
+            <fieldset class="hidden">
+                <input type="hidden" th:field="*{name}"/>
+                <input type="hidden" th:field="*{note}"/>
+                <input type="hidden" th:field="*{avatar}"/>
+                <input type ="hidden" th:field="*{currency}"/>
+            </fieldset>
+            <div id="incomes-card">
+                <div class="item-card-header">
+                    <h1>INCOMES</h1><button class="addIncome primary-button">Add income</button>
+                </div>
+                <div class="item-card-content">
+                    <div class="item-list" th:remove="all-but-first">
+                        <div id="incomes0" th:each="item, stat : *{incomes}" th:id="${'incomes' + stat.index}" class="item-wrap">
+                            <div class="hidden-inputs">
+                                <input id="incomes0.id" type="hidden" th:field="*{incomes[__${stat.index}__].id}" th:value="${item.id}" th:id="${'incomes' + stat.index + '.id'}" value="1" >
+                                <input id="incomes0.accountName" type="hidden" th:field="*{incomes[__${stat.index}__].accountName}" th:value="${item.accountName}" th:id="${'incomes' + stat.index + '.accountName'}" value="demo" >
+                                <input id="incomes0.type" type="hidden" th:field="*{incomes[__${stat.index}__].type}" th:value="${item.type}" th:id="${'incomes' + stat.index + '.type'}" value="INCOME" >
+                                <input id="incomes0.category" type="hidden" th:field="*{incomes[__${stat.index}__].category}" th:value="${item.category}" th:id="${'incomes' + stat.index + '.category'}" value="FIXED" >
+                            </div>
+                            <div class="card-icon">
+                                <div class="card-img house" th:class="${'card-img ' + item.icon}"></div>
+                                <input id="incomes0.icon" type="hidden" th:field="*{incomes[__${stat.index}__].icon}" th:value="${item.icon}" th:id="${'incomes' + stat.index + '.icon'}"  value="house" readonly>
+                            </div>
+                            <div class="card-details">
+                                <input id="incomes0.title" class="card-title" th:type="text" th:field="*{incomes[__${stat.index}__].title}" th:value="${item.title}" th:id="${'incomes' + stat.index + '.title'}"  value="salary" readonly>
+                                <div class="card-divisor"></div>
+                                <input id="incomes0.amount" class="card-amount" th:type="number" th:field="*{incomes[__${stat.index}__].amount}" th:value="${item.amount}" th:id="${'incomes' + stat.index + '.amount'}"  value="1200" readonly>
+                                <input id="incomes0.currency" class="card-currency" th:type="text" th:field="*{incomes[__${stat.index}__].currency}" th:value="${item.currency}" th:id="${'incomes' + stat.index + '.currency'}" value="USD" readonly >
+                                <div class="card-slash"></div>
+                                <input id="incomes0.frequency" class="card-frequency" th:type="text" th:field="*{incomes[__${stat.index}__].frequency}" th:value="${item.frequency}" th:id="${'incomes' + stat.index + '.frequency'}" value="MONTH" readonly>
+                            </div>
+                            <button class="delete-button">
+                                <span class="material-symbols-outlined delete-icon">delete</span>
+                            </button>
+                        </div>
+                        <div id="incomes1" class="item-wrap">
+                            <div class="hidden-inputs">
+                                <input name="incomes[1].id" id="incomes1.id" type="hidden" value="2">
+                                <input name="incomes[1].accountName" id="incomes1.accountName"type="hidden" value="demo">
+                                <input name="incomes[1].type" id="incomes1.type" type="hidden" value="INCOME">
+                                <input name="incomes[1].category" id="incomes1.category" type="hidden" value="FIXED">
+                            </div>
+                            <div class="card-icon">
+                                <div class="card-img investment"></div>
+                                <input name="incomes[1].icon" id="incomes1.icon" type="hidden" value="food" readonly>
+                            </div>
+                            <div class="card-details">
+                                <input name="incomes[1].title" id="incomes1.title" class="card-title" value="investment" readonly>
+                                <div class="card-divisor"></div>
+                                <input name="incomes[1].amount" id="incomes1.amount" class="card-amount" value="2000" readonly>
+                                <input name="incomes[1].currency" id="incomes1.currency" class="card-currency" value="USD" readonly>
+                                <div class="card-slash"></div>
+                                <input name="incomes[1].frequency" id="incomes1.frequency" class="card-frequency" value="QUARTER" readonly>
+                            </div>
+                            <button class="delete-button">
+                                <span class="material-symbols-outlined delete-icon">delete</span>
+                            </button>
+                        </div>
+                        <div id="incomes2" class="item-wrap">
+                            <div class="hidden-inputs">
+                                <input name="incomes[2].id" id="incomes2.id" type="hidden" value="3">
+                                <input name="incomes[2].accountName" id="incomes2.accountName"type="hidden" value="demo">
+                                <input name="incomes[2].type" id="incomes2.type" type="hidden" value="INCOME">
+                                <input name="incomes[2].category" id="incomes2.category" type="hidden" value="OCCASIONAL">
+                            </div>
+                            <div class="card-icon">
+                                <div class="card-img work"></div>
+                                <input name="incomes[2].icon" id="incomes2.icon" type="hidden" value="work" readonly>
+                            </div>
+                            <div class="card-details">
+                                <input name="incomes[2].title" id="incomes2.title" class="card-title" value="freelance" readonly>
+                                <div class="card-divisor"></div>
+                                <input name="incomes[2].amount" id="incomes2.amount" class="card-amount" value="100" readonly>
+                                <input name="incomes[2].currency" id="incomes2.currency" class="card-currency" value="USD" readonly>
+                                <div class="card-slash"></div>
+                                <input name="incomes[2].frequency" id="incomes2.frequency" class="card-frequency" value="WEEK" readonly>
+                            </div>
+                            <button class="delete-button">
+                                <span class="material-symbols-outlined delete-icon">delete</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div th:if="*{#lists.isEmpty(incomes)}" class="card-empty">
+                        <h1>No incomes yet...</h1>
+                        <button class="addIncome primary-button">Add income</button>
+                    </div>
+                </div>
+                <div class="item-card-footer">
+                    <button class="scroll-up">Previous<span></span></button>
+                    <button class="scroll-down">Next<span></span></button>
+                </div>
+            </div>
+            <div id="expenses-card">
+                <div class="item-card-header">
+                    <h1>EXPENSES</h1><button class="addExpense primary-button">Add expense</button>
+                </div>
+                <div class="item-card-content">
+                    <div class="item-list" th:remove="all-but-first" th:unless="*{#lists.isEmpty(expenses)}">
+                        <div id="expenses0" th:each="item, stat : *{expenses}" th:id="${'expenses' + stat.index}" class="item-wrap">
+                            <div class="hidden-inputs">
+                                <input id="expenses0.id" type="hidden" th:field="*{expenses[__${stat.index}__].id}" th:value="${item.id}" th:id="${'expenses' + stat.index + '.id'}" value="4">
+                                <input id="expenses0.accountName" type="hidden" th:field="*{expenses[__${stat.index}__].accountName}" th:value="${item.accountName}" th:id="${'expenses' + stat.index + '.accountName'}" value="demo">
+                                <input id="expenses0.type" type="hidden" th:field="*{expenses[__${stat.index}__].type}" th:value="${item.type}"th:id="${'expenses' + stat.index + '.type'}" value="EXPENSE">
+                                <input id="expenses0.category" type="hidden" th:field="*{expenses[__${stat.index}__].category}" th:value="${item.category}"th:id="${'expenses' + stat.index + '.category'}" value="FIXED">
+                            </div>
+                            <div class="card-icon">
+                                <div class="card-img entertainment" th:class="${'card-img ' + item.icon}"></div>
+                                <input id="expenses0.icon" type="hidden" th:field="*{expenses[__${stat.index}__].icon}" th:value="${item.icon}" th:id="${'expenses' + stat.index + '.icon'}" value="entertainment" readonly>
+                            </div>
+                            <div class="card-details">
+                                <input id="expenses0.title" class="card-title" th:type="text" th:field="*{expenses[__${stat.index}__].title}" th:value="${item.title}" th:id="${'expenses' + stat.index + '.title'}" value="cinema" readonly>
+                                <div class="card-divisor"></div>
+                                <input id="expenses0.amount" class="card-amount" th:type="number" th:field="*{expenses[__${stat.index}__].amount}" th:value="${item.amount}" th:id="${'expenses' + stat.index + '.amount'}" value="15" readonly>
+                                <input id="expenses0.currency" class="card-currency" th:type="text" th:field="*{expenses[__${stat.index}__].currency}" th:value="${item.currency}" th:id="${'expenses' + stat.index + '.currency'}" value="USD" readonly >
+                                <div class="card-slash"></div>
+                                <input id="expenses0.frequency" class="card-frequency" th:type="text" th:field="*{expenses[__${stat.index}__].frequency}" th:value="${item.frequency}" th:id="${'expenses' + stat.index + '.frequency'}" value="DAY" readonly>
+                            </div>
+                            <button class="delete-button">
+                                <span class="material-symbols-outlined delete-icon">delete</span>
+                            </button>
+                        </div>
+                        <div id="expenses1" class="item-wrap">
+                            <div class="hidden-inputs">
+                                <input name="expenses[1].id" id="expenses1.id" type="hidden" value="5">
+                                <input name="expenses[1].accountName" id="expenses1.accountName" type="hidden" value="demo">
+                                <input name="expenses[1].type" id="expenses1.type" type="hidden" value="EXPENSE">
+                                <input name="expenses[1].category" id="expenses1.category" type="hidden" value="FIXED">
+                            </div>
+                            <div class="card-icon">
+                                <div class="card-img sport"></div>
+                                <input name="expenses[1].icon" id="expenses1.icon" type="hidden" value="sport" readonly>
+                            </div>
+                            <div class="card-details">
+                                <input name="expenses[1].title" id="expenses1.title" class="card-title" value="gym" readonly>
+                                <div class="card-divisor"></div>
+                                <input name="expenses[1].amount" id="expenses1.amount" class="card-amount" value="55" readonly>
+                                <input name="expenses[1].currency" id="expenses1.currency" class="card-currency" value="USD" readonly >
+                                <div class="card-slash"></div>
+                                <input name="expenses[1].frequency" id="expenses1.frequency" class="card-frequency" value="MONTH" readonly>
+                            </div>
+                            <button class="delete-button">
+                                <span class="material-symbols-outlined delete-icon">delete</span>
+                            </button>
+                        </div>
+                        <div id="expenses2" class="item-wrap">
+                            <div class="hidden-inputs">
+                                <input name="expenses[2].id" id="expenses2.id" type="hidden" th:type="hidden" value="6">
+                                <input name="expenses[2].accountName" id="expenses2.accountName" type="hidden" value="demo">
+                                <input name="expenses[2].type" id="expenses2.type" type="hidden" th:type="hidden" value="EXPENSE">
+                                <input name="expenses[2].category" id="expenses2.category" type="hidden" value="FIXED">
+                            </div>
+                            <div class="card-icon">
+                                <div class="card-img work"></div>
+                                <input name="expenses[2].icon" id="expenses2.icon" type="hidden"  value="work" readonly>
+                            </div>
+                            <div class="card-details">
+                                <input name="expenses[2].title" id="expenses2.title" class="card-title" value="books" readonly>
+                                <div class="card-divisor"></div>
+                                <input name="expenses[2].amount" id="expenses2.amount" class="card-amount" value="60"  readonly>
+                                <input name="expenses[2].currency" id="expenses2.currency" class="card-currency" value="USD" readonly >
+                                <div class="card-slash"></div>
+                                <input name="expenses[2].frequency" id="expenses2.frequency" class="card-frequency" value="QUARTER" readonly>
+                            </div>
+                            <button class="delete-button">
+                                <span class="material-symbols-outlined delete-icon">delete</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div th:if="*{#lists.isEmpty(expenses)}" class="card-empty">
+                        <h1>No expenses yet...</h1>
+                        <button class="addExpense primary-button">Add expense</button>
+                    </div>
+                </div>
+                <div class="item-card-footer">
+                    <button class="scroll-up">Previous<span></span></button>
+                    <button class="scroll-down">Next<span></span></button>
+                </div>
+            </div>
+        </form>
+        <div class="main-buttons">
+            <button id="continue-button" class="primary-button show">See statistics</button>
+            <button id="submit-button" type="submit" class="submit-button" disabled>Save changes</button>
+        </div>
+    </div>
+    <div class="modal-outer" id="modal-outer" th:fragment="itemModal">
+        <div id="modal">
+            <button class="custom-button close-button">X</button>
+            <h2 class="title">Create item</h2>
+            <input id="modal-accountName" type="hidden">
+            <input id="modal-type" type="hidden">
+            <div id="modal-icon" class="custom-select custom-select-icons">
+                <div class="selected-option">
+                    <div class="option-item house" data-icon="house">
+                        <div class="option-icon"></div>
+                    </div>
+                </div>
+                <div class="select-list">
+                    <div class="option-item house" th:each="itemIcon : ${allItemIcons}" th:class="${'option-item ' + itemIcon.name}" th:data-icon="${itemIcon.name}">
+                        <div class="option-icon"></div>
+                    </div>
+                </div>
+            </div>
+            <input id="modal-title" placeholder="title" type="text" name="title"/>
+            <div id="modal-amount-currency">
+                <div class="custom-input">
+                    <input id="modal-amount" type="number" name="amount" placeholder="amount">
+                    <div class="custom-input-actions">
+                        <button class="addButton"></button>
+                        <button class="substractButton"></button>
+                    </div>
+                </div>
+                <div id="modal-currency" class="custom-select">
+                    <div class="selected-option">
+                        <div class="option-item" data-currency="USD">
+                            <p class="option-text">USD</p>
+                        </div>
+                    </div>
+                    <div class="select-list">
+                        <div th:each="currency : ${allCurrencies}" class="option-item" th:data-currency="${currency}">
+                            <p class="option-text" th:text="${currency}">USD</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="modal-category-frequency">
+                <div id="modal-category" class="custom-select">
+                    <div class="selected-option">
+                        <div class="option-item" data-category="FIXED">
+                            <p class="option-text">FIXED</p>
+                        </div>
+                    </div>
+                    <div class="select-list">
+                        <div th:each="category : ${allCategories}" class="option-item" th:data-category="${category}">
+                            <p class="option-text" th:text="${category}">FIXED</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="modal-frequency" class="custom-select">
+                    <div class="selected-option">
+                        <div class="option-item" data-frequency="DAY">
+                            <p class="option-text">DAY</p>
+                        </div>
+                    </div>
+                    <div class="select-list">
+                        <div th:each="frequency : ${allFrequencies}" class="option-item" th:data-frequency="${frequency}">
+                            <p class="option-text" th:text="${frequency}">DAY</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input id="modal-target" type="hidden">
+            <div class="modal-buttons">
+                <button class="primary-button" type="submit" disabled>Save</button>
+                <button class="danger-button" type="submit" disabled>Discard</button>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="bottom-page">
+    <div class="stats-page">
+        <div th:each="stat : ${stats}"  class="stats-card">
+            <div th:if="${stat.statsDate == null}" class="stats-empty">
+                There are no stats yet
+            </div>
+            <div th:unless="${stat.statsDate == null}">
+                <div th:text="#{stats.title(${stat.accountName})}" class="stats-title">Statistics for account: demoH</div>
+                <div th:text="#{stats.date(${stat.statsDate})}" class="stats-date">Date: 24/04/2024</div>
+                <div class="stats-metrics">
+                    <div class="metric metric-incomes">
+                        <div class="metric-text" th:text="#{stats.metrics.incomes}">Incomes</div>
+                        <div class="metric-value" th:text="${stat.totalIncomes}">1200</div><span th:text="${stat.currency}">USD</span>
+                    </div>
+                    <div class="metric metric-expenses">
+                        <div class="metric-text" th:text="#{stats.metrics.expenses}">Expenses</div>
+                        <div class="metric-value" th:text="${stat.totalExpenses}">800</div><span th:text="${stat.currency}">USD</span>
+                    </div>
+                    <div class="metric metric-savings">
+                        <div class="metric-text" th:text="#{stats.metrics.savings}">Savings</div>
+                        <div class="metric-value">400</div><span th:text="${stat.currency}">USD</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="primary-button back-to-main">Back to account</button>
+    </div>
+
+</section>
+</body>
+</html>

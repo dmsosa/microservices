@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Microservices</title>
+</head>
+<body>
+
+<section class="bottom-page">
+    <div class="stats-page" th:fragment="statsPage">
+        <div th:each="stat : ${stats}"  class="stats-card">
+            <div th:if="${stat.statsDate == null}" class="stats-empty">
+                There are no stats yet
+            </div>
+            <div th:unless="${stat.statsDate == null}">
+                <div th:text="#{stats.title(${stat.accountName})}" class="stats-title">Statistics for account: demoH</div>
+                <div th:text="#{stats.date(${stat.statsDate})}" class="stats-date">Date: 24/04/2024</div>
+                <div class="stats-metrics">
+                    <div class="metric metric-incomes">
+                        <div class="metric-text" th:text="#{stats.metrics.incomes}">Incomes</div>
+                        <div class="metric-value" th:text="${stat.totalIncomes}">1200</div><span th:text="${stat.currency}">USD</span>
+                    </div>
+                    <div class="metric metric-expenses">
+                        <div class="metric-text" th:text="#{stats.metrics.expenses}">Expenses</div>
+                        <div class="metric-value" th:text="${stat.totalExpenses}">800</div><span th:text="${stat.currency}">USD</span>
+                    </div>
+                    <div class="metric metric-savings">
+                        <div class="metric-text" th:text="#{stats.metrics.savings}">Savings</div>
+                        <div class="metric-value">400</div><span th:text="${stat.currency}">USD</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="primary-button back-to-main">Back to account</button>
+    </div>
+</section>
+</body>
+</html>
