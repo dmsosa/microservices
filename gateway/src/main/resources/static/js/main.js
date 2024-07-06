@@ -224,7 +224,6 @@ function discardModalChanges(event) {
 
 function  discardModalNoteChanges(event) {
     event.preventDefault();
-
     const initAvatar = dashboard.createOptionItem("avatar", avatarInitValue);
 
     $("#modal-avatar .selected-option").children().replaceWith(initAvatar);
@@ -361,8 +360,10 @@ $(document).ready(function() {
     })
 
     $("#modal .primary-button").on("click", function(e) {
-        if ($(".modal-errors") !== undefined) {
-            $(".modal-errors").empty();
+        const modalErrors = $("#modal .modal-errors");
+
+        if (modalErrors !== undefined) {
+            modalErrors.empty();
         };
         const errors = dashboard.checkErrors();
         if (errors.length > 0) {
@@ -381,16 +382,17 @@ $(document).ready(function() {
     });
     $(".avatar-options .primary-button").on("click", function(e) {
         e.preventDefault();
-        if ($(".modal-errors") !== undefined) {
-            $(".modal-errors").empty();
+        const noteModalErrors = $(".avatar-options .modal-errors");
+        if ( noteModalErrors !== undefined) {
+            noteModalErrors.empty();
         };
-        const errors = dashboard.checkErrors();
+        const errors = dashboard.checkNoteModalErrors();
         if (errors.length > 0) {
-            const modalErrors = $("<div class='modal-errors'></div>");
-            const modal = $(".avatar-options");
-            modal.append(modalErrors);
+            const modalErrors = $("<div class='modal-errors left-pos'></div>");
+            const noteModal = $(".avatar-options");
+            noteModal.append(modalErrors);
             for (const errorObject of errors ) {
-                dashboard.appendError(modal, errorObject);
+                dashboard.appendError(noteModal, errorObject, true);
             }
         } else {
             dashboard.updateAccountDetails(e);

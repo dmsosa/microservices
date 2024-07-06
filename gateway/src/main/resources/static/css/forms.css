@@ -330,6 +330,14 @@ input.card-frequency {
     gap: 0.5rem;
 
 }
+.modal-errors.left-pos {
+    left: -12.5rem;
+    right: auto;
+}
+.modal-errors.left-pos .error-message {
+    margin-left: auto;
+}
+
 .error-message {
     display: block;
     position: relative;
@@ -347,6 +355,7 @@ input.card-frequency {
     cursor: pointer;
     transition: all 0.2s;
 }
+
 .error-message::after {
     content: "!";
     font-size: 2rem;

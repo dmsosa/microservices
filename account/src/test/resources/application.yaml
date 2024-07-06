@@ -1,16 +1,21 @@
+eureka:
+  client:
+    enabled: false
 spring:
   flyway:
     enabled: false
   cloud:
     config:
-      import-check:
+      discovery:
         enabled: false
+      enabled: false
   datasource:
     url: jdbc:h2:mem:tests
-    username: sa
-    password: password
+    username: "test"
+    password: "password"
     driverClassName:  org.h2.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     show-sql: true
+  defer-datasource-initialization: true

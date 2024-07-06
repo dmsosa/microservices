@@ -1,50 +1,42 @@
 package com.duvi.services.account.config.security;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2ClientConfigurer;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.core.oidc.OidcScopes;
-import org.springframework.security.web.SecurityFilterChain;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+
 
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
 
     private final String[] WHITELIST = {"/v3/api-docs/**", "/swagger-ui/**", "/h2-console/**"};
-    private DiscoveryClient discoveryClient;
-    public SecurityConfig(DiscoveryClient discoveryClient) {
-        this.discoveryClient = discoveryClient;
-    }
+    @Autowired
+    private OAuth2Config oAuth2Config;
 
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(csrf -> csrf.disable())
+                .cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfigurationSource()))
                 //allowing h2 to display in a frame of the same origin as our app
                 .headers(headers -> headers.frameOptions(options -> options.sameOrigin()))
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(WHITELIST).permitAll()
                         .requestMatchers(HttpMethod.POST, "/create").permitAll()
                         .requestMatchers(HttpMethod.POST, "/demo").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/**").hasAuthority("SCOPE_profile")
                         .requestMatchers(HttpMethod.GET, "/demo").permitAll()
                         .anyRequest().authenticated())
                 //Very simple Security Config, just indicating the type of tokens supported by our server here.
@@ -54,40 +46,24 @@ public class SecurityConfig {
 
     @Bean
     Customizer<OAuth2ResourceServerConfigurer<HttpSecurity>.JwtConfigurer> jwtConfigCustomizer() {
-        return new JwtCustomizer(discoveryClient);
+        return new JwtCustomizer();
     }
 
     @Bean
-    public ClientRegistration clientRegistration() {
-        Map<String, String> authUris = findAuthServiceUris();
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        String authServiceHost = oAuth2Config.findAuthServiceUris().get("host");
+        configuration.addAllowedOriginPattern("*");
+        configuration.addAllowedMethod(HttpMethod.POST);
+        configuration.addAllowedMethod(HttpMethod.OPTIONS);
+        configuration.addAllowedHeader("Authorization");
+        configuration.setMaxAge(3600L);
 
-        return ClientRegistration.withRegistrationId("accountClient")
-                .clientId("accountClient")
-                .clientSecret("account")
-                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .scope(List.of("openid", "profile"))
-                .clientName("accountService")
-                .issuerUri(authUris.get("issuerUri"))
-                .tokenUri(authUris.get("tokenUri"))
-                .authorizationUri(authUris.get("authorizationUri"))
-                .build();
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
-    private Map<String, String> findAuthServiceUris() {
-        //finding auth instances
-        ServiceInstance authInstance = discoveryClient.getInstances("auth-service").getFirst();
-        String issuerUri = authInstance.getUri().toString();
-        Map<String, String> map = new HashMap<>();
-        map.put("issuerUri", issuerUri + "/api/uaa");
-        map.put("tokenUri", issuerUri + "/api/uaa/oauth2/token");
-        map.put("authorizationUri", issuerUri + "/api/uaa/oauth2/authorize");
-        return map;
-    }
 
-    @Bean
-    public ClientRegistrationRepository clientRegistrationRepository() {
-        return new InMemoryClientRegistrationRepository(clientRegistration());
-    }
 
 }

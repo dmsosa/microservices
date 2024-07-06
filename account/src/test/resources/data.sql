@@ -1,14 +1,14 @@
 INSERT INTO accounts (name, last_seen, note, avatar, currency) VALUES (
-    'demo',
+    'test',
     '2024-03-04',
-    'demo notes!',
+    'test notes!',
     'piggy',
-    'USD'
+    DEFAULT
 );
 
 INSERT INTO items (account_id, title, icon, amount, category, currency, frequency, type) VALUES (
     1,
-    'demo salary',
+    'test salary',
     'work',
     1220,
     'FIXED',
@@ -19,7 +19,7 @@ INSERT INTO items (account_id, title, icon, amount, category, currency, frequenc
 
 INSERT INTO items (account_id, title, icon, amount, category, currency, frequency, type) VALUES (
     1,
-    'demo grocery',
+    'test grocery',
     'food',
     25,
     'OCCASIONAL',
@@ -30,7 +30,7 @@ INSERT INTO items (account_id, title, icon, amount, category, currency, frequenc
 
 INSERT INTO items (account_id, title, icon, amount, category, currency, frequency, type) VALUES (
     1,
-    'demo gym',
+    'test gym',
     'sport',
     55,
     'FIXED',
@@ -41,7 +41,7 @@ INSERT INTO items (account_id, title, icon, amount, category, currency, frequenc
 
 INSERT INTO items (account_id, title, icon, amount, category, currency, frequency, type) VALUES (
     1,
-    'demo payment',
+    'test payment',
     'house',
     420,
     'FIXED',
@@ -52,7 +52,7 @@ INSERT INTO items (account_id, title, icon, amount, category, currency, frequenc
 
 INSERT INTO items (account_id, title, icon, amount, category, currency, frequency, type) VALUES (
     1,
-    'demo food',
+    'test food',
     'food',
     250,
     'FIXED',
@@ -63,7 +63,7 @@ INSERT INTO items (account_id, title, icon, amount, category, currency, frequenc
 
 INSERT INTO items (account_id, title, icon, amount, category, currency, frequency, type) VALUES (
     1,
-    'demo insurance',
+    'test insurance',
     'health',
     350,
     'FIXED',

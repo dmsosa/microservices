@@ -7,5 +7,5 @@ CREATE TABLE IF NOT EXISTS notifications (
     active BOOLEAN,
     last_notified TIMESTAMP,
     PRIMARY KEY (id),
-    CONSTRAINT ACCOUNT_NOTI UNIQUE(account_name, email, noti_type)
+    CONSTRAINT ACCOUNT_NOTI UNIQUE(account_name, noti_type)
 );

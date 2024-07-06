@@ -307,7 +307,7 @@
                     </div>
                 </div>
                 <div class="select-list">
-                    <div class="option-item house" th:each="itemIcon : ${allItemIcons}" th:class="${'option-item ' + itemIcon.name}" th:data-icon="${itemIcon.name}">
+                    <div th:each="itemIcon : ${allItemIcons}" th:class="${'option-item bg-' + itemIcon.name}" th:data-icon="${itemIcon.name}">
                         <div class="option-icon"></div>
                     </div>
                 </div>

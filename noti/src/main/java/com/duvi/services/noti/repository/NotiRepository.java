@@ -12,8 +12,13 @@ import java.util.Optional;
 
 @Repository
 public interface NotiRepository extends JpaRepository<NotificationEntity, Long> {
+    Boolean existsByAccountNameAndNotiType(String accountName, NotiType notiType);
+    Boolean existsByAccountName(String accountName);
+    @Override
+    Optional<NotificationEntity> findById(Long aLong);
+
     List<NotificationEntity> findAllByAccountName(String accountName);
-    NotificationEntity deleteByAccountNameAndNotiType(String accountName, NotiType notiType);
+    Integer deleteByAccountNameAndNotiType(String accountName, NotiType notiType);
     @Query(value = "SELECT * FROM notifications WHERE noti_type = 'REMIND' AND active = true AND last_notified < CURRENT_DATE - frequency", nativeQuery = true)
     List<NotificationEntity> findAllRemindReady();
 

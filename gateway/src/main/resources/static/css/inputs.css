@@ -297,31 +297,31 @@ input::-webkit-inner-spin-button {
     width: 8rem;
 } 
 
-.custom-select-icons .option-item.education .option-icon {
+.custom-select-icons .option-item.bg-education .option-icon {
     background-position: -10px -10px;
 }
-.custom-select-icons .option-item.entertainment .option-icon {
+.custom-select-icons .option-item.bg-entertainment .option-icon {
     background-position: -110px -10px;
 }
-.custom-select-icons .option-item.sport .option-icon {
+.custom-select-icons .option-item.bg-sport .option-icon {
     background-position: -110px -210px;
 }
-.custom-select-icons .option-item.work .option-icon {
+.custom-select-icons .option-item.bg-work .option-icon {
     background-position: -210px -210px;
 }
-.custom-select-icons .option-item.food .option-icon {
+.custom-select-icons .option-item.bg-food .option-icon {
     background-position: -10px -110px;
 }
-.custom-select-icons .option-item.house .option-icon {
+.custom-select-icons .option-item.bg-house .option-icon {
     background-position: -110px -110px;
 }
-.custom-select-icons .option-item.hygiene .option-icon {
+.custom-select-icons .option-item.bg-hygiene .option-icon {
     background-position: -210px -10px;
 }
-.custom-select-icons .option-item.health .option-icon {
+.custom-select-icons .option-item.bg-health .option-icon {
     background-position: -210px -110px;
 }
-.custom-select-icons .option-item.investment .option-icon {
+.custom-select-icons .option-item.bg-investment .option-icon {
     background-position: -10px -210px;
 }
 

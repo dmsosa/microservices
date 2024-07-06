@@ -26,8 +26,11 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-
+import java.util.Arrays;
 
 
 @Configuration
@@ -42,7 +45,10 @@ public class SecurityConfig {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(httpSecurity);
         httpSecurity.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
                 .oidc(Customizer.withDefaults());
-        httpSecurity.exceptionHandling(exceptions -> exceptions
+
+        httpSecurity
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .exceptionHandling(exceptions -> exceptions
                 .defaultAuthenticationEntryPointFor(
                         new LoginUrlAuthenticationEntryPoint("/login"),
                         new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
@@ -61,11 +67,12 @@ public class SecurityConfig {
                         .requestMatchers( WHITELIST).permitAll()
                         .requestMatchers(HttpMethod.POST, "/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/login").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS,"/oauth2/token").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/oauth2/token").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(formLogin ->
                         formLogin.loginPage("/login"))
                 .logout( logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")))
-                .oauth2ResourceServer(rs -> rs.jwt(Customizer.withDefaults()))
                 .build();
 
 
@@ -80,5 +87,19 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*", "http://172.28.48.1:8083"));
+        configuration.addAllowedMethod(HttpMethod.POST);
+        configuration.addAllowedMethod(HttpMethod.OPTIONS);
+        configuration.addAllowedHeader("Authorization");
+        configuration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

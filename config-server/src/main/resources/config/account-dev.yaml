@@ -25,7 +25,10 @@ spring:
   h2:
     console:
       enabled: true
-
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: documentClient
 
 logging:
   level:

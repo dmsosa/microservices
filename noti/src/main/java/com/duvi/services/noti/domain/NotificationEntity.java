@@ -47,4 +47,7 @@ public class NotificationEntity {
         this.lastNotified = LocalDate.now();
     }
 
+    public Boolean isActive() {
+        return active;
+    }
 }

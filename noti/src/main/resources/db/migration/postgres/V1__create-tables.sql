@@ -8,5 +8,5 @@ CREATE TABLE notifications (
     noti_type notiTypes,
     active BOOLEAN,
     last_notified TIMESTAMP,
-    UNIQUE (account_name, email, noti_type)
+    UNIQUE (account_name, noti_type)
 );

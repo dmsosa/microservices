@@ -43,13 +43,11 @@ spring:
   flyway:
     locations: classpath:/db/migration/${database}
 backup:
-  cron: "*/10 * * * * *"
+  cron: "*/1 * * * * *"
   email:
     subject: "Backup message from Duvi Dmservices Team!"
-    text: "Hey, {0}!\n We hope you're doing well, in the next section you can find your backup data for this {1}.\nRegards,\n\nDmservices Team."
     attachment: "backup.json"
 remind:
-  cron: "*/10 * * * * *"
+  cron: "*/1 * * * * *"
   email:
     subject: "Reminder from Dmservices Team!"
-    text: "Hey, {0}!\n It's always good to see you, we are committed to remind you every {1} to consider coming back, your finances do not sleep!\nThis is an automatic notification, if you do reply to this email february 30th will come before you get an answer..\n\nRegards,\n\nDmservices Team."

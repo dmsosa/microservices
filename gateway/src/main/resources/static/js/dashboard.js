@@ -85,11 +85,11 @@ export function createOptionItem(fieldName, fieldValue) {
         </div>
     `
     const iconTemplate = `
-        <div class="option-item ${fieldValue}" data-${fieldName}="${fieldValue}">
+        <div class="option-item bg-${fieldValue}" data-${fieldName}="${fieldValue}">
             <div class="option-icon"></div>
         </div>
     `
-    const result = fieldName === "icon" ? $.parseHTML(iconTemplate) : $.parseHTML(optionTemplate);
+    const result = fieldName === "icon" || "avatar" ? $.parseHTML(iconTemplate) : $.parseHTML(optionTemplate);
     return result;
 }
 
@@ -151,7 +151,6 @@ export function checkErrors() {
     let modalTitle, modalAmount, modalNote;
     modalTitle = $("#modal-title").val();
     modalAmount = Number($("#modal-amount").val());
-    modalNote = $(".avatar-options .textarea-note").val();
 
 
     if (modalTitle.length === 0) {
@@ -178,6 +177,18 @@ export function checkErrors() {
         errorObject = {title: "amountMaxValue", message: "Amount must not be more than 1 Million"}
         errors.push(errorObject); 
     }
+    
+    return errors;
+}
+export function checkNoteModalErrors() {
+    let errors = [];
+    let modalNote; 
+    
+    var errorObject = {title: "", message: ""};
+
+
+    modalNote = $(".avatar-options .textarea-note").val();
+
     if (modalNote.length === 0) {
         errorObject = {title: "noteNotNull", message: "Note must not be null"};
         errors.push(errorObject);
