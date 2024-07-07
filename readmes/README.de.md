@@ -28,19 +28,18 @@ Die Dokumentation unsere APIs mit Swagger entwickelt war, um seinen Funktionen z
 
 Das Gateway Thymeleaf nutzen, um der UI zu erstellen
 
-#### AUTH DIENST:🔒 
+#### AUTHORIZATION DIENST:🔒 
 
-Sicherheitserver, womit das Kunden in unseres App login and registrieren kann. OAuth2 sicherheit auch fur Dienst zu Dienst kommunikation enrichten.
+Der Zweck dieses Sicherheitsservers besteht darin, Benutzern die Anmeldung und Registrierung für alle die Dienste in ein jeinziges Ort zu ermöglichen.
 
-Grant Types:
+GRANT TYPES:
+Client Credentials:
+  Account Dienst
+  Stats Dienst
+  Noti Dienst
 
-1. Client Credentials (bei jeder Dienst ausser der Gateway verwendet):
-
-Es ist benutz, so ein Dienst anfragen zu ein anderes authorisiert werden konnen, ohne neuen Beglaubigungsschreiben zu geben
-
-2. Authorization Code:
-
-Unseres Gateway eine Art Kunde sein, um die anfrage zu jedes Dienst zu senden, aber es muss autorisiert bei die AuthService sein.
+Authorization Code:
+  Gateway
 
 #### ACCOUNT DIENST:🪪
 
@@ -89,5 +88,33 @@ Das Seite neu laden
 
 ### NOTIFICATION DIENST 🔔
 
+Offnete Endepunkte:
 
 
+Gesicherte Endepunkte:
+| Method | Endepunkte |Request Body | Parameter | Beschreibung |
+|--|--|--|--| --|
+| GET | /{accountName} |  | | notification des Konto zu erhalten |
+| POST | /create | NotificationEntity | | notification zu erstellen |
+| PUT | /edit | NotificationEntity | | notification zu bearbeiten |
+| DELETE | /{accountName} |  | Notification Type (REMIND or BACKUP)| notification zu entfernen |
+
+---
+
+Für die Entwicklung wird eine In-Memory-H2-Datenbank verwendet, für die Produktion wird PostgreSQL verwendet
+
+## Laufen das Projekt in Ihres PC
+
+1. Klonen Sie das Repository mit dem folgenden Kommand:
+
+`git clone https://github.com/dmsosa/microservices.git`
+
+2. Gehen zu das Repo ein
+
+`cd microservices`
+
+3. Stellen Sie sicher, dass Ihr [Docker-Daemon](https://docs.docker.com/config/daemon/start/) laufen ausgeführt wird, und führen Sie dann Folgendes aus:
+
+`docker compose up`
+
+4. Das App sollen zu http://localhost:8061/index erreichbar sein
