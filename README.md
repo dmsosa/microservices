@@ -17,7 +17,7 @@ The obstacles I encountered during the development of the project can be found i
 
 ##### GATEWAY SERVICE: 🏬
 
-Use the Thymeleaf gateway to create the UI
+Entrypoint of the app, allows users to send requests to each of the four (4) services of the application. Provides an UI with Thymeleaf as well.
 
 #### AUTHORIZATION SERVICE:🔒
 
