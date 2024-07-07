@@ -10,7 +10,13 @@ Microdienste Projekt ist nach [piggymetrics](https://github.com/sqshq/piggymetri
 
 TechStack: PostgreSQL, Spring, Docker
 
+![etwa](https://github.com/dmsosa/microservices/assets/112881114/6950e84b-5f82-46e1-ae11-681106470a0b)
+
+
 Die Hindernisse, die ich wahrend der Entwlickung der Projekt gefunden hatte finden Sie in weiterer "etwas . md" Dateien, denn ich mochte nicht dieses Text entweder sehr groß noch gemischt von Themen machen.
+
+
+
 
 ### Dokumentation:
 
