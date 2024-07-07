@@ -11,7 +11,7 @@ TechStack: PostgreSQL, Spring, Docker
 The obstacles I encountered during the development of the project can be found in additional "somewhat . md" files, because I didn't want to make this text either very large nor mixed of topics.
 
 ### Documentation: 
-![swagger](https://github.com/dmsosa/microservices/assets/112881114/88c3fed6-7d73-4c85-ba3b-56cbf9042b61) The documentation of our APIs was developed with Swagger to explain its functions.
+![swagger](https://github.com/dmsosa/microservices/assets/112881114/16444857-9111-4e6f-bc5a-8b6bdd2a42fa) The documentation of our APIs was developed with Swagger to explain its functions.
 
 ### SERVICES:
 
