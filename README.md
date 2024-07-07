@@ -1,6 +1,6 @@
 # Microservices project ⚙️🐷
 
-[![English Readme](https://img.shields.io/badge/lang-en-green)](https://github.com/dmsosa/microservices/blob/main/README.md) [![French Readme](https://img.shields.io/badge/lang-de-blue)](https://github.com/dmsosa/microservices/blob/main/readmes/README.fr.md)
+[![English Readme](https://img.shields.io/badge/lang-en-green)](https://github.com/dmsosa/microservices/blob/main/README.md) [![French Readme](https://img.shields.io/badge/lang-de-blue)](https://github.com/dmsosa/microservices/blob/main/readmes/README.fr.md) [![German Readme](https://img.shields.io/badge/lang-de-red)](https://github.com/dmsosa/microservices/blob/main/readmes/README.de.md)
 
 ⚙️Microservices project is inspired by [piggymetrics](https://github.com/sqshq/piggymetrics/tree/master) by @sqshq "Alexander Lukyanchikov", but this implementation uses PostgreSQL and a simple business logic, the main goal of this project is to show an example of microservices architecture.
 
