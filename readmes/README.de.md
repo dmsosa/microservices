@@ -8,7 +8,15 @@
 
 ⚙️Microdienste Projekt ist nach [piggymetrics](https://github.com/sqshq/piggymetrics/tree/master) von @sqshq "Alexander Lukyanchikov" inspiriert, aber dieses Implementation PostgreSQL und ein einfacher Businesslogik benutzt, der Hauptsziele dieses Projekt ist ein Beispiel von Microdienste zu zeigen.
 
-TechStack: PostgreSQL, Spring, Docker
+TechStack: Spring, PostgreSQL
+
+Merkmale:
+-Service Registry with Eureka Netflix
+-Spring Cloud Config Server
+-Spring Cloud Gateway
+-OAuth2 Authorization Server
+-Resilience4J
+-Thymeleaf
 
 ![etwa](https://github.com/dmsosa/microservices/assets/112881114/6950e84b-5f82-46e1-ae11-681106470a0b)
 
@@ -118,3 +126,6 @@ Für die Entwicklung wird eine In-Memory-H2-Datenbank verwendet, für die Produk
 `docker compose up`
 
 4. Das App sollen zu http://localhost:8061/index erreichbar sein
+<img width="384" alt="Microservices" src="https://github.com/dmsosa/microservices/assets/112881114/a2263ba8-0ba0-4aa0-ab02-5e246eb9002e">
+
+
