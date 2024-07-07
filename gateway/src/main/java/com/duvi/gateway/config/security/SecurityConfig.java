@@ -45,6 +45,7 @@ public class SecurityConfig {
     private String instanceId;
     @Value("${app.issuer-uri}")
     private String hostIssuerUri;
+    private final String[] WHITELIST = {"/v3/api-docs/**", "/swagger-ui/**"};
     private DiscoveryClient discoveryClient;
     public SecurityConfig(DiscoveryClient discoveryClient ) {
         this.discoveryClient = discoveryClient;
@@ -63,6 +64,7 @@ public class SecurityConfig {
                 .exceptionHandling(exceptionHandlingSpec -> exceptionHandlingSpec.authenticationEntryPoint(new RedirectServerAuthenticationEntryPoint("/oauth2/authorization/gatewayClient")))
                 .authorizeExchange( exchanges ->
                         exchanges
+                        .pathMatchers(WHITELIST).permitAll()
                         .pathMatchers("/css/**").permitAll()
                         .pathMatchers("/images/**").permitAll()
                         .pathMatchers("/js/**").permitAll()

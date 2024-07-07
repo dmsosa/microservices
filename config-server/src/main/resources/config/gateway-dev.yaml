@@ -7,8 +7,9 @@ management.endpoint.health.circuitbreakers.enabled: true
 logging.level.org.springframework.security: TRACE
 logging.level.reactor.netty.http.client: TRACE
 #thymeleaf and dev tools
-
-
+springdoc:
+  swagger-ui:
+    path: /swagger-ui/api-docs.html
 
 server:
   port:

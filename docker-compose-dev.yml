@@ -1,59 +1,122 @@
 services:
-  #  config
   config-server:
     depends_on:
       service-registry:
         condition: service_healthy
+    environment:
+      SERVICE_REGISTRY_URL: ${SERVICE_REGISTRY_URL}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     container_name: config-server
     build: config-server
+    expose:
+      - "8888"
     ports:
-      - 8888:8888
+      - 127.0.0.1:8888:8888
+    networks:
+      - dmnetwork
   service-registry:
     container_name: service-registry
     build: service-registry
+    expose:
+      - "8761"
     ports:
-      - 8761:8761
-  #  services
+      - 127.0.0.1:8761:8761
+    networks:
+      - dmnetwork
   auth-service:
     depends_on:
       config-server:
         condition: service_healthy
       service-registry:
         condition: service_healthy
+    environment:
+      SERVICE_REGISTRY_URL: ${SERVICE_REGISTRY_URL}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: authdb
     container_name: auth-service
     build: auth-service
+    expose:
+      - "9000"
     ports:
-      - 9000:9000
+      - 127.0.0.1:9000:9000
+    networks:
+      - dmnetwork
+  gateway:
+    depends_on:
+      config-server:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+    environment:
+      SERVICE_REGISTRY_URL: ${SERVICE_REGISTRY_URL}
+      HOST_ISSUER_URI: ${HOST_ISSUER_URI}
+    container_name: gateway
+    build: gateway
+    expose:
+      - "8061"
+    ports:
+      - 127.0.0.1:8061:8061
+    networks:
+      - dmnetwork
+  #micro services
   account:
     depends_on:
-      config-server:
+      auth-service:
         condition: service_healthy
-      service-registry:
-        condition: service_healthy
+    environment:
+      SERVICE_REGISTRY_URL: ${SERVICE_REGISTRY_URL}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: accountdb
+      HOST_ISSUER_URI: ${HOST_ISSUER_URI}
     container_name: account
     build: account
+    expose:
+      - "8083"
     ports:
-      - 8083:8083
+      - 127.0.0.1:8083:8083
+    networks:
+      - dmnetwork
   stats:
     depends_on:
-      config-server:
+      auth-service:
         condition: service_healthy
-      service-registry:
-        condition: service_healthy
+    environment:
+      SERVICE_REGISTRY_URL: ${SERVICE_REGISTRY_URL}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: statsdb
+      HOST_ISSUER_URI: ${HOST_ISSUER_URI}
     container_name: stats
     build: stats
+    expose:
+      - "8085"
     ports:
-      - 8085:8085
+      - 127.0.0.1:8085:8085
+    networks:
+      - dmnetwork
   noti:
     depends_on:
-      config-server:
+      auth-service:
         condition: service_healthy
-      service-registry:
-        condition: service_healthy
+    environment:
+      SERVICE_REGISTRY_URL: ${SERVICE_REGISTRY_URL}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: notidb
+      HOST_ISSUER_URI: ${HOST_ISSUER_URI}
     container_name: noti
     build: noti
+    expose:
+      - "8084"
     ports:
-      - 8084:8084
+      - 127.0.0.1:8084:8084
+    networks:
+      - dmnetwork
   #databases
   authdb:
     container_name: authdb
@@ -61,33 +124,51 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: authdb
+    expose:
+      - "5000"
     ports:
-      - 5000:5432
+      - 127.0.0.1:5000:5432
+    networks:
+      - dmnetwork
   accountdb:
     container_name: accountdb
     build: postgresql
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: accountdb
+    expose:
+      - "5001"
     ports:
-      - 5003:5432
+      - 127.0.0.1:5001:5432
+    networks:
+      - dmnetwork
   statsdb:
+    container_name: statsdb
     build: postgresql
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: statsdb
+    expose:
+      - "5002"
     ports:
-      - 5005:5432
+      - 127.0.0.1:5002:5432
+    networks:
+      - dmnetwork
   notidb:
+    container_name: notidb
     build: postgresql
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: notidb
+    expose:
+      - "5003"
     ports:
-      - 5004:5432
+      - 127.0.0.1:5003:5432
+    networks:
+      - dmnetwork
 volumes:
-  dmservicesvol
+  dmservicesvol:
+networks:
+  dmnetwork:
+    name: dmnetwork
+    external: true
