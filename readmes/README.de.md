@@ -20,7 +20,7 @@ Die Hindernisse, die ich wahrend der Entwlickung der Projekt gefunden hatte find
 
 ### Dokumentation:
 
-Die Dokumentation unsere APIs mit Swagger entwickelt war, um seinen Funktionen zu erklaren.
+![swagger](https://github.com/dmsosa/microservices/assets/112881114/16444857-9111-4e6f-bc5a-8b6bdd2a42fa) Die Dokumentation unsere APIs mit Swagger entwickelt war, um seinen Funktionen zu erklaren.
 
 ### DIENSTE:
 
