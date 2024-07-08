@@ -91,7 +91,9 @@ Secured endpoints:
 
 ---
 
-For development, an in-memory H2 database is used, for production, PostgreSQL is used
+You can run the project in your local machine with an in-memory H2 database or PostgreSQL,
+
+By default,  an in-memory H2 database is used for development profile, and  PostgreSQL is used for production
 
 ## Run the project on your PC
 
