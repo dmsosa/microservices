@@ -109,7 +109,9 @@ By default,  an in-memory H2 database is used for development profile, and  Post
 
 `docker compose up`
 
-4. The app should be reachable at http://localhost:8061/index
+4. The app should be reachable at http://localhost:8061/index to continue without registration:
+username: demo
+password: password
 
  <img width="384" alt="Microservices" src="https://github.com/dmsosa/microservices/assets/112881114/a2263ba8-0ba0-4aa0-ab02-5e246eb9002e">
 
